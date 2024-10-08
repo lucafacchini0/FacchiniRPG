@@ -1,3 +1,12 @@
+/* @brief
+* The problem is that, in the Playe class, when the Player levels up, we don't know what
+ * statistic to increment, because we don't know which class the Player is. We can't just
+ * increment all the statistics, because we don't know if the Player is a Warrior, Mage, etc.
+ * For this reason, I created the Character class. Let's imagine it as a class that has the
+ * role of being overridden by each class (Warrior, Mage etc.). These single classes will
+ * return their increment values, so that the Player class can increment the correct statistic.
+ */
+
 #pragma once
 #include "Statistics.h"
 #include <cstdint>
@@ -18,13 +27,4 @@ public:
     [[nodiscard]] virtual stats_t getManaIncrement(level_t level) const = 0;
     [[nodiscard]] virtual stats_t getAttackIncrement(level_t level) const = 0;
     [[nodiscard]] virtual stats_t getDefenseIncrement(level_t level) const = 0;
-
-
-    // Theory
-    // The problem is that, in the Playe class, when the Player levels up, we don't know what
-    // statistic to increment, because we don't know which class the Player is. We can't just
-    // increment all the statistics, because we don't know if the Player is a Warrior, Mage, etc.
-    // For this reason, I created the Character class. Let's imagine it as a class that has the
-    // role of being overridden by each class (Warrior, Mage etc.). These single classes will
-    // return their increment values, so that the Player class can increment the correct statistic.
 };

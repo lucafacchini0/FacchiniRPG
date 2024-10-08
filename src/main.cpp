@@ -1,15 +1,16 @@
 // main.cpp
-#include "Player.h"
-#include "Warrior.h"
-#include "Item.h"
 #include <iostream>
+#include <memory>
+#include "../include/Player.h"
+#include "../include/Warrior.h"
+#include "../include/Item.h"
 
 int main() {
     Player player2("Luca", Warrior());
 
     // Add items to inventory
-    player2.addItemToInventory(std::unique_ptr<Item>(new Item("Sword Shield", "Sword 1")));
-    player2.addItemToInventory(std::unique_ptr<Item>(new Item("Shield", "Shield 1")));
+    player2.addItemToInventory(std::make_unique<Item>("Sword Shield", "Sword 1"));
+    player2.addItemToInventory(std::make_unique<Item>("Shield", "Shield 1"));
     player2.displayInventory();
 
     player2.removeItemFromInventory("Sword   ");
