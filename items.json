@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Mushroom",
+    "description": "Example Item, I'm getting crazy",
+    "buffs": {
+        "hp": 10,
+        "mana": 0,
+        "attack": 0,
+        "defense": 0
+    }
+  },
+  {
+    "name": "Fire_Flower",
+    "description": "Yeah like SUPER MARIO MARIO MARIOOO!!",
+    "buffs": {
+        "hp": 0,
+        "mana": 0,
+        "attack": 10,
+        "defense": 0
+    }
+  }
+]
