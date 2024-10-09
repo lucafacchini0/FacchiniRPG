@@ -4,10 +4,9 @@
 #include "../include/Player.h"
 #include "../include/Warrior.h"
 #include "../include/Item.h"
+#include "../include/Mushroom.h"
 
 int main() {
-    Player player("Luca", Warrior());
-    player.printStats();
 
     return 0;
 }

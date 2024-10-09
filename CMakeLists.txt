@@ -12,5 +12,5 @@ add_executable(FacchiniRPG_Final
         include/Colors.h
         include/Item.h
         include/Inventory.h
-        include/Items/Mushrooms.h
+        include/Mushroom.h
 )

@@ -1,4 +1,3 @@
-#pragma once
 #include <vector>
 #include <memory>
 #include <fstream>
@@ -17,21 +16,21 @@ public:
     /**
      * @brief Removes an item from the inventory based on the provided name.
      *
-     * This function uses the `std::remove_if` algorithm to identify items
-     * to be removed from the inventory. The `remove_if` function iterates
-     * through the vector of unique pointers to `Item` objects and applies
+     * This function uses the std::remove_if algorithm to identify items
+     * to be removed from the inventory. The remove_if function iterates
+     * through the vector of unique pointers to Item objects and applies
      * a lambda function that compares the name of each item with the
-     * provided name (`itemName`). Items that satisfy this condition (i.e.,
-     * their name matches `itemName`) will be "removed" from the vector
+     * provided name (itemName). Items that satisfy this condition (i.e.,
+     * their name matches itemName) will be "removed" from the vector
      * (i.e., they will be moved to the end of the vector without being
      * actually deleted at this stage).
      *
-     * After `remove_if` has shifted the items to be removed to the end
-     * of the vector, the `erase` method is called to physically remove
-     * those items from the vector. `erase` takes as arguments the
+     * After remove_if has shifted the items to be removed to the end
+     * of the vector, the erase method is called to physically remove
+     * those items from the vector. erase takes as arguments the
      * iterator pointing to the beginning and the iterator pointing to
      * the end of the range to be removed, which is determined by
-     * `remove_if`.
+     * remove_if.
      *
      * This approach is efficient because it minimizes the number of
      * element shifts within the vector and leverages C++ iterator
@@ -54,6 +53,3 @@ public:
 private:
     std::vector<std::unique_ptr<Item>> items;
 };
-
-
-
