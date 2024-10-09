@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <memory>
 #include <fstream>
@@ -53,3 +54,6 @@ public:
 private:
     std::vector<std::unique_ptr<Item>> items;
 };
+
+
+

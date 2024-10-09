@@ -1,17 +1,16 @@
+// Item.h
 #pragma once
 #include <string>
 
-using std::string;
-
 class Item {
 public:
-    Item(string name, string description)
+    Item(std::string name, std::string description)
         : name(std::move(name)), description(std::move(description)) {}
 
-    [[nodiscard]] const string& getName() const { return name; }
-    [[nodiscard]] const string& getDescription() const { return description; }
+    [[nodiscard]] const std::string& getName() const { return name; }
+    [[nodiscard]] const std::string& getDescription() const { return description; }
 
-private:
-    string name;
-    string description;
+protected:
+    std::string name;
+    std::string description;
 };

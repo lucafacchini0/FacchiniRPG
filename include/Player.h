@@ -90,7 +90,7 @@ public:
     // **************************************** //
 
     void printStats() const {
-        static const std::uint8_t LENGTH = 30;
+        static constexpr std::uint8_t LENGTH = 30;
         std::uint16_t paddingName = ((LENGTH - name.length()) / 2);
         std::uint16_t paddingClass = ((LENGTH - className.length()) / 2);
 
