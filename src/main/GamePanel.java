@@ -40,7 +40,6 @@ public class GamePanel extends JPanel implements Runnable {
 
         this.setFocusable(true); // Makes the panel focusable, allowing it to receive input events such as keyboard events.
         // Without this setting, the panel may not respond to keyboard events even if a KeyListener is registered.
-
     }
 
     // Start the game thread.
@@ -55,16 +54,16 @@ public class GamePanel extends JPanel implements Runnable {
         double targetFrameTime = 1_000_000_000.0 / FPS; // The delay between frames in nanoseconds.
         double nextFrameTime = System.nanoTime() + targetFrameTime; // The time when the next frame should be drawn.
 
-        while(gameThread != null) { // As long as the game thread is running...
+        while (gameThread != null) { // As long as the game thread is running...
             updateComponents();
             repaint(); // Repaint the panel.
 
             try {
                 double remainingTime = nextFrameTime - System.nanoTime(); // Calculate the remaining time until the next frame.
-                Thread.sleep((long) remainingTime / 1_000_000); // Sleep until the next frame time is reached.
-
+                if (remainingTime > 0) {
+                    Thread.sleep((long) remainingTime / 1_000_000); // Sleep until the next frame time is reached.
+                }
                 nextFrameTime += targetFrameTime; // Calculate the time when the next frame should be drawn.
-
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
