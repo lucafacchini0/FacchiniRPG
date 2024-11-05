@@ -6,6 +6,7 @@ out/
 # Hide notes
 **/src/**.md
 
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -27,6 +28,9 @@ bin/
 
 ### VS Code ###
 .vscode/
+
+### IntelliJ IDEA ###
+.idea/
 
 ### Mac OS ###
 .DS_Store
