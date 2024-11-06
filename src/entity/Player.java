@@ -11,22 +11,40 @@ import java.util.Objects;
 
 public class Player extends Entity {
 
-    private final int UPDATE_TIME_FOR_SPRITE = 10;
+    // Player speed
+    public final int DEFAULT_PLAYER_SPEED = 4;
 
+    // Player sprites settings
+    private final int UPDATE_TIME_FOR_SPRITE = 10; // Every x frames the sprite will be updated.
+
+    // Where we draw player on the screen. (Usually, fixed to the center of the screen)
+    public final int screenX;
+    public final int screenY;
+
+    // Objects
     GamePanel gp;
     KeyHandler kh;
 
     public Player(GamePanel gp, KeyHandler kh) {
         this.gp = gp;
         this.kh = kh;
+
+        screenX = gp.SCREEN_WIDTH / 2 - gp.TILE_SIZE / 2; // Center the player on the screen
+        screenY = gp.SCREEN_HEIGHT / 2 - gp.TILE_SIZE / 2; // Center the player on the screen
+
         setDefaultValues();
         getImages();
     }
 
     void setDefaultValues() {
-        x = 250;
-        y = 250;
-        speed = gp.DEFAULT_PLAYER_SPEED;
+        // Where we "spawn" the player in the world.
+        worldX = gp.TILE_SIZE * 25 - gp.TILE_SIZE;
+        worldY = gp.TILE_SIZE * 25 - gp.TILE_SIZE;
+
+        // Initial speed
+        speed = DEFAULT_PLAYER_SPEED;
+
+        // Initial direction
         currentDirection = "down";
     }
 
@@ -55,12 +73,12 @@ public class Player extends Entity {
 
             // Normalize the speed when moving diagonally
             if (deltaX != 0 && deltaY != 0) {
-                deltaX /= Math.sqrt(2);
-                deltaY /= Math.sqrt(2);
+                deltaX /= Math.sqrt(1.7); // Not 2 because we want to mover a bit faster.
+                deltaY /= Math.sqrt(1.7); // Not 2 because we want to mover a bit faster.
             }
 
-            x += deltaX;
-            y += deltaY;
+            worldX += deltaX;
+            worldY += deltaY;
 
             spriteFramesCounter++;
 
@@ -121,10 +139,8 @@ public class Player extends Entity {
                     image = rightImages[1];
                 }
                 break;
-
         }
-
-        g2d.drawImage(image, x, y, gp.TILE_SIZE, gp.TILE_SIZE, null);
+        g2d.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
     }
 
     @Override

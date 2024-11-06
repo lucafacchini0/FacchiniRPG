@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class TileManager {
 
     // Constants for the total number of unique tiles in the game.
-    public final int TOTAL_UNIQUE_TILES = 4;
+    public final int TOTAL_UNIQUE_TILES = 6;
 
     // The gameMap of the game.
     private final int[][] gameMap;
@@ -29,8 +29,7 @@ public class TileManager {
         this.gp = gp;
 
         tileType = new Tile[TOTAL_UNIQUE_TILES];
-
-        gameMap = new int[gp.MAX_SCREEN_COLUMNS][gp.MAX_SCREEN_ROWS];
+        gameMap = new int[gp.MAX_WORLD_COLUMNS][gp.MAX_WORLD_ROWS];
 
         loadTileImages();
         loadMap(MAP_PATH + "default.txt");
@@ -43,6 +42,8 @@ public class TileManager {
             final int WALL1_INDEX = 1;
             final int WATER1_INDEX = 2;
             final int TREE_INDEX = 3;
+            final int DIRT_INDEX = 4;
+            final int SAND_INDEX = 5;
 
             tileType[GRASS1_INDEX] = new Tile();
             tileType[GRASS1_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/GRASS1.png")));
@@ -56,6 +57,12 @@ public class TileManager {
             tileType[TREE_INDEX] = new Tile();
             tileType[TREE_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/TREE1.png")));
 
+            tileType[DIRT_INDEX] = new Tile();
+            tileType[DIRT_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/DIRT1.png")));
+
+            tileType[SAND_INDEX] = new Tile();
+            tileType[SAND_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/SAND1.png")));
+
 
         } catch (Exception e) {
             Logger.getLogger(TileManager.class.getName()).log(Level.SEVERE, null, e);
@@ -68,25 +75,21 @@ public class TileManager {
             assert inputFile != null;
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputFile));
 
-            int currentColumn = 0;
-            int currentRow = 0;
+            int currentWorldColumn = 0;
+            int currentWorldRow = 0;
 
-            while(currentRow < gp.MAX_SCREEN_ROWS) {
-
+            while(currentWorldRow < gp.MAX_WORLD_ROWS) {
                 String line = reader.readLine();
 
-                while(currentColumn < gp.MAX_SCREEN_COLUMNS) {
-
+                while(currentWorldColumn < gp.MAX_WORLD_COLUMNS) {
                     String[] numbers = line.split(" ");
-
-                    int number = Integer.parseInt(numbers[currentColumn]);
-
-                    gameMap[currentColumn][currentRow] = number;
-                    currentColumn++;
+                    int number = Integer.parseInt(numbers[currentWorldColumn]);
+                    gameMap[currentWorldColumn][currentWorldRow] = number;
+                    currentWorldColumn++;
                 }
 
-                currentColumn = 0;
-                currentRow++;
+                currentWorldColumn = 0;
+                currentWorldRow++;
             }
             reader.close();
         } catch (Exception e) {
@@ -96,26 +99,36 @@ public class TileManager {
 
     public void draw(Graphics2D g2d) {
 
-        int currentColumn = 0;
-        int currentRow = 0;
-        int tileX = 0;
-        int tileY = 0;
+        int currentWorldColumn = 0;
+        int currentWorldRow = 0;
 
-        while(currentColumn < gp.MAX_SCREEN_COLUMNS && currentRow < gp.MAX_SCREEN_ROWS) {
+        while(currentWorldColumn < gp.MAX_WORLD_COLUMNS && currentWorldRow < gp.MAX_WORLD_ROWS) {
 
+            int currentTileIndex = gameMap[currentWorldColumn][currentWorldRow];
 
-            int currentTileIndex = gameMap[currentColumn][currentRow];
+            // The x and y position of the tile in the game world.
+            // This is the actual position of the tile in the game world.
+            int worldX = currentWorldColumn * gp.TILE_SIZE; // The x position of the tile in the game world
+            int worldY = currentWorldRow * gp.TILE_SIZE; // The y position of the tile in the game world
 
-            g2d.drawImage(tileType[currentTileIndex].image, tileX, tileY, gp.TILE_SIZE, gp.TILE_SIZE, null);
-            currentColumn++;
+            // The x and y position of the tile displayed on the screen.
+            // This is the position of the tile on the screen.
+            int screenX = worldX - gp.player.worldX + gp.player.screenX;
+            int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-            tileX = tileX + gp.TILE_SIZE;
+            if(worldX + gp.TILE_SIZE > gp.player.worldX - gp.player.screenX &&
+               worldX - gp.TILE_SIZE < gp.player.worldX + gp.player.screenX &&
+               worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.screenY &&
+               worldY - gp.TILE_SIZE < gp.player.worldY + gp.player.screenY) {
+                g2d.drawImage(tileType[currentTileIndex].image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+            }
 
-            if(currentColumn == gp.MAX_SCREEN_COLUMNS) {
-                tileX = 0;
-                tileY = tileY + gp.TILE_SIZE;
-                currentRow++;
-                currentColumn = 0;
+            currentWorldColumn++;
+
+            if(currentWorldColumn == gp.MAX_WORLD_COLUMNS) {
+
+                currentWorldRow++;
+                currentWorldColumn = 0;
             }
         }
     }
