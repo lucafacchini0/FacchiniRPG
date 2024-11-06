@@ -13,12 +13,12 @@ public class Player extends Entity {
 
     private final int UPDATE_TIME_FOR_SPRITE = 10;
 
-    GamePanel gamePanel;
-    KeyHandler keyHandler;
+    GamePanel gp;
+    KeyHandler kh;
 
     public Player(GamePanel gp, KeyHandler kh) {
-        this.gamePanel = gp;
-        this.keyHandler = kh;
+        this.gp = gp;
+        this.kh = kh;
         setDefaultValues();
         getImages();
     }
@@ -26,7 +26,7 @@ public class Player extends Entity {
     void setDefaultValues() {
         x = 250;
         y = 250;
-        speed = gamePanel.DEFAULT_PLAYER_SPEED;
+        speed = gp.DEFAULT_PLAYER_SPEED;
         currentDirection = "down";
     }
 
@@ -35,20 +35,20 @@ public class Player extends Entity {
         int deltaX = 0;
         int deltaY = 0;
 
-        if(keyHandler.isLeftPressed == true || keyHandler.isRightPressed == true || keyHandler.isUpPressed == true || keyHandler.isDownPressed == true) {
-            if (keyHandler.isLeftPressed) {
+        if(kh.isLeftPressed || kh.isRightPressed || kh.isUpPressed || kh.isDownPressed) {
+            if (kh.isLeftPressed) {
                 currentDirection = "left";
                 deltaX -= speed;
             }
-            if (keyHandler.isRightPressed) {
+            if (kh.isRightPressed) {
                 currentDirection = "right";
                 deltaX += speed;
             }
-            if (keyHandler.isUpPressed) {
+            if (kh.isUpPressed) {
                 currentDirection = "up";
                 deltaY -= speed;
             }
-            if (keyHandler.isDownPressed) {
+            if (kh.isDownPressed) {
                 currentDirection = "down";
                 deltaY += speed;
             }
@@ -124,17 +124,29 @@ public class Player extends Entity {
 
         }
 
-        g2d.drawImage(image, x, y, gamePanel.TILE_SIZE, gamePanel.TILE_SIZE, null);
+        g2d.drawImage(image, x, y, gp.TILE_SIZE, gp.TILE_SIZE, null);
     }
 
     @Override
     public void getImages() {
         try {
-            for(int i = 0; i < MAX_SPRITES_PER_DIRECTION; i++) {
-                upImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/player/up" + (i + 1) + ".png")));
-                downImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/player/down" + (i + 1) + ".png")));
-                leftImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/player/left" + (i + 1) + ".png")));
-                rightImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/assets/player/right" + (i + 1) + ".png")));
+            for (int i = 0; i < MAX_SPRITES_PER_DIRECTION; i++) {
+                String upPath = "/assets/player/up" + (i + 1) + ".png";
+                String downPath = "/assets/player/down" + (i + 1) + ".png";
+                String leftPath = "/assets/player/left" + (i + 1) + ".png";
+                String rightPath = "/assets/player/right" + (i + 1) + ".png";
+
+                System.out.println("Loading: " + upPath);
+                upImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(upPath)));
+
+                System.out.println("Loading: " + downPath);
+                downImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(downPath)));
+
+                System.out.println("Loading: " + leftPath);
+                leftImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(leftPath)));
+
+                System.out.println("Loading: " + rightPath);
+                rightImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(rightPath)));
             }
         } catch (IOException e) {
             System.out.println("Error loading player sprites.\n" +

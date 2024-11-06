@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import tiles.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,12 +23,13 @@ public class GamePanel extends JPanel implements Runnable {
     final int FPS = 60;
 
     // Player/NPCs speed
-    public final int DEFAULT_PLAYER_SPEED = 4;
+    public final int DEFAULT_PLAYER_SPEED = 4; // TODO: Move the constant to the player class
 
     // Class objects
     Thread gameThread; // The thread that runs the game loop.
     KeyHandler keyHandler = new KeyHandler(); // The key handler that listens for key events.
     Player player = new Player(this, keyHandler); // The player object.
+    TileManager tileManager = new TileManager(this); // The tile manager object.
 
     // Constructor
     public GamePanel() {
@@ -55,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
         double nextFrameTime = System.nanoTime() + targetFrameTime; // The time when the next frame should be drawn.
 
         while (gameThread != null) { // As long as the game thread is running...
-            updateComponents();
+            updateComponents(); // Update the components of the panel.
             repaint(); // Repaint the panel.
 
             try {
@@ -77,7 +79,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Draw the components of the panel.
     private void drawComponents(Graphics2D g2d) {
+        tileManager.draw(g2d);
         player.draw(g2d);
+
     }
 
     // Paint the components of the panel.
