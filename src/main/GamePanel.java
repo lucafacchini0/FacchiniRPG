@@ -10,7 +10,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Tile settings
     final int ORIGINAL_TILE_SIZE = 16; // One tile is 16x16 pixels.
-    final int SCALE = 4; // Scale up ORIGINAL_TILE_SIZE by 4x.
+    public final int SCALE = 4; // Scale up ORIGINAL_TILE_SIZE by 4x.
     public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // The size of a tile after scaling.
 
     // Screen settings
@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler kh = new KeyHandler(); // The key handler that listens for key events.
     public Player player = new Player(this, kh); // The player object.
     TileManager tileManager = new TileManager(this); // The tile manager object.
+    public CollisionManager collisionManager = new CollisionManager(this); // The collision manager object.
 
     // Constructor
     public GamePanel() {
@@ -52,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this); // "This" means this class is the target of the thread.
         gameThread.start(); // Start the game thread.
     }
+
 
     // Game loop.
     @Override

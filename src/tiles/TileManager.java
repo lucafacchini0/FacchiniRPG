@@ -17,13 +17,13 @@ public class TileManager {
     public final int TOTAL_UNIQUE_TILES = 6;
 
     // The gameMap of the game.
-    private final int[][] gameMap;
+    public final int[][] gameMap;
 
     // Map paths
     private final String MAP_PATH = "/assets/maps/";
     
     GamePanel gp;
-    Tile[] tileType; // This will contain all the unique tiles in the game
+    public Tile[] tileType; // This will contain all the unique tiles in the game
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -50,12 +50,15 @@ public class TileManager {
 
             tileType[WALL1_INDEX] = new Tile();
             tileType[WALL1_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/WALL1.png")));
+            tileType[WALL1_INDEX].collision = true;
 
             tileType[WATER1_INDEX] = new Tile();
             tileType[WATER1_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/WATER1.png")));
+            tileType[WATER1_INDEX].collision = true;
 
             tileType[TREE_INDEX] = new Tile();
             tileType[TREE_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/TREE1.png")));
+            tileType[TREE_INDEX].collision = true;
 
             tileType[DIRT_INDEX] = new Tile();
             tileType[DIRT_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/DIRT1.png")));

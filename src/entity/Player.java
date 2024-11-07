@@ -21,6 +21,10 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
+    // Bounding box constants
+    public final int BOUNDING_BOX_X = 8;
+    public final int BOUNDING_BOX_Y = 2;
+
     // Objects
     GamePanel gp;
     KeyHandler kh;
@@ -31,6 +35,14 @@ public class Player extends Entity {
 
         screenX = gp.SCREEN_WIDTH / 2 - gp.TILE_SIZE / 2; // Center the player on the screen
         screenY = gp.SCREEN_HEIGHT / 2 - gp.TILE_SIZE / 2; // Center the player on the screen
+
+        // Bounding box settings
+        boundingBox = new Rectangle();
+
+        boundingBox.x = gp.TILE_SIZE / BOUNDING_BOX_X;
+        boundingBox.y = gp.TILE_SIZE / BOUNDING_BOX_Y;
+        boundingBox.width = gp.TILE_SIZE - 2 * (gp.TILE_SIZE / BOUNDING_BOX_X) - 1;
+        boundingBox.height = gp.TILE_SIZE - (gp.TILE_SIZE / BOUNDING_BOX_Y) - 1;
 
         setDefaultValues();
         getImages();
@@ -49,55 +61,71 @@ public class Player extends Entity {
     }
 
     @Override
-    public void update() {
-        int deltaX = 0;
-        int deltaY = 0;
+    public void getImages() {
+        try {
+            for (int i = 0; i < MAX_SPRITES_PER_DIRECTION; i++) {
+                String upPath = "/assets/player/up" + (i+1) + ".png";
+                String downPath = "/assets/player/down" + (i+1) + ".png";
+                String leftPath = "/assets/player/left" + (i+1) + ".png";
+                String rightPath = "/assets/player/right" + (i+1) + ".png";
 
-        if(kh.isLeftPressed || kh.isRightPressed || kh.isUpPressed || kh.isDownPressed) {
-            if (kh.isLeftPressed) {
-                currentDirection = "left";
-                deltaX -= speed;
-            }
-            if (kh.isRightPressed) {
-                currentDirection = "right";
-                deltaX += speed;
-            }
-            if (kh.isUpPressed) {
-                currentDirection = "up";
-                deltaY -= speed;
-            }
-            if (kh.isDownPressed) {
-                currentDirection = "down";
-                deltaY += speed;
-            }
+                System.out.println("Loading: " + upPath);
+                upImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(upPath)));
 
-            // Normalize the speed when moving diagonally
-            if (deltaX != 0 && deltaY != 0) {
-                deltaX /= Math.sqrt(1.7); // Not 2 because we want to mover a bit faster.
-                deltaY /= Math.sqrt(1.7); // Not 2 because we want to mover a bit faster.
+                System.out.println("Loading: " + downPath);
+                downImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(downPath)));
+
+                System.out.println("Loading: " + leftPath);
+                leftImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(leftPath)));
+
+                System.out.println("Loading: " + rightPath);
+                rightImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(rightPath)));
             }
-
-            worldX += deltaX;
-            worldY += deltaY;
-
-            spriteFramesCounter++;
-
-            // Update() is called FPS times per second. So our sprite will be updated every 10 frames.
-            if(spriteFramesCounter > UPDATE_TIME_FOR_SPRITE) {
-                if(spriteImageNum == 1) {
-                    spriteImageNum = 2;
-                } else if(spriteImageNum == 2) {
-                    spriteImageNum = 1;
-                }
-
-                spriteFramesCounter = 0;
-            }
-        } else { // If no key is pressed, as soon as the player presses another key, the sprite will be updated.
-            spriteFramesCounter = UPDATE_TIME_FOR_SPRITE;
+        } catch (IOException e) {
+            System.out.println("Error loading player sprites.\n" +
+                    "Check if the files are in the correct directory in src/assets/player/.\n" +
+                    "You can also check method getImage() in Player.java to load the correct files."
+            );
+            throw new RuntimeException(e);
         }
     }
 
+    @Override
+    public void update() {
 
+        if(kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed) {
+            if(kh.isUpPressed) {
+                currentDirection = "up";
+            } else if(kh.isDownPressed) {
+                currentDirection = "down";
+            } else if(kh.isLeftPressed) {
+                currentDirection = "left";
+            } else if(kh.isRightPressed) {
+                currentDirection = "right";
+            }
+
+            isColliding = false;
+            gp.collisionManager.checkTile(this);
+
+            if(!isColliding) {
+                if(kh.isUpPressed) {
+                    worldY -= speed;
+                } else if(kh.isDownPressed) {
+                    worldY += speed;
+                } else if(kh.isLeftPressed) {
+                    worldX -= speed;
+                } else if(kh.isRightPressed) {
+                    worldX += speed;
+                }
+            }
+
+            spriteFramesCounter++;
+            if(spriteFramesCounter >= UPDATE_TIME_FOR_SPRITE) {
+                spriteFramesCounter = 0;
+                spriteImageNum = (spriteImageNum == 1) ? 2 : 1;
+            }
+        }
+    }
 
     @Override
     public void draw(Graphics2D g2d) {
@@ -141,35 +169,5 @@ public class Player extends Entity {
                 break;
         }
         g2d.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
-    }
-
-    @Override
-    public void getImages() {
-        try {
-            for (int i = 0; i < MAX_SPRITES_PER_DIRECTION; i++) {
-                String upPath = "/assets/player/up" + (i + 1) + ".png";
-                String downPath = "/assets/player/down" + (i + 1) + ".png";
-                String leftPath = "/assets/player/left" + (i + 1) + ".png";
-                String rightPath = "/assets/player/right" + (i + 1) + ".png";
-
-                System.out.println("Loading: " + upPath);
-                upImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(upPath)));
-
-                System.out.println("Loading: " + downPath);
-                downImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(downPath)));
-
-                System.out.println("Loading: " + leftPath);
-                leftImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(leftPath)));
-
-                System.out.println("Loading: " + rightPath);
-                rightImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(rightPath)));
-            }
-        } catch (IOException e) {
-            System.out.println("Error loading player sprites.\n" +
-                    "Check if the files are in the correct directory in src/assets/player/.\n" +
-                    "You can also check method getImage() in Player.java to load the correct files."
-            );
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -20,6 +20,10 @@ public class Entity {
 
     public String currentDirection;
 
+    // The bounding box of the entity and whether it is colliding with another entity.
+    public Rectangle boundingBox;
+    public boolean isColliding = false;
+
     public void update() {}
     public void draw(Graphics2D g2d) {}
     public void getImages() {}
