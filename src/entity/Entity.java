@@ -4,14 +4,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
+    public final int MAX_SPRITES_PER_DIRECTION = 2;
+
     public int worldX, worldY; // The position of the entity in the game world. Not just the visible screen.
     public int speed;
-
-    // worldX and worldY is not where we draw the player.
-    // This is the Entity's position in the game world.
-
-
-    public final int MAX_SPRITES_PER_DIRECTION = 2;
 
     public BufferedImage[] upImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
     public BufferedImage[] downImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
