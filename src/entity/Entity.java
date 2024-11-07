@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
-    public int worldX, worldY; // That's actually the game world position. Not the entity position.
+    public int worldX, worldY; // The position of the entity in the game world. Not just the visible screen.
     public int speed;
 
     // worldX and worldY is not where we draw the player.

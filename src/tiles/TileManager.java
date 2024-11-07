@@ -72,6 +72,7 @@ public class TileManager {
         }
     }
 
+    // Reads the map file and loads the map into the gameMap array.
     public void loadMap(String filePath) {
         try {
             InputStream inputFile = getClass().getResourceAsStream(filePath);
@@ -109,16 +110,15 @@ public class TileManager {
 
             int currentTileIndex = gameMap[currentWorldColumn][currentWorldRow];
 
-            // The x and y position of the tile in the game world.
-            // This is the actual position of the tile in the game world.
             int worldX = currentWorldColumn * gp.TILE_SIZE; // The x position of the tile in the game world
             int worldY = currentWorldRow * gp.TILE_SIZE; // The y position of the tile in the game world
 
-            // The x and y position of the tile displayed on the screen.
-            // This is the position of the tile on the screen.
             int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
+            // Draw the tile if it is within the screen bounds.
+            // player.worldX and player.worldY are the player's coordinates in the game world.
+            // worldX and worldY are the coordinates of the tile in the game world.
             if(worldX + gp.TILE_SIZE > gp.player.worldX - gp.player.screenX &&
                worldX - gp.TILE_SIZE < gp.player.worldX + gp.player.screenX &&
                worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.screenY &&

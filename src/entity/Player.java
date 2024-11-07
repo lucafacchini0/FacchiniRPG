@@ -125,7 +125,11 @@ public class Player extends Entity {
         // Change the sprite image
         if (spriteFramesCounter >= UPDATE_TIME_FOR_SPRITE * spriteCounterMultiplier) {
             spriteFramesCounter = 0;
-            spriteImageNum = (spriteImageNum == 1) ? 2 : 1;
+
+            switch(spriteImageNum) {
+                case 1: spriteImageNum = 2; break;
+                case 2: spriteImageNum = 1; break;
+            }
         }
 
         // Change the player's position
