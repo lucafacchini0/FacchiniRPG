@@ -16,8 +16,10 @@ public class Player extends Entity {
 
     // Player sprites settings
     private final int UPDATE_TIME_FOR_SPRITE = 10; // Every x frames the sprite will be updated.
+    private final int IDLING_SPRITE_COUNTER_MULTIPLIER = 3; // Makes the idling sprite change slower.
+    private final int MOVING_SPRITE_COUNTER_MULTIPLIER = 1; // Makes the moving sprite change faster.
 
-    // Where we draw player on the screen. (Usually, fixed to the center of the screen)
+    // Where we draw player on the screen. (Fixed to the center of the screen, in this game).
     public final int screenX;
     public final int screenY;
 
@@ -68,6 +70,7 @@ public class Player extends Entity {
                 String downPath = "/assets/player/down" + (i+1) + ".png";
                 String leftPath = "/assets/player/left" + (i+1) + ".png";
                 String rightPath = "/assets/player/right" + (i+1) + ".png";
+                String idlingPath = "/assets/player/idling" + (i+1) + ".png";
 
                 System.out.println("Loading: " + upPath);
                 upImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(upPath)));
@@ -80,11 +83,16 @@ public class Player extends Entity {
 
                 System.out.println("Loading: " + rightPath);
                 rightImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(rightPath)));
+
+                // idling1.png and idling2.png
+                idlingImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(idlingPath)));
+
             }
         } catch (IOException e) {
-            System.out.println("Error loading player sprites.\n" +
-                    "Check if the files are in the correct directory in src/assets/player/.\n" +
-                    "You can also check method getImage() in Player.java to load the correct files."
+            System.out.println("""
+                    Error loading player sprites.
+                    Check if the files are in the correct directory in src/assets/player/.
+                    You can also check method getImage() in Player.java to load the correct files."""
             );
             throw new RuntimeException(e);
         }
@@ -92,40 +100,64 @@ public class Player extends Entity {
 
     @Override
     public void update() {
+        boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
+        boolean isIdle = !isMoving;
 
-        if(kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed) {
-            if(kh.isUpPressed) {
-                currentDirection = "up";
-            } else if(kh.isDownPressed) {
-                currentDirection = "down";
-            } else if(kh.isLeftPressed) {
-                currentDirection = "left";
-            } else if(kh.isRightPressed) {
-                currentDirection = "right";
-            }
+        if (isIdle || (kh.isUpPressed && kh.isDownPressed) || (kh.isLeftPressed && kh.isRightPressed)) {
+            currentDirection = "idling";
+        } else {
+            if (kh.isUpPressed && kh.isLeftPressed) currentDirection = "up-left";
+            else if (kh.isUpPressed && kh.isRightPressed) currentDirection = "up-right";
+            else if (kh.isDownPressed && kh.isLeftPressed) currentDirection = "down-left";
+            else if (kh.isDownPressed && kh.isRightPressed) currentDirection = "down-right";
+            else if (kh.isUpPressed) currentDirection = "up";
+            else if (kh.isDownPressed) currentDirection = "down";
+            else if (kh.isLeftPressed) currentDirection = "left";
+            else currentDirection = "right";
+        }
 
-            isColliding = false;
-            gp.collisionManager.checkTile(this);
+        // Every frame we increase the spriteFramesCounter
+        spriteFramesCounter++;
 
-            if(!isColliding) {
-                if(kh.isUpPressed) {
-                    worldY -= speed;
-                } else if(kh.isDownPressed) {
-                    worldY += speed;
-                } else if(kh.isLeftPressed) {
-                    worldX -= speed;
-                } else if(kh.isRightPressed) {
-                    worldX += speed;
+        // The multiplier is used to change the sprite image slower or faster.
+        int spriteCounterMultiplier = isIdle ? IDLING_SPRITE_COUNTER_MULTIPLIER : MOVING_SPRITE_COUNTER_MULTIPLIER;
+
+        // Change the sprite image
+        if (spriteFramesCounter >= UPDATE_TIME_FOR_SPRITE * spriteCounterMultiplier) {
+            spriteFramesCounter = 0;
+            spriteImageNum = (spriteImageNum == 1) ? 2 : 1;
+        }
+
+        // Change the player's position
+        if (isMoving && !(kh.isUpPressed && kh.isDownPressed) && !(kh.isLeftPressed && kh.isRightPressed)) {
+            isColliding = false; // Reset collision
+            gp.collisionManager.checkTile(this); // This changes isColliding to true if the player is colliding with a tile.
+
+            if (!isColliding) { // Player is not colliding with a tile
+
+                // Diagonal movement
+                if (kh.isUpPressed && kh.isLeftPressed) {
+                    worldY -= (int) (speed * Math.sqrt(2) / 2);
+                    worldX -= (int) (speed * Math.sqrt(2) / 2);
+                } else if (kh.isUpPressed && kh.isRightPressed) {
+                    worldY -= (int) (speed * Math.sqrt(2) / 2);
+                    worldX += (int) (speed * Math.sqrt(2) / 2);
+                } else if (kh.isDownPressed && kh.isLeftPressed) {
+                    worldY += (int) (speed * Math.sqrt(2) / 2);
+                    worldX -= (int) (speed * Math.sqrt(2) / 2);
+                } else if (kh.isDownPressed && kh.isRightPressed) {
+                    worldY += (int) (speed * Math.sqrt(2) / 2);
+                    worldX += (int) (speed * Math.sqrt(2) / 2);
                 }
-            }
 
-            spriteFramesCounter++;
-            if(spriteFramesCounter >= UPDATE_TIME_FOR_SPRITE) {
-                spriteFramesCounter = 0;
-                spriteImageNum = (spriteImageNum == 1) ? 2 : 1;
+                else if (kh.isUpPressed) worldY -= speed;
+                else if (kh.isDownPressed) worldY += speed;
+                else if (kh.isLeftPressed) worldX -= speed;
+                else if (kh.isRightPressed) worldX += speed;
             }
         }
     }
+
 
     @Override
     public void draw(Graphics2D g2d) {
@@ -133,41 +165,51 @@ public class Player extends Entity {
 
         switch(currentDirection) {
             case "up":
-                if(spriteImageNum == 1) {
-                    image = upImages[0];
-                }
-                if(spriteImageNum == 2) {
-                    image = upImages[1];
-                }
+                if(spriteImageNum == 1) image = upImages[0];
+                if(spriteImageNum == 2) image = upImages[1];
                 break;
 
             case "down":
-                if(spriteImageNum == 1) {
-                    image = downImages[0];
-                }
-                if(spriteImageNum == 2) {
-                    image = downImages[1];
-                }
+                if(spriteImageNum == 1) { image = downImages[0]; }
+                if(spriteImageNum == 2) { image = downImages[1]; }
                 break;
 
             case "left":
-                if(spriteImageNum == 1) {
-                    image = leftImages[0];
-                }
-                if(spriteImageNum == 2) {
-                    image = leftImages[1];
-                }
+                if(spriteImageNum == 1) { image = leftImages[0]; }
+                if(spriteImageNum == 2) { image = leftImages[1]; }
                 break;
 
             case "right":
-                if(spriteImageNum == 1) {
-                    image = rightImages[0];
-                }
-                if(spriteImageNum == 2) {
-                    image = rightImages[1];
-                }
+                if(spriteImageNum == 1) { image = rightImages[0]; }
+                if(spriteImageNum == 2) { image = rightImages[1]; }
+                break;
+
+            case "up-left":
+                if(spriteImageNum == 1) { image = upImages[0]; }
+                if(spriteImageNum == 2) { image = upImages[1]; }
+                break;
+
+            case "up-right":
+                if(spriteImageNum == 1) { image = upImages[0]; }
+                if(spriteImageNum == 2) { image = upImages[1]; }
+                break;
+
+            case "down-left":
+                if(spriteImageNum == 1) { image = downImages[0]; }
+                if(spriteImageNum == 2) { image = downImages[1]; }
+                break;
+
+            case "down-right":
+                if(spriteImageNum == 1) { image = downImages[0]; }
+                if(spriteImageNum == 2) { image = downImages[1]; }
+                break;
+
+            case "idling":
+                if(spriteImageNum == 1) { image = idlingImages[0]; }
+                if(spriteImageNum == 2) { image = idlingImages[1]; }
                 break;
         }
+        // screenX and screenY is the position of the player on the screen. (Always centered)
         g2d.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
     }
 }
