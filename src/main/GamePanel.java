@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import objects.SuperObject;
 import tiles.TileManager;
 
 import javax.swing.*;
@@ -28,12 +29,17 @@ public class GamePanel extends JPanel implements Runnable {
     // Window settings
     final int FPS = 60; // The target frames per second for the game.
 
-    // Class objects
+    // Object settings
+    public final int MAX_OBJECTS_ARRAY = 15; // The maximum number of objectsArray in the game.
+
+    // Class objectsArray
     Thread gameThread; // The thread that runs the game loop.
     KeyHandler kh = new KeyHandler(); // The key handler that listens for key events.
     public Player player = new Player(this, kh); // The player object.
     TileManager tileManager = new TileManager(this); // The tile manager object.
     public CollisionManager collisionManager = new CollisionManager(this); // The collision manager object.
+    public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // The array of objectsArray in the game.
+    public AssetSetter assetSetter = new AssetSetter(this); // The object initializer object.
 
     // Constructor
     public GamePanel() {
@@ -46,6 +52,10 @@ public class GamePanel extends JPanel implements Runnable {
 
         this.setFocusable(true); // Makes the panel focusable, allowing it to receive input events such as keyboard events.
         // Without this setting, the panel may not respond to keyboard events even if a KeyListener is registered.
+    }
+
+    public void initializeGame() {
+        assetSetter.placeObject(); // Place the objectsArray in the game.
     }
 
     // Start the game thread. (Called in main)
@@ -87,6 +97,12 @@ public class GamePanel extends JPanel implements Runnable {
     // Draw the components of the panel.
     private void drawAllComponents(Graphics2D g2d) {
         tileManager.draw(g2d);
+
+        for(int i = 0; i < objectsArray.length; i++) {
+            if(objectsArray[i] != null) {
+                objectsArray[i].draw(g2d, this);
+            }
+        }
         player.draw(g2d);
 
     }
