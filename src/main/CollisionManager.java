@@ -10,21 +10,24 @@ public class CollisionManager {
         this.gp = gp;
     }
 
-    // Helper method to check for tile collisions
+    private boolean isTileColliding(int tileNum1, int tileNum2) {
+        return gp.tileManager.tileType[tileNum1].collision || gp.tileManager.tileType[tileNum2].collision;
+    }
+
     private void checkTileCollision(Entity entity, int entityLeftColumn, int entityRightColumn, int entityTopRow, int entityBottomRow) {
         int tileNum1, tileNum2;
 
-        // Check the left and right sides of the entity
+        // Check top side
         tileNum1 = gp.tileManager.gameMap[entityLeftColumn][entityTopRow];
         tileNum2 = gp.tileManager.gameMap[entityRightColumn][entityTopRow];
-        if (gp.tileManager.tileType[tileNum1].collision || gp.tileManager.tileType[tileNum2].collision) {
+        if (isTileColliding(tileNum1, tileNum2)) {
             entity.isColliding = true;
         }
 
-        // Check the bottom side of the entity (for vertical movement)
+        // Check bottom side
         tileNum1 = gp.tileManager.gameMap[entityLeftColumn][entityBottomRow];
         tileNum2 = gp.tileManager.gameMap[entityRightColumn][entityBottomRow];
-        if (gp.tileManager.tileType[tileNum1].collision || gp.tileManager.tileType[tileNum2].collision) {
+        if (isTileColliding(tileNum1, tileNum2)) {
             entity.isColliding = true;
         }
     }
@@ -40,45 +43,59 @@ public class CollisionManager {
         int entityTopRow = entityTopWorldY / gp.TILE_SIZE;
         int entityBottomRow = entityBottomWorldY / gp.TILE_SIZE;
 
-        // Handle movement directions
         switch (entity.currentDirection) {
             case "up":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
-                checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
                 break;
             case "down":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
-                checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
                 break;
             case "left":
                 entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
-                checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
                 break;
             case "right":
                 entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
-                checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
                 break;
-            // Handling Diagonal movement
             case "up-left":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
                 entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
-                checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
                 break;
             case "up-right":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
                 entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
-                checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
                 break;
             case "down-left":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
                 entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
-                checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
                 break;
             case "down-right":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
                 entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
-                checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
                 break;
         }
+        checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
     }
+
+    public boolean isCollidingFromLeft(Entity entity) {
+        int entityLeftWorldX = entity.worldX + entity.boundingBox.x;
+        int nextLeftWorldX = entityLeftWorldX - entity.speed;
+
+        int leftTile = nextLeftWorldX / gp.TILE_SIZE;
+        int topTile = (entity.worldY + entity.boundingBox.y) / gp.TILE_SIZE;
+        int bottomTile = (entity.worldY + entity.boundingBox.y + entity.boundingBox.height) / gp.TILE_SIZE;
+
+        return isTileColliding(gp.tileManager.gameMap[leftTile][topTile], gp.tileManager.gameMap[leftTile][bottomTile]);
+    }
+
+    public boolean isCollidingFromRight(Entity entity) {
+        int entityRightWorldX = entity.worldX + entity.boundingBox.x + entity.boundingBox.width;
+        int nextRightWorldX = entityRightWorldX + entity.speed;
+
+        int rightTile = nextRightWorldX / gp.TILE_SIZE;
+        int topTile = (entity.worldY + entity.boundingBox.y) / gp.TILE_SIZE;
+        int bottomTile = (entity.worldY + entity.boundingBox.y + entity.boundingBox.height) / gp.TILE_SIZE;
+
+        return isTileColliding(gp.tileManager.gameMap[rightTile][topTile], gp.tileManager.gameMap[rightTile][bottomTile]);
+    }
+
 }

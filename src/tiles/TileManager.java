@@ -20,7 +20,7 @@ public class TileManager {
     public final int[][] gameMap;
 
     // Map paths
-    private final String MAP_PATH = "/assets/maps/";
+    private final String MAP_PATH = "/resources/maps/";
     
     GamePanel gp;
     public Tile[] tileType; // This will contain all the unique tiles in the game
@@ -46,25 +46,25 @@ public class TileManager {
             final int SAND_INDEX = 5;
 
             tileType[GRASS1_INDEX] = new Tile();
-            tileType[GRASS1_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/GRASS1.png")));
+            tileType[GRASS1_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/tiles/GRASS1.png")));
 
             tileType[WALL1_INDEX] = new Tile();
-            tileType[WALL1_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/WALL1.png")));
+            tileType[WALL1_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/tiles/WALL1.png")));
             tileType[WALL1_INDEX].collision = true;
 
             tileType[WATER1_INDEX] = new Tile();
-            tileType[WATER1_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/WATER1.png")));
+            tileType[WATER1_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/tiles/WATER1.png")));
             tileType[WATER1_INDEX].collision = true;
 
             tileType[TREE_INDEX] = new Tile();
-            tileType[TREE_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/TREE1.png")));
+            tileType[TREE_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/tiles/TREE1.png")));
             tileType[TREE_INDEX].collision = true;
 
             tileType[DIRT_INDEX] = new Tile();
-            tileType[DIRT_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/DIRT1.png")));
+            tileType[DIRT_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/tiles/DIRT1.png")));
 
             tileType[SAND_INDEX] = new Tile();
-            tileType[SAND_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/SAND1.png")));
+            tileType[SAND_INDEX].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/tiles/SAND1.png")));
 
 
         } catch (Exception e) {

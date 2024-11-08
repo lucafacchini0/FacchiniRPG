@@ -66,11 +66,11 @@ public class Player extends Entity {
     public void getImages() {
         try {
             for (int i = 0; i < MAX_SPRITES_PER_DIRECTION; i++) {
-                String upPath = "/assets/player/up" + (i+1) + ".png";
-                String downPath = "/assets/player/down" + (i+1) + ".png";
-                String leftPath = "/assets/player/left" + (i+1) + ".png";
-                String rightPath = "/assets/player/right" + (i+1) + ".png";
-                String idlingPath = "/assets/player/idling" + (i+1) + ".png";
+                String upPath = "/resources/player/up" + (i+1) + ".png";
+                String downPath = "/resources/player/down" + (i+1) + ".png";
+                String leftPath = "/resources/player/left" + (i+1) + ".png";
+                String rightPath = "/resources/player/right" + (i+1) + ".png";
+                String idlingPath = "/resources/player/idling" + (i+1) + ".png";
 
                 System.out.println("Loading: " + upPath);
                 upImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(upPath)));
@@ -134,6 +134,7 @@ public class Player extends Entity {
 
         // Change the player's position
         if (isMoving && !(kh.isUpPressed && kh.isDownPressed) && !(kh.isLeftPressed && kh.isRightPressed)) {
+
             isColliding = false; // Reset collision
             gp.collisionManager.checkTile(this); // This changes isColliding to true if the player is colliding with a tile.
 
@@ -158,6 +159,34 @@ public class Player extends Entity {
                 else if (kh.isDownPressed) worldY += speed;
                 else if (kh.isLeftPressed) worldX -= speed;
                 else if (kh.isRightPressed) worldX += speed;
+
+            } else { // Player is colliding with a tile
+                // Allow diagonal movement on the appropriate axis
+                if (kh.isUpPressed && kh.isLeftPressed) {
+                    if (gp.collisionManager.isCollidingFromLeft(this)) {
+                        worldY -= (int) (speed * Math.sqrt(2) / 2);
+                    } else {
+                        worldX -= (int) (speed * Math.sqrt(2) / 2);
+                    }
+                } else if (kh.isUpPressed && kh.isRightPressed) {
+                    if (gp.collisionManager.isCollidingFromRight(this)) {
+                        worldY -= (int) (speed * Math.sqrt(2) / 2);
+                    } else {
+                        worldX += (int) (speed * Math.sqrt(2) / 2);
+                    }
+                } else if (kh.isDownPressed && kh.isLeftPressed) {
+                    if (gp.collisionManager.isCollidingFromLeft(this)) {
+                        worldY += (int) (speed * Math.sqrt(2) / 2);
+                    } else {
+                        worldX -= (int) (speed * Math.sqrt(2) / 2);
+                    }
+                } else if (kh.isDownPressed && kh.isRightPressed) {
+                    if (gp.collisionManager.isCollidingFromRight(this)) {
+                        worldY += (int) (speed * Math.sqrt(2) / 2);
+                    } else {
+                        worldX += (int) (speed * Math.sqrt(2) / 2);
+                    }
+                }
             }
         }
     }
