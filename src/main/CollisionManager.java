@@ -98,4 +98,27 @@ public class CollisionManager {
         return isTileColliding(gp.tileManager.gameMap[rightTile][topTile], gp.tileManager.gameMap[rightTile][bottomTile]);
     }
 
+    public boolean isCollidingFromBottom(Entity entity) {
+        int entityBottomWorldY = entity.worldY + entity.boundingBox.y + entity.boundingBox.height;
+        int nextBottomWorldY = entityBottomWorldY + entity.speed;
+
+        int leftTile = (entity.worldX + entity.boundingBox.x) / gp.TILE_SIZE;
+        int rightTile = (entity.worldX + entity.boundingBox.x + entity.boundingBox.width) / gp.TILE_SIZE;
+        int bottomTile = nextBottomWorldY / gp.TILE_SIZE;
+
+        return isTileColliding(gp.tileManager.gameMap[leftTile][bottomTile], gp.tileManager.gameMap[rightTile][bottomTile]);
+    }
+
+    public boolean isCollidingFromTop(Entity entity) {
+        int entityTopWorldY = entity.worldY + entity.boundingBox.y;
+        int nextTopWorldY = entityTopWorldY - entity.speed;
+
+        int leftTile = (entity.worldX + entity.boundingBox.x) / gp.TILE_SIZE;
+        int rightTile = (entity.worldX + entity.boundingBox.x + entity.boundingBox.width) / gp.TILE_SIZE;
+        int topTile = nextTopWorldY / gp.TILE_SIZE;
+
+        return isTileColliding(gp.tileManager.gameMap[leftTile][topTile], gp.tileManager.gameMap[rightTile][topTile]);
+    }
+
+
 }

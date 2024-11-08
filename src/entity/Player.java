@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Player extends Entity {
 
     // Player speed
-    public final int DEFAULT_PLAYER_SPEED = 4;
+    public final int DEFAULT_PLAYER_SPEED = 15;
 
     // Player sprites settings
     private final int UPDATE_TIME_FOR_SPRITE = 10; // Every x frames the sprite will be updated.
@@ -138,8 +138,8 @@ public class Player extends Entity {
             isColliding = false; // Reset collision
             gp.collisionManager.checkTile(this); // This changes isColliding to true if the player is colliding with a tile.
 
-            if (!isColliding) { // Player is not colliding with a tile
-
+            // Player is not colliding with a tile
+            if (!isColliding) {
                 // Diagonal movement
                 if (kh.isUpPressed && kh.isLeftPressed) {
                     worldY -= (int) (speed * Math.sqrt(2) / 2);
@@ -159,31 +159,59 @@ public class Player extends Entity {
                 else if (kh.isDownPressed) worldY += speed;
                 else if (kh.isLeftPressed) worldX -= speed;
                 else if (kh.isRightPressed) worldX += speed;
+            }
 
-            } else { // Player is colliding with a tile
-                // Allow diagonal movement on the appropriate axis
+            // Player is colliding with a tile
+            else {
+                // Diagonal movement
                 if (kh.isUpPressed && kh.isLeftPressed) {
-                    if (gp.collisionManager.isCollidingFromLeft(this)) {
+                    if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromTop(this)) {
+                        return;
+                    } else if (gp.collisionManager.isCollidingFromLeft(this)) {
                         worldY -= (int) (speed * Math.sqrt(2) / 2);
+                    } else if (gp.collisionManager.isCollidingFromTop(this)) {
+                        worldX -= (int) (speed * Math.sqrt(2) / 2);
                     } else {
+                        worldY -= (int) (speed * Math.sqrt(2) / 2);
                         worldX -= (int) (speed * Math.sqrt(2) / 2);
                     }
-                } else if (kh.isUpPressed && kh.isRightPressed) {
-                    if (gp.collisionManager.isCollidingFromRight(this)) {
+                }
+
+                else if (kh.isUpPressed && kh.isRightPressed) {
+                    if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromTop(this)) {
+                        return;
+                    } else if (gp.collisionManager.isCollidingFromRight(this)) {
                         worldY -= (int) (speed * Math.sqrt(2) / 2);
+                    } else if (gp.collisionManager.isCollidingFromTop(this)) {
+                        worldX += (int) (speed * Math.sqrt(2) / 2);
                     } else {
+                        worldY -= (int) (speed * Math.sqrt(2) / 2);
                         worldX += (int) (speed * Math.sqrt(2) / 2);
                     }
-                } else if (kh.isDownPressed && kh.isLeftPressed) {
-                    if (gp.collisionManager.isCollidingFromLeft(this)) {
+                }
+
+                else if (kh.isDownPressed && kh.isLeftPressed) {
+                    if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromBottom(this)) {
+                        return;
+                    } else if (gp.collisionManager.isCollidingFromLeft(this)) {
                         worldY += (int) (speed * Math.sqrt(2) / 2);
+                    } else if (gp.collisionManager.isCollidingFromBottom(this)) {
+                        worldX -= (int) (speed * Math.sqrt(2) / 2);
                     } else {
+                        worldY += (int) (speed * Math.sqrt(2) / 2);
                         worldX -= (int) (speed * Math.sqrt(2) / 2);
                     }
-                } else if (kh.isDownPressed && kh.isRightPressed) {
-                    if (gp.collisionManager.isCollidingFromRight(this)) {
+                }
+
+                else if (kh.isDownPressed && kh.isRightPressed) {
+                    if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromBottom(this)) {
+                        return;
+                    } else if (gp.collisionManager.isCollidingFromRight(this)) {
                         worldY += (int) (speed * Math.sqrt(2) / 2);
+                    } else if (gp.collisionManager.isCollidingFromBottom(this)) {
+                        worldX += (int) (speed * Math.sqrt(2) / 2);
                     } else {
+                        worldY += (int) (speed * Math.sqrt(2) / 2);
                         worldX += (int) (speed * Math.sqrt(2) / 2);
                     }
                 }
