@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Player extends Entity {
 
     // Player speed
-    public final int DEFAULT_PLAYER_SPEED = 15;
+    public final int DEFAULT_PLAYER_SPEED = 4;
 
     // Player sprites settings
     private final int UPDATE_TIME_FOR_SPRITE = 10; // Every x frames the sprite will be updated.
