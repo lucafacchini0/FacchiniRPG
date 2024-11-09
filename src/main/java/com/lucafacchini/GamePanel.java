@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int MAX_SCREEN_COLUMNS = 16;
     public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLUMNS;
     public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
-    private final int FPS = 60;
+    public final int FPS = 60;
 
     // World settings
     public final int MAX_WORLD_COLUMNS = 50;
@@ -38,6 +38,11 @@ public class GamePanel extends JPanel implements Runnable {
     public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // Max number of objects in the game.
     public AssetSetter assetSetter = new AssetSetter(this); // This class will place objects in the game.
 
+    Sound music = new Sound();
+    Sound sound = new Sound();
+
+    public UI ui = new UI(this);
+
     // Constructor
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -46,6 +51,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         this.addKeyListener(kh);
         this.setFocusable(true);
+
+        playMusic(0);
     }
 
     public void initializeGame() {
@@ -105,5 +112,21 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         player.draw(g2d);
+        ui.draw(g2d);
+    }
+
+    public void playMusic(int index) {
+        music.setFile(index);
+        music.play();
+        music.loop();
+    }
+
+    public void stopMusic() {
+        music.stop();
+    }
+
+    public void playSound(int index) {
+        sound.setFile(index);
+        sound.play();
     }
 }

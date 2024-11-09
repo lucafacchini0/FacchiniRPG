@@ -235,14 +235,32 @@ public class Player extends Entity {
 
             switch(objectName) {
                 case "Key":
+                    gp.playSound(1);
                     hasKey++;
+                    gp.ui.showMessage("You picked up a key!");
                     gp.objectsArray[index] = null;
                     break;
                 case "Door":
                     if(hasKey > 0) {
+                        gp.ui.showMessage("You used a key!");
+                        gp.playSound(3);
                         hasKey--;
                         gp.objectsArray[index] = null;
+                    } else {
+                        gp.ui.showMessage("You need a key to open this door!");
                     }
+                    break;
+                case "Boots":
+                    gp.ui.showMessage("You picked up boots!");
+                    gp.playSound(2);
+                    speed *= 2;
+                    gp.objectsArray[index] = null;
+                    break;
+                case "Chest":
+                    gp.stopMusic();
+                    gp.playSound(4);
+                    gp.ui.gameFinished = true;
+
                     break;
             }
         }

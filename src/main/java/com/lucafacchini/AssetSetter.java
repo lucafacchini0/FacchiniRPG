@@ -1,5 +1,7 @@
 package com.lucafacchini;
 
+import com.lucafacchini.objects.Boots_Object;
+import com.lucafacchini.objects.Chest_Object;
 import com.lucafacchini.objects.Door_Object;
 import com.lucafacchini.objects.Key_Object;
 
@@ -23,5 +25,13 @@ public class AssetSetter {
         gp.objectsArray[2] = new Door_Object();
         gp.objectsArray[2].worldX = 28 * gp.TILE_SIZE;
         gp.objectsArray[2].worldY = 28 * gp.TILE_SIZE;
+
+        gp.objectsArray[3] = new Boots_Object();
+        gp.objectsArray[3].worldX = 30 * gp.TILE_SIZE;
+        gp.objectsArray[3].worldY = 31 * gp.TILE_SIZE;
+
+        gp.objectsArray[4] = new Chest_Object();
+        gp.objectsArray[4].worldX = 25 * gp.TILE_SIZE;
+        gp.objectsArray[4].worldY = 25 * gp.TILE_SIZE;
     }
 }
