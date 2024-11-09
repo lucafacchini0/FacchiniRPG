@@ -6,30 +6,31 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class SuperObject {
+
+    // Coordinates
+    public int worldX, worldY;
+    public int screenX, screenY;
+
+    // Properties
+    public boolean isSolid = false;
+
+    // Objects
     public BufferedImage image;
     public String name;
-    public boolean collision = false;
+    public Rectangle boundingBox = new Rectangle(0, 0, 64, 64); // TODO: Replace size with gp.TILE_SIZE
 
-    // TODO: Use SCALE instead of 64, 64 for the bounding box.
-    public Rectangle boundingBox = new Rectangle(0, 0, 64, 64);
     public int boundingBoxDefaultX = 0;
     public int boundingBoxDefaultY = 0;
 
-    // The position of the object in the game world. Not just the visible screen.
-    public int worldX, worldY;
-
     public void draw(Graphics2D g2d, GamePanel gp) {
-        // The position of the object on the screen.
-        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+        screenX = worldX - gp.player.worldX + gp.player.screenX;
+        screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-        // Draw the tile if it is within the screen bounds.
-        // player.worldX and player.worldY are the player's coordinates in the game world.
-        // worldX and worldY are the coordinates of the tile in the game world.
-        if(worldX + gp.TILE_SIZE > gp.player.worldX - gp.player.screenX &&
-                worldX - gp.TILE_SIZE < gp.player.worldX + gp.player.screenX &&
-                worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.screenY &&
-                worldY - gp.TILE_SIZE < gp.player.worldY + gp.player.screenY) {
+        // If the object is within the screen boundaries, draw it.
+        if (worldX + gp.TILE_SIZE > gp.player.worldX - gp.player.screenX &&
+            worldX - gp.TILE_SIZE < gp.player.worldX + gp.player.screenX &&
+            worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.screenY &&
+            worldY - gp.TILE_SIZE < gp.player.worldY + gp.player.screenY) {
             g2d.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
         }
     }

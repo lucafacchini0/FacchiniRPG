@@ -1,9 +1,6 @@
 package com.lucafacchini;
 
 import com.lucafacchini.entity.Entity;
-import com.lucafacchini.objects.SuperObject;
-
-import java.awt.*;
 
 public class CollisionManager {
 
@@ -13,26 +10,25 @@ public class CollisionManager {
         this.gp = gp;
     }
 
-    // Tile collision detection
     private boolean isTileColliding(int tileNum1, int tileNum2) {
-        return gp.tileManager.tileType[tileNum1].collision || gp.tileManager.tileType[tileNum2].collision;
+        return gp.tileManager.tileUnique[tileNum1].isSolid || gp.tileManager.tileUnique[tileNum2].isSolid;
     }
 
-    private Rectangle getTileBounds(int column, int row) {
-        return new Rectangle(column * gp.TILE_SIZE, row * gp.TILE_SIZE, gp.TILE_SIZE, gp.TILE_SIZE);
-    }
+    private void checkTileCollision(Entity entity, int entityLeftColumn, int entityRightColumn, int entityTopRow, int entityBottomRow) {
+        int tileNum1, tileNum2;
 
-    private void checkTileCollision(Entity entity, Rectangle entityBounds) {
-        for (int row = 0; row < gp.tileManager.gameMap.length; row++) {
-            for (int column = 0; column < gp.tileManager.gameMap[0].length; column++) {
-                if (isTileColliding(gp.tileManager.gameMap[column][row], gp.tileManager.gameMap[column][row])) {
-                    Rectangle tileBounds = getTileBounds(column, row);
-                    if (entityBounds.intersects(tileBounds)) {
-                        entity.isCollidingWithTile = true;
-                        return;
-                    }
-                }
-            }
+        // Check top side
+        tileNum1 = gp.tileManager.GAME_MAP[entityLeftColumn][entityTopRow];
+        tileNum2 = gp.tileManager.GAME_MAP[entityRightColumn][entityTopRow];
+        if (isTileColliding(tileNum1, tileNum2)) {
+            entity.isColliding = true;
+        }
+
+        // Check bottom side
+        tileNum1 = gp.tileManager.GAME_MAP[entityLeftColumn][entityBottomRow];
+        tileNum2 = gp.tileManager.GAME_MAP[entityRightColumn][entityBottomRow];
+        if (isTileColliding(tileNum1, tileNum2)) {
+            entity.isColliding = true;
         }
     }
 
@@ -42,39 +38,42 @@ public class CollisionManager {
         int entityTopWorldY = entity.worldY + entity.boundingBox.y;
         int entityBottomWorldY = entity.worldY + entity.boundingBox.y + entity.boundingBox.height;
 
-        Rectangle entityBounds = new Rectangle(entityLeftWorldX, entityTopWorldY, entityRightWorldX - entityLeftWorldX, entityBottomWorldY - entityTopWorldY);
+        int entityLeftColumn = entityLeftWorldX / gp.TILE_SIZE;
+        int entityRightColumn = entityRightWorldX / gp.TILE_SIZE;
+        int entityTopRow = entityTopWorldY / gp.TILE_SIZE;
+        int entityBottomRow = entityBottomWorldY / gp.TILE_SIZE;
 
         switch (entity.currentDirection) {
             case "up":
-                entityBounds.y -= entity.speed;
+                entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
                 break;
             case "down":
-                entityBounds.y += entity.speed;
+                entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
                 break;
             case "left":
-                entityBounds.x -= entity.speed;
+                entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
                 break;
             case "right":
-                entityBounds.x += entity.speed;
+                entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
                 break;
             case "up-left":
-                entityBounds.y -= entity.speed;
-                entityBounds.x -= entity.speed;
+                entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
+                entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
                 break;
             case "up-right":
-                entityBounds.y -= entity.speed;
-                entityBounds.x += entity.speed;
+                entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
+                entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
                 break;
             case "down-left":
-                entityBounds.y += entity.speed;
-                entityBounds.x -= entity.speed;
+                entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
+                entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
                 break;
             case "down-right":
-                entityBounds.y += entity.speed;
-                entityBounds.x += entity.speed;
+                entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
+                entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
                 break;
         }
-        checkTileCollision(entity, entityBounds);
+        checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
     }
 
     public boolean isCollidingFromLeft(Entity entity) {
@@ -85,7 +84,7 @@ public class CollisionManager {
         int topTile = (entity.worldY + entity.boundingBox.y) / gp.TILE_SIZE;
         int bottomTile = (entity.worldY + entity.boundingBox.y + entity.boundingBox.height) / gp.TILE_SIZE;
 
-        return isTileColliding(gp.tileManager.gameMap[leftTile][topTile], gp.tileManager.gameMap[leftTile][bottomTile]);
+        return isTileColliding(gp.tileManager.GAME_MAP[leftTile][topTile], gp.tileManager.GAME_MAP[leftTile][bottomTile]);
     }
 
     public boolean isCollidingFromRight(Entity entity) {
@@ -96,7 +95,7 @@ public class CollisionManager {
         int topTile = (entity.worldY + entity.boundingBox.y) / gp.TILE_SIZE;
         int bottomTile = (entity.worldY + entity.boundingBox.y + entity.boundingBox.height) / gp.TILE_SIZE;
 
-        return isTileColliding(gp.tileManager.gameMap[rightTile][topTile], gp.tileManager.gameMap[rightTile][bottomTile]);
+        return isTileColliding(gp.tileManager.GAME_MAP[rightTile][topTile], gp.tileManager.GAME_MAP[rightTile][bottomTile]);
     }
 
     public boolean isCollidingFromBottom(Entity entity) {
@@ -107,7 +106,7 @@ public class CollisionManager {
         int rightTile = (entity.worldX + entity.boundingBox.x + entity.boundingBox.width) / gp.TILE_SIZE;
         int bottomTile = nextBottomWorldY / gp.TILE_SIZE;
 
-        return isTileColliding(gp.tileManager.gameMap[leftTile][bottomTile], gp.tileManager.gameMap[rightTile][bottomTile]);
+        return isTileColliding(gp.tileManager.GAME_MAP[leftTile][bottomTile], gp.tileManager.GAME_MAP[rightTile][bottomTile]);
     }
 
     public boolean isCollidingFromTop(Entity entity) {
@@ -118,9 +117,138 @@ public class CollisionManager {
         int rightTile = (entity.worldX + entity.boundingBox.x + entity.boundingBox.width) / gp.TILE_SIZE;
         int topTile = nextTopWorldY / gp.TILE_SIZE;
 
-        return isTileColliding(gp.tileManager.gameMap[leftTile][topTile], gp.tileManager.gameMap[rightTile][topTile]);
+        return isTileColliding(gp.tileManager.GAME_MAP[leftTile][topTile], gp.tileManager.GAME_MAP[rightTile][topTile]);
     }
 
+    // Objects
+    public int checkObject(Entity entity, boolean isPlayer) {
+        int index = -1;
 
+        for(int i = 0; i < gp.objectsArray.length; i++) {
+            if(gp.objectsArray[i] != null) {
+                entity.boundingBox.x = entity.worldX + entity.boundingBox.x;
+                entity.boundingBox.y = entity.worldY + entity.boundingBox.y;
 
+                gp.objectsArray[i].boundingBox.x = gp.objectsArray[i].worldX + gp.objectsArray[i].boundingBox.x;
+                gp.objectsArray[i].boundingBox.y = gp.objectsArray[i].worldY + gp.objectsArray[i].boundingBox.y;
+
+                switch(entity.currentDirection) {
+                    case "up-left":
+                        entity.boundingBox.x -= entity.speed;
+                        entity.boundingBox.y -= entity.speed;
+                        if(entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
+                            if(gp.objectsArray[i].isSolid) {
+                                // Debug message
+                                entity.isColliding = true;
+
+                            }
+                            if(isPlayer) {
+                                index = i;
+                            }
+                        }
+
+                        break;
+                    case "up-right":
+                        entity.boundingBox.x += entity.speed;
+                        entity.boundingBox.y -= entity.speed;
+                        if(entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
+                            if(gp.objectsArray[i].isSolid) {
+                                // Debug message
+                                entity.isColliding = true;
+
+                            }
+                            if(isPlayer) {
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "down-left":
+                        entity.boundingBox.x -= entity.speed;
+                        entity.boundingBox.y += entity.speed;
+                        if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
+                            if(gp.objectsArray[i].isSolid) {
+                                // Debug message
+                                entity.isColliding = true;
+
+                            }
+                            if(isPlayer) {
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "down-right":
+                        entity.boundingBox.x += entity.speed;
+                        entity.boundingBox.y += entity.speed;
+                        if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
+                            if(gp.objectsArray[i].isSolid) {
+                                // Debug message
+                                entity.isColliding = true;
+
+                            }
+                            if(isPlayer) {
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "up":
+                        entity.boundingBox.y -= entity.speed;
+                        if(entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
+                            if(gp.objectsArray[i].isSolid) {
+                                // Debug message
+                                entity.isColliding = true;
+
+                            }
+                            if(isPlayer) {
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "down":
+                        entity.boundingBox.y += entity.speed;
+                        if(entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
+                            if(gp.objectsArray[i].isSolid) {
+                                // Debug message
+                                entity.isColliding = true;
+
+                            }
+                            if(isPlayer) {
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "left":
+                        entity.boundingBox.x -= entity.speed;
+                        if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
+                            if(gp.objectsArray[i].isSolid) {
+                                // Debug message
+                                entity.isColliding = true;
+                            }
+                            if(isPlayer) {
+                                index = i;
+                            }
+                        }
+                        break;
+                    case "right":
+                        entity.boundingBox.x += entity.speed;
+                        if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
+                            if(gp.objectsArray[i].isSolid) {
+                                // Debug message
+                                entity.isColliding = true;
+
+                            }
+                            if(isPlayer) {
+                                index = i;
+                            }
+                        }
+                        break;
+                }
+
+                entity.boundingBox.x = entity.boundingBoxDefaultX;
+                entity.boundingBox.y = entity.boundingBoxDefaultY;
+                gp.objectsArray[i].boundingBox.x = gp.objectsArray[i].boundingBoxDefaultX;
+                gp.objectsArray[i].boundingBox.y = gp.objectsArray[i].boundingBoxDefaultY;
+            }
+        }
+        return index;
+    }
 }

@@ -11,13 +11,7 @@ import java.util.Objects;
 
 public class Player extends Entity {
 
-    // Player speed
     public final int DEFAULT_PLAYER_SPEED = 4;
-
-    // Player sprites settings
-    private final int UPDATE_TIME_FOR_SPRITE = 10; // Every x frames the sprite will be updated.
-    private final int IDLING_SPRITE_COUNTER_MULTIPLIER = 3; // Makes the idling sprite change slower.
-    private final int MOVING_SPRITE_COUNTER_MULTIPLIER = 1; // Makes the moving sprite change faster.
 
     // Where we draw player on the screen. (Fixed to the center of the screen, in this game).
     public final int screenX;
@@ -26,6 +20,8 @@ public class Player extends Entity {
     // Bounding box constants
     public final int BOUNDING_BOX_X = 8;
     public final int BOUNDING_BOX_Y = 2;
+
+    public int hasKey = 0;
 
     // Objects
     GamePanel gp;
@@ -38,6 +34,7 @@ public class Player extends Entity {
         screenX = gp.SCREEN_WIDTH / 2 - gp.TILE_SIZE / 2; // Center the player on the screen
         screenY = gp.SCREEN_HEIGHT / 2 - gp.TILE_SIZE / 2; // Center the player on the screen
 
+
         // Bounding box settings
         boundingBox = new Rectangle();
 
@@ -46,11 +43,10 @@ public class Player extends Entity {
         boundingBox.width = gp.TILE_SIZE - 2 * (gp.TILE_SIZE / BOUNDING_BOX_X) - 1;
         boundingBox.height = gp.TILE_SIZE - (gp.TILE_SIZE / BOUNDING_BOX_Y) - 1;
 
-        // The Bounding Box variables will be changed.
-        // These variables are used to take track of the default values.
         boundingBoxDefaultX = boundingBox.x;
         boundingBoxDefaultY = boundingBox.y;
 
+        // Load player sprites
         setDefaultValues();
         getImages();
     }
@@ -105,19 +101,15 @@ public class Player extends Entity {
 
     @Override
     public void update() {
-        boolean isMoving = checkIfMoving();
+        updateDirection();
+        updateSprite();
+        updatePosition();
+    }
+
+    private void updateDirection() {
+        boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
         boolean isIdle = !isMoving;
 
-        updateDirection(isIdle);
-        updateSprite(isIdle);
-        updatePosition(isMoving);
-    }
-
-    private boolean checkIfMoving() {
-        return kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
-    }
-
-    private void updateDirection(boolean isIdle) {
         if (isIdle || (kh.isUpPressed && kh.isDownPressed) || (kh.isLeftPressed && kh.isRightPressed)) {
             currentDirection = "idling";
         } else {
@@ -132,12 +124,17 @@ public class Player extends Entity {
         }
     }
 
-    private void updateSprite(boolean isIdle) {
+    private void updateSprite() {
         spriteFramesCounter++;
-        int spriteCounterMultiplier = isIdle ? IDLING_SPRITE_COUNTER_MULTIPLIER : MOVING_SPRITE_COUNTER_MULTIPLIER;
 
+        int IDLING_SPRITE_COUNTER_MULTIPLIER = 3;
+        int MOVING_SPRITE_COUNTER_MULTIPLIER = 1;
+        int spriteCounterMultiplier = currentDirection.equals("idling") ? IDLING_SPRITE_COUNTER_MULTIPLIER : MOVING_SPRITE_COUNTER_MULTIPLIER;
+
+        int UPDATE_TIME_FOR_SPRITE = 10;
         if (spriteFramesCounter >= UPDATE_TIME_FOR_SPRITE * spriteCounterMultiplier) {
             spriteFramesCounter = 0;
+
             switch(spriteImageNum) {
                 case 1: spriteImageNum = 2; break;
                 case 2: spriteImageNum = 1; break;
@@ -145,20 +142,25 @@ public class Player extends Entity {
         }
     }
 
-    private void updatePosition(boolean isMoving) {
-        if (isMoving && !(kh.isUpPressed && kh.isDownPressed) && !(kh.isLeftPressed && kh.isRightPressed)) {
-            isCollidingWithTile = false;
-            gp.collisionManager.checkTile(this);
+    private void updatePosition() {
+        boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
 
-            if (!isCollidingWithTile) {
-                moveWithoutCollision();
+        if (isMoving && !(kh.isUpPressed && kh.isDownPressed) && !(kh.isLeftPressed && kh.isRightPressed)) {
+            isColliding = false;
+            gp.collisionManager.checkTile(this);
+            int objectIndex = gp.collisionManager.checkObject(this, true);
+
+            pickUpObject(objectIndex);
+
+            if (!isColliding) {
+                movePlayer();
             } else {
-                moveWithCollision();
+               // handleCollision();
             }
         }
     }
 
-    private void moveWithoutCollision() {
+    private void movePlayer() {
         if (kh.isUpPressed && kh.isLeftPressed) {
             worldY -= (int) (speed * Math.sqrt(2) / 2);
             worldX -= (int) (speed * Math.sqrt(2) / 2);
@@ -182,10 +184,9 @@ public class Player extends Entity {
         }
     }
 
-    private void moveWithCollision() {
+    private void handleCollision() {
         if (kh.isUpPressed && kh.isLeftPressed) {
             if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromTop(this)) {
-                return;
             } else if (gp.collisionManager.isCollidingFromLeft(this)) {
                 worldY -= (int) (speed * Math.sqrt(2) / 2);
             } else if (gp.collisionManager.isCollidingFromTop(this)) {
@@ -196,7 +197,6 @@ public class Player extends Entity {
             }
         } else if (kh.isUpPressed && kh.isRightPressed) {
             if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromTop(this)) {
-                return;
             } else if (gp.collisionManager.isCollidingFromRight(this)) {
                 worldY -= (int) (speed * Math.sqrt(2) / 2);
             } else if (gp.collisionManager.isCollidingFromTop(this)) {
@@ -207,7 +207,6 @@ public class Player extends Entity {
             }
         } else if (kh.isDownPressed && kh.isLeftPressed) {
             if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromBottom(this)) {
-                return;
             } else if (gp.collisionManager.isCollidingFromLeft(this)) {
                 worldY += (int) (speed * Math.sqrt(2) / 2);
             } else if (gp.collisionManager.isCollidingFromBottom(this)) {
@@ -218,7 +217,6 @@ public class Player extends Entity {
             }
         } else if (kh.isDownPressed && kh.isRightPressed) {
             if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromBottom(this)) {
-                return;
             } else if (gp.collisionManager.isCollidingFromRight(this)) {
                 worldY += (int) (speed * Math.sqrt(2) / 2);
             } else if (gp.collisionManager.isCollidingFromBottom(this)) {
@@ -226,6 +224,26 @@ public class Player extends Entity {
             } else {
                 worldY += (int) (speed * Math.sqrt(2) / 2);
                 worldX += (int) (speed * Math.sqrt(2) / 2);
+            }
+        }
+    }
+
+    private void pickUpObject(int index) {
+        if(index != -1) {
+
+            String objectName = gp.objectsArray[index].name;
+
+            switch(objectName) {
+                case "Key":
+                    hasKey++;
+                    gp.objectsArray[index] = null;
+                    break;
+                case "Door":
+                    if(hasKey > 0) {
+                        hasKey--;
+                        gp.objectsArray[index] = null;
+                    }
+                    break;
             }
         }
     }
