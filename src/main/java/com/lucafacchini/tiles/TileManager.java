@@ -132,6 +132,10 @@ public class TileManager {
                 currentWorldRow++;
                 currentWorldColumn = 0;
             }
+
+            // ##TROUBLESHOOTING ##IMPORTANT
+//            g2d.setColor(Color.pink);
+//            g2d.drawRect(screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE);
         }
     }
 }

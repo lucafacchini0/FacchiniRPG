@@ -4,16 +4,21 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
-    public final int MAX_SPRITES_PER_DIRECTION = 2;
+    public final int MAX_SPRITES_PER_WALKING_DIRECTION = 6;
+    public final int MAX_SPRITES_PER_IDLING_DIRECTION = 4;
 
     public int worldX, worldY; // The position of the entity in the game world. Not just the visible screen.
     public int speed;
 
-    public BufferedImage[] upImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
-    public BufferedImage[] downImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
-    public BufferedImage[] leftImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
-    public BufferedImage[] rightImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
-    public BufferedImage[] idlingImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
+    public BufferedImage[] upImages = new BufferedImage[MAX_SPRITES_PER_WALKING_DIRECTION];
+    public BufferedImage[] downImages = new BufferedImage[MAX_SPRITES_PER_WALKING_DIRECTION];
+    public BufferedImage[] leftImages = new BufferedImage[MAX_SPRITES_PER_WALKING_DIRECTION];
+    public BufferedImage[] rightImages = new BufferedImage[MAX_SPRITES_PER_WALKING_DIRECTION];
+
+    public BufferedImage[] idlingDownImages = new BufferedImage[MAX_SPRITES_PER_IDLING_DIRECTION];
+    public BufferedImage[] idlingUpImages = new BufferedImage[MAX_SPRITES_PER_IDLING_DIRECTION];
+    public BufferedImage[] idlingLeftImages = new BufferedImage[MAX_SPRITES_PER_IDLING_DIRECTION];
+    public BufferedImage[] idlingRightImages = new BufferedImage[MAX_SPRITES_PER_IDLING_DIRECTION];
 
     public String currentDirection;
 

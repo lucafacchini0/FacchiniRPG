@@ -33,5 +33,10 @@ public class SuperObject {
             worldY - gp.TILE_SIZE < gp.player.worldY + gp.player.screenY) {
             g2d.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
         }
+
+        //##TROUBLESHOOTING ##IMPORTANT
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(screenX + boundingBox.x, screenY + boundingBox.y, boundingBox.width, boundingBox.height);
+
     }
 }
