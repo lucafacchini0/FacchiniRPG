@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.lucafacchini'
-version = '1.0-SNAPSHOT'
+version = '1.0-alpha1'
 
 repositories {
     mavenCentral()
@@ -12,6 +12,15 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.lucafacchini.Main' // Replace with your main class
+        )
+    }
 }
 
 test {

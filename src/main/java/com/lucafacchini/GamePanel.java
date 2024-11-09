@@ -38,6 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, kh); // The player object.
     TileManager tileManager = new TileManager(this); // The tile manager object.
     public CollisionManager collisionManager = new CollisionManager(this); // The collision manager object.
+
     public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // The array of objectsArray in the game.
     public AssetSetter assetSetter = new AssetSetter(this); // The object initializer object.
 

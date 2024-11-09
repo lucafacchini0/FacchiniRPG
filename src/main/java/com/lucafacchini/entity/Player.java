@@ -46,6 +46,11 @@ public class Player extends Entity {
         boundingBox.width = gp.TILE_SIZE - 2 * (gp.TILE_SIZE / BOUNDING_BOX_X) - 1;
         boundingBox.height = gp.TILE_SIZE - (gp.TILE_SIZE / BOUNDING_BOX_Y) - 1;
 
+        // The Bounding Box variables will be changed.
+        // These variables are used to take track of the default values.
+        boundingBoxDefaultX = boundingBox.x;
+        boundingBoxDefaultY = boundingBox.y;
+
         setDefaultValues();
         getImages();
     }
@@ -100,9 +105,19 @@ public class Player extends Entity {
 
     @Override
     public void update() {
-        boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
+        boolean isMoving = checkIfMoving();
         boolean isIdle = !isMoving;
 
+        updateDirection(isIdle);
+        updateSprite(isIdle);
+        updatePosition(isMoving);
+    }
+
+    private boolean checkIfMoving() {
+        return kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
+    }
+
+    private void updateDirection(boolean isIdle) {
         if (isIdle || (kh.isUpPressed && kh.isDownPressed) || (kh.isLeftPressed && kh.isRightPressed)) {
             currentDirection = "idling";
         } else {
@@ -115,110 +130,105 @@ public class Player extends Entity {
             else if (kh.isLeftPressed) currentDirection = "left";
             else currentDirection = "right";
         }
+    }
 
-        // Every frame we increase the spriteFramesCounter
+    private void updateSprite(boolean isIdle) {
         spriteFramesCounter++;
-
-        // The multiplier is used to change the sprite image slower or faster.
         int spriteCounterMultiplier = isIdle ? IDLING_SPRITE_COUNTER_MULTIPLIER : MOVING_SPRITE_COUNTER_MULTIPLIER;
 
-        // Change the sprite image
         if (spriteFramesCounter >= UPDATE_TIME_FOR_SPRITE * spriteCounterMultiplier) {
             spriteFramesCounter = 0;
-
             switch(spriteImageNum) {
                 case 1: spriteImageNum = 2; break;
                 case 2: spriteImageNum = 1; break;
             }
         }
+    }
 
-        // Change the player's position
+    private void updatePosition(boolean isMoving) {
         if (isMoving && !(kh.isUpPressed && kh.isDownPressed) && !(kh.isLeftPressed && kh.isRightPressed)) {
+            isCollidingWithTile = false;
+            gp.collisionManager.checkTile(this);
 
-            isColliding = false; // Reset collision
-            gp.collisionManager.checkTile(this); // This changes isColliding to true if the player is colliding with a tile.
-
-            // Player is not colliding with a tile
-            if (!isColliding) {
-                // Diagonal movement
-                if (kh.isUpPressed && kh.isLeftPressed) {
-                    worldY -= (int) (speed * Math.sqrt(2) / 2);
-                    worldX -= (int) (speed * Math.sqrt(2) / 2);
-                } else if (kh.isUpPressed && kh.isRightPressed) {
-                    worldY -= (int) (speed * Math.sqrt(2) / 2);
-                    worldX += (int) (speed * Math.sqrt(2) / 2);
-                } else if (kh.isDownPressed && kh.isLeftPressed) {
-                    worldY += (int) (speed * Math.sqrt(2) / 2);
-                    worldX -= (int) (speed * Math.sqrt(2) / 2);
-                } else if (kh.isDownPressed && kh.isRightPressed) {
-                    worldY += (int) (speed * Math.sqrt(2) / 2);
-                    worldX += (int) (speed * Math.sqrt(2) / 2);
-                }
-
-                else if (kh.isUpPressed) worldY -= speed;
-                else if (kh.isDownPressed) worldY += speed;
-                else if (kh.isLeftPressed) worldX -= speed;
-                else if (kh.isRightPressed) worldX += speed;
-            }
-
-            // Player is colliding with a tile
-            else {
-                // Diagonal movement
-                if (kh.isUpPressed && kh.isLeftPressed) {
-                    if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromTop(this)) {
-                        return;
-                    } else if (gp.collisionManager.isCollidingFromLeft(this)) {
-                        worldY -= (int) (speed * Math.sqrt(2) / 2);
-                    } else if (gp.collisionManager.isCollidingFromTop(this)) {
-                        worldX -= (int) (speed * Math.sqrt(2) / 2);
-                    } else {
-                        worldY -= (int) (speed * Math.sqrt(2) / 2);
-                        worldX -= (int) (speed * Math.sqrt(2) / 2);
-                    }
-                }
-
-                else if (kh.isUpPressed && kh.isRightPressed) {
-                    if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromTop(this)) {
-                        return;
-                    } else if (gp.collisionManager.isCollidingFromRight(this)) {
-                        worldY -= (int) (speed * Math.sqrt(2) / 2);
-                    } else if (gp.collisionManager.isCollidingFromTop(this)) {
-                        worldX += (int) (speed * Math.sqrt(2) / 2);
-                    } else {
-                        worldY -= (int) (speed * Math.sqrt(2) / 2);
-                        worldX += (int) (speed * Math.sqrt(2) / 2);
-                    }
-                }
-
-                else if (kh.isDownPressed && kh.isLeftPressed) {
-                    if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromBottom(this)) {
-                        return;
-                    } else if (gp.collisionManager.isCollidingFromLeft(this)) {
-                        worldY += (int) (speed * Math.sqrt(2) / 2);
-                    } else if (gp.collisionManager.isCollidingFromBottom(this)) {
-                        worldX -= (int) (speed * Math.sqrt(2) / 2);
-                    } else {
-                        worldY += (int) (speed * Math.sqrt(2) / 2);
-                        worldX -= (int) (speed * Math.sqrt(2) / 2);
-                    }
-                }
-
-                else if (kh.isDownPressed && kh.isRightPressed) {
-                    if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromBottom(this)) {
-                        return;
-                    } else if (gp.collisionManager.isCollidingFromRight(this)) {
-                        worldY += (int) (speed * Math.sqrt(2) / 2);
-                    } else if (gp.collisionManager.isCollidingFromBottom(this)) {
-                        worldX += (int) (speed * Math.sqrt(2) / 2);
-                    } else {
-                        worldY += (int) (speed * Math.sqrt(2) / 2);
-                        worldX += (int) (speed * Math.sqrt(2) / 2);
-                    }
-                }
+            if (!isCollidingWithTile) {
+                moveWithoutCollision();
+            } else {
+                moveWithCollision();
             }
         }
     }
 
+    private void moveWithoutCollision() {
+        if (kh.isUpPressed && kh.isLeftPressed) {
+            worldY -= (int) (speed * Math.sqrt(2) / 2);
+            worldX -= (int) (speed * Math.sqrt(2) / 2);
+        } else if (kh.isUpPressed && kh.isRightPressed) {
+            worldY -= (int) (speed * Math.sqrt(2) / 2);
+            worldX += (int) (speed * Math.sqrt(2) / 2);
+        } else if (kh.isDownPressed && kh.isLeftPressed) {
+            worldY += (int) (speed * Math.sqrt(2) / 2);
+            worldX -= (int) (speed * Math.sqrt(2) / 2);
+        } else if (kh.isDownPressed && kh.isRightPressed) {
+            worldY += (int) (speed * Math.sqrt(2) / 2);
+            worldX += (int) (speed * Math.sqrt(2) / 2);
+        } else if (kh.isUpPressed) {
+            worldY -= speed;
+        } else if (kh.isDownPressed) {
+            worldY += speed;
+        } else if (kh.isLeftPressed) {
+            worldX -= speed;
+        } else if (kh.isRightPressed) {
+            worldX += speed;
+        }
+    }
+
+    private void moveWithCollision() {
+        if (kh.isUpPressed && kh.isLeftPressed) {
+            if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromTop(this)) {
+                return;
+            } else if (gp.collisionManager.isCollidingFromLeft(this)) {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+            } else if (gp.collisionManager.isCollidingFromTop(this)) {
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            } else {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            }
+        } else if (kh.isUpPressed && kh.isRightPressed) {
+            if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromTop(this)) {
+                return;
+            } else if (gp.collisionManager.isCollidingFromRight(this)) {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+            } else if (gp.collisionManager.isCollidingFromTop(this)) {
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            } else {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            }
+        } else if (kh.isDownPressed && kh.isLeftPressed) {
+            if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromBottom(this)) {
+                return;
+            } else if (gp.collisionManager.isCollidingFromLeft(this)) {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+            } else if (gp.collisionManager.isCollidingFromBottom(this)) {
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            } else {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            }
+        } else if (kh.isDownPressed && kh.isRightPressed) {
+            if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromBottom(this)) {
+                return;
+            } else if (gp.collisionManager.isCollidingFromRight(this)) {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+            } else if (gp.collisionManager.isCollidingFromBottom(this)) {
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            } else {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            }
+        }
+    }
 
     @Override
     public void draw(Graphics2D g2d) {

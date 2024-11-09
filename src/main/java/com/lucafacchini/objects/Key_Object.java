@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 
 public class Key_Object extends SuperObject {
     public Key_Object() {
+        super();
         name = "Key";
 
         try {

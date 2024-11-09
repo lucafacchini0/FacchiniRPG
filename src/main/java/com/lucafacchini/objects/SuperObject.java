@@ -10,6 +10,11 @@ public class SuperObject {
     public String name;
     public boolean collision = false;
 
+    // TODO: Use SCALE instead of 64, 64 for the bounding box.
+    public Rectangle boundingBox = new Rectangle(0, 0, 64, 64);
+    public int boundingBoxDefaultX = 0;
+    public int boundingBoxDefaultY = 0;
+
     // The position of the object in the game world. Not just the visible screen.
     public int worldX, worldY;
 

@@ -9,6 +9,9 @@ public class Entity {
     public int worldX, worldY; // The position of the entity in the game world. Not just the visible screen.
     public int speed;
 
+    public int spriteFramesCounter = 0; // Frames that has passed since the last sprite change.
+    public int spriteImageNum = 1; // The current sprite image number.
+
     public BufferedImage[] upImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
     public BufferedImage[] downImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
     public BufferedImage[] leftImages = new BufferedImage[MAX_SPRITES_PER_DIRECTION];
@@ -19,12 +22,13 @@ public class Entity {
 
     // The bounding box of the entity and whether it is colliding with another entity.
     public Rectangle boundingBox;
-    public boolean isColliding = false;
+    public boolean isCollidingWithTile = false;
+    public boolean isCollidingWithObject = false;
+
+    public int boundingBoxDefaultX;
+    public int boundingBoxDefaultY;
 
     public void update() {}
     public void draw(Graphics2D g2d) {}
     public void getImages() {}
-
-    public int spriteFramesCounter = 0; // Frames that has passed since the last sprite change.
-    public int spriteImageNum = 1; // The current sprite image number.
 }

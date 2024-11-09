@@ -6,9 +6,11 @@ import java.awt.*;
 import java.io.InputStreamReader;
 import java.io.InputStream;
 import java.io.BufferedReader;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.List;
 
 public class TileManager {
 
@@ -134,5 +136,28 @@ public class TileManager {
             }
         }
     }
+
+    public List<Rectangle> getCollisionTiles(int playerX, int playerY, int tileSize, int range) {
+        List<Rectangle> collisionTiles = new ArrayList<>();
+
+        int startCol = Math.max((playerX - range) / tileSize, 0);
+        int endCol = Math.min((playerX + range) / tileSize, gp.MAX_WORLD_COLUMNS - 1);
+        int startRow = Math.max((playerY - range) / tileSize, 0);
+        int endRow = Math.min((playerY + range) / tileSize, gp.MAX_WORLD_ROWS - 1);
+
+        for (int col = startCol; col <= endCol; col++) {
+            for (int row = startRow; row <= endRow; row++) {
+                int tileIndex = gameMap[col][row];
+                Tile tile = tileType[tileIndex];
+                if (tile.collision) {
+                    int tileX = col * tileSize;
+                    int tileY = row * tileSize;
+                    collisionTiles.add(new Rectangle(tileX, tileY, tileSize, tileSize));
+                }
+            }
+        }
+        return collisionTiles;
+    }
+
 }
 

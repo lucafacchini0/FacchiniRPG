@@ -1,6 +1,9 @@
 package com.lucafacchini;
 
 import com.lucafacchini.entity.Entity;
+import com.lucafacchini.objects.SuperObject;
+
+import java.awt.*;
 
 public class CollisionManager {
 
@@ -10,25 +13,26 @@ public class CollisionManager {
         this.gp = gp;
     }
 
+    // Tile collision detection
     private boolean isTileColliding(int tileNum1, int tileNum2) {
         return gp.tileManager.tileType[tileNum1].collision || gp.tileManager.tileType[tileNum2].collision;
     }
 
-    private void checkTileCollision(Entity entity, int entityLeftColumn, int entityRightColumn, int entityTopRow, int entityBottomRow) {
-        int tileNum1, tileNum2;
+    private Rectangle getTileBounds(int column, int row) {
+        return new Rectangle(column * gp.TILE_SIZE, row * gp.TILE_SIZE, gp.TILE_SIZE, gp.TILE_SIZE);
+    }
 
-        // Check top side
-        tileNum1 = gp.tileManager.gameMap[entityLeftColumn][entityTopRow];
-        tileNum2 = gp.tileManager.gameMap[entityRightColumn][entityTopRow];
-        if (isTileColliding(tileNum1, tileNum2)) {
-            entity.isColliding = true;
-        }
-
-        // Check bottom side
-        tileNum1 = gp.tileManager.gameMap[entityLeftColumn][entityBottomRow];
-        tileNum2 = gp.tileManager.gameMap[entityRightColumn][entityBottomRow];
-        if (isTileColliding(tileNum1, tileNum2)) {
-            entity.isColliding = true;
+    private void checkTileCollision(Entity entity, Rectangle entityBounds) {
+        for (int row = 0; row < gp.tileManager.gameMap.length; row++) {
+            for (int column = 0; column < gp.tileManager.gameMap[0].length; column++) {
+                if (isTileColliding(gp.tileManager.gameMap[column][row], gp.tileManager.gameMap[column][row])) {
+                    Rectangle tileBounds = getTileBounds(column, row);
+                    if (entityBounds.intersects(tileBounds)) {
+                        entity.isCollidingWithTile = true;
+                        return;
+                    }
+                }
+            }
         }
     }
 
@@ -38,42 +42,39 @@ public class CollisionManager {
         int entityTopWorldY = entity.worldY + entity.boundingBox.y;
         int entityBottomWorldY = entity.worldY + entity.boundingBox.y + entity.boundingBox.height;
 
-        int entityLeftColumn = entityLeftWorldX / gp.TILE_SIZE;
-        int entityRightColumn = entityRightWorldX / gp.TILE_SIZE;
-        int entityTopRow = entityTopWorldY / gp.TILE_SIZE;
-        int entityBottomRow = entityBottomWorldY / gp.TILE_SIZE;
+        Rectangle entityBounds = new Rectangle(entityLeftWorldX, entityTopWorldY, entityRightWorldX - entityLeftWorldX, entityBottomWorldY - entityTopWorldY);
 
         switch (entity.currentDirection) {
             case "up":
-                entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
+                entityBounds.y -= entity.speed;
                 break;
             case "down":
-                entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
+                entityBounds.y += entity.speed;
                 break;
             case "left":
-                entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
+                entityBounds.x -= entity.speed;
                 break;
             case "right":
-                entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
+                entityBounds.x += entity.speed;
                 break;
             case "up-left":
-                entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
-                entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
+                entityBounds.y -= entity.speed;
+                entityBounds.x -= entity.speed;
                 break;
             case "up-right":
-                entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
-                entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
+                entityBounds.y -= entity.speed;
+                entityBounds.x += entity.speed;
                 break;
             case "down-left":
-                entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
-                entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
+                entityBounds.y += entity.speed;
+                entityBounds.x -= entity.speed;
                 break;
             case "down-right":
-                entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
-                entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
+                entityBounds.y += entity.speed;
+                entityBounds.x += entity.speed;
                 break;
         }
-        checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
+        checkTileCollision(entity, entityBounds);
     }
 
     public boolean isCollidingFromLeft(Entity entity) {
@@ -119,6 +120,7 @@ public class CollisionManager {
 
         return isTileColliding(gp.tileManager.gameMap[leftTile][topTile], gp.tileManager.gameMap[rightTile][topTile]);
     }
+
 
 
 }
