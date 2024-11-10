@@ -64,6 +64,29 @@ public class TileManager {
             final int GRASS_ROUND_24 = 890;
             final int GRASS_ROUND_25 = 891;
 
+            // Grass accessories
+            final int GRASS_ACCESSORY_SINGLE_1 = 2304;
+            final int GRASS_ACCESSORY_SINGLE_2 = 2131;
+            final int GRASS_ACCESSORY_1 = 1954;
+            final int GRASS_ACCESSORY_2 = 2130;
+            final int GRASS_ACCESSORY_3 = 1956;
+            final int GRASS_ACCESSORY_4 = 2132;
+            final int GRASS_ACCESSORY_5 = 1112;
+            final int GRASS_ACCESSORY_6 = 1113;
+            final int GRASS_ACCESSORY_TREE_LOG_1 = 1109;
+            final int GRASS_ACCESSORY_TREE_LOG_2 = 1110;
+            final int GRASS_ACCESSORY_SMALL_TREE_LOG_1 = 1111;
+
+            // Bushes
+            final int NATURAL_BUSH_1 = 1771;
+            final int NATURAL_BUSH_2 = 1772;
+
+            final int BUSH_WITH_FLOWERBED_1 = 1947;
+            final int BUSH_WITH_FLOWERBED_2 = 1948;
+            final int BUSH_WITH_FLOWERBED_3 = 2123;
+            final int BUSH_WITH_FLOWERBED_4 = 2124;
+
+
             // Small Tree Clean Tiles
             final int SMALL_TREE_CLEAN_1 = 544;
             final int SMALL_TREE_CLEAN_2 = 545;
@@ -100,6 +123,26 @@ public class TileManager {
             final int SMALL_TREE_WITH_ARTIFICIAL_FLOWERBED_7 = 1078;
             final int SMALL_TREE_WITH_ARTIFICIAL_FLOWERBED_8 = 1079;
 
+            // Big alone tree
+            final int BIG_ALONE_TREE_1 = 615;
+            final int BIG_ALONE_TREE_2 = 616;
+            final int BIG_ALONE_TREE_3 = 617;
+            final int BIG_ALONE_TREE_4 = 618;
+            final int BIG_ALONE_TREE_5 = 619;
+            final int BIG_ALONE_TREE_6 = 791;
+            final int BIG_ALONE_TREE_7 = 792;
+            final int BIG_ALONE_TREE_8 = 793;
+            final int BIG_ALONE_TREE_9 = 794;
+            final int BIG_ALONE_TREE_10 = 795;
+            final int BIG_ALONE_TREE_11 = 967;
+            final int BIG_ALONE_TREE_12 = 968;
+            final int BIG_ALONE_TREE_13 = 969;
+            final int BIG_ALONE_TREE_14 = 970;
+            final int BIG_ALONE_TREE_15 = 971;
+            final int BIG_ALONE_TREE_16 = 1144;
+            final int BIG_ALONE_TREE_17 = 1145;
+            final int BIG_ALONE_TREE_18 = 1146;
+            final int BIG_ALONE_TREE_19 = 1147;
             // Pine in sequence
             final int PINE_IN_SEQUENCE_1 = 1069;
             final int PINE_IN_SEQUENCE_2 = 1070;
@@ -131,6 +174,52 @@ public class TileManager {
             final int ISLAND_WITH_GRASS_14 = 834;
             final int ISLAND_WITH_GRASS_15 = 835;
             final int ISLAND_WITH_GRASS_16 = 836;
+
+            // FLOWERBEDS
+            final int FLOWERBED_BLUE_WHITE_1 = 1114;
+            final int FLOWERBED_BLUE_WHITE_2 = 1115;
+            final int FLOWERBED_BLUE_WHITE_3 = 1290;
+            final int FLOWERBED_BLUE_WHITE_4 = 1291;
+            final int FLOWERBED_YELLOW_1 = 1116;
+            final int FLOWERBED_YELLOW_2 = 1117;
+            final int FLOWERBED_YELLOW_3 = 1292;
+            final int FLOWERBED_YELLOW_4 = 1293;
+            final int FLOWERBED_YELLOW_BLUE = 1466;
+            final int FLOWERBED_YELLOW_BLUE_2 = 1467;
+            final int FLOWERBED_YELLOW_BLUE_3 = 1642;
+            final int FLOWERBED_YELLOW_BLUE_4 = 1643;
+            final int FLOWERBED_PINK_1 = 1468;
+            final int FLOWERBED_PINK_2 = 1469;
+            final int FLOWERBED_PINK_3 = 1644;
+            final int FLOWERBED_PINK_4 = 1645;
+
+            // FLOWERS
+            final int BLUE_WHITE_FLOWER_1 = 1284;
+            final int BLUE_WHITE_FLOWER_2 = 1285;
+            final int BLUE_WHITE_FLOWER_3 = 1460;
+            final int BLUE_WHITE_FLOWER_4 = 1461;
+            final int PINK_FLOWER_1 = 1286;
+            final int PINK_FLOWER_2 = 1287;
+            final int PINK_FLOWER_3 = 1462;
+            final int PINK_FLOWER_4 = 1463;
+            final int PINK_YELLOW_FLOWER_1 = 1288;
+            final int PINK_YELLOW_FLOWER_2 = 1289;
+            final int PINK_YELLOW_FLOWER_3 = 1464;
+            final int PINK_YELLOW_FLOWER_4 = 1465;
+            final int YELLOW_FLOWER_1 = 1636;
+            final int YELLOW_FLOWER_2 = 1637;
+            final int YELLOW_FLOWER_3 = 1812;
+            final int YELLOW_FLOWER_4 = 1813;
+            final int PURPLE_FLOWER_1 = 1638;
+            final int PURPLE_FLOWER_2 = 1639;
+            final int PURPLE_FLOWER_3 = 1814;
+            final int PURPLE_FLOWER_4 = 1815;
+            final int RED_PINK_FLOWER_1 = 1640;
+            final int RED_PINK_FLOWER_2 = 1641;
+            final int RED_PINK_FLOWER_3 = 1816;
+            final int RED_PINK_FLOWER_4 = 1817;
+
+
 
             // LITTLE POUND
             final int LITTLE_POUND_1 = 309;
@@ -197,6 +286,29 @@ public class TileManager {
             tileUnique[GRASS_ROUND_24] = new Tile();
             tileUnique[GRASS_ROUND_25] = new Tile();
 
+            // Flowerbeds
+
+
+            tileUnique[GRASS_ACCESSORY_SINGLE_1] = new Tile();
+            tileUnique[GRASS_ACCESSORY_SINGLE_2] = new Tile();
+            tileUnique[GRASS_ACCESSORY_1] = new Tile();
+            tileUnique[GRASS_ACCESSORY_2] = new Tile();
+            tileUnique[GRASS_ACCESSORY_3] = new Tile();
+            tileUnique[GRASS_ACCESSORY_4] = new Tile();
+            tileUnique[GRASS_ACCESSORY_5] = new Tile();
+            tileUnique[GRASS_ACCESSORY_6] = new Tile();
+            tileUnique[GRASS_ACCESSORY_TREE_LOG_1] = new Tile();
+            tileUnique[GRASS_ACCESSORY_TREE_LOG_2] = new Tile();
+            tileUnique[GRASS_ACCESSORY_SMALL_TREE_LOG_1] = new Tile();
+
+
+            tileUnique[NATURAL_BUSH_1] = new Tile();
+            tileUnique[NATURAL_BUSH_2] = new Tile();
+            tileUnique[BUSH_WITH_FLOWERBED_1] = new Tile();
+            tileUnique[BUSH_WITH_FLOWERBED_2] = new Tile();
+            tileUnique[BUSH_WITH_FLOWERBED_3] = new Tile();
+            tileUnique[BUSH_WITH_FLOWERBED_4] = new Tile();
+
             tileUnique[SMALL_TREE_CLEAN_1] = new Tile();
             tileUnique[SMALL_TREE_CLEAN_2] = new Tile();
             tileUnique[SMALL_TREE_CLEAN_3] = new Tile();
@@ -219,6 +331,73 @@ public class TileManager {
             tileUnique[SMALL_TREE_WITH_FLOWERBED_6] = new Tile();
             tileUnique[SMALL_TREE_WITH_FLOWERBED_7] = new Tile();
             tileUnique[SMALL_TREE_WITH_FLOWERBED_8] = new Tile();
+
+            // BIG TREE ALONE
+            tileUnique[BIG_ALONE_TREE_1] = new Tile();
+            tileUnique[BIG_ALONE_TREE_2] = new Tile();
+            tileUnique[BIG_ALONE_TREE_3] = new Tile();
+            tileUnique[BIG_ALONE_TREE_4] = new Tile();
+            tileUnique[BIG_ALONE_TREE_5] = new Tile();
+            tileUnique[BIG_ALONE_TREE_6] = new Tile();
+            tileUnique[BIG_ALONE_TREE_7] = new Tile();
+            tileUnique[BIG_ALONE_TREE_8] = new Tile();
+            tileUnique[BIG_ALONE_TREE_9] = new Tile();
+            tileUnique[BIG_ALONE_TREE_10] = new Tile();
+            tileUnique[BIG_ALONE_TREE_11] = new Tile();
+            tileUnique[BIG_ALONE_TREE_12] = new Tile();
+            tileUnique[BIG_ALONE_TREE_13] = new Tile();
+            tileUnique[BIG_ALONE_TREE_14] = new Tile();
+            tileUnique[BIG_ALONE_TREE_15] = new Tile();
+            tileUnique[BIG_ALONE_TREE_17] = new Tile();
+            tileUnique[BIG_ALONE_TREE_18] = new Tile();
+            tileUnique[BIG_ALONE_TREE_19] = new Tile();
+
+            // FLOWERBEDS
+            tileUnique[FLOWERBED_BLUE_WHITE_1] = new Tile();
+            tileUnique[FLOWERBED_BLUE_WHITE_2] = new Tile();
+            tileUnique[FLOWERBED_BLUE_WHITE_3] = new Tile();
+            tileUnique[FLOWERBED_BLUE_WHITE_4] = new Tile();
+            tileUnique[FLOWERBED_YELLOW_1] = new Tile();
+            tileUnique[FLOWERBED_YELLOW_2] = new Tile();
+            tileUnique[FLOWERBED_YELLOW_3] = new Tile();
+            tileUnique[FLOWERBED_YELLOW_4] = new Tile();
+            tileUnique[FLOWERBED_YELLOW_BLUE] = new Tile();
+            tileUnique[FLOWERBED_YELLOW_BLUE_2] = new Tile();
+            tileUnique[FLOWERBED_YELLOW_BLUE_3] = new Tile();
+            tileUnique[FLOWERBED_YELLOW_BLUE_4] = new Tile();
+            tileUnique[FLOWERBED_PINK_1] = new Tile();
+            tileUnique[FLOWERBED_PINK_2] = new Tile();
+            tileUnique[FLOWERBED_PINK_3] = new Tile();
+            tileUnique[FLOWERBED_PINK_4] = new Tile();
+
+            // FLOWERS
+            tileUnique[BLUE_WHITE_FLOWER_1] = new Tile();
+            tileUnique[BLUE_WHITE_FLOWER_2] = new Tile();
+            tileUnique[BLUE_WHITE_FLOWER_3] = new Tile();
+            tileUnique[BLUE_WHITE_FLOWER_4] = new Tile();
+            tileUnique[PINK_FLOWER_1] = new Tile();
+            tileUnique[PINK_FLOWER_2] = new Tile();
+            tileUnique[PINK_FLOWER_3] = new Tile();
+            tileUnique[PINK_FLOWER_4] = new Tile();
+            tileUnique[PINK_YELLOW_FLOWER_1] = new Tile();
+            tileUnique[PINK_YELLOW_FLOWER_2] = new Tile();
+            tileUnique[PINK_YELLOW_FLOWER_3] = new Tile();
+            tileUnique[PINK_YELLOW_FLOWER_4] = new Tile();
+            tileUnique[YELLOW_FLOWER_1] = new Tile();
+            tileUnique[YELLOW_FLOWER_2] = new Tile();
+            tileUnique[YELLOW_FLOWER_3] = new Tile();
+            tileUnique[YELLOW_FLOWER_4] = new Tile();
+            tileUnique[PURPLE_FLOWER_1] = new Tile();
+            tileUnique[PURPLE_FLOWER_2] = new Tile();
+            tileUnique[PURPLE_FLOWER_3] = new Tile();
+            tileUnique[PURPLE_FLOWER_4] = new Tile();
+            tileUnique[RED_PINK_FLOWER_1] = new Tile();
+            tileUnique[RED_PINK_FLOWER_2] = new Tile();
+            tileUnique[RED_PINK_FLOWER_3] = new Tile();
+            tileUnique[RED_PINK_FLOWER_4] = new Tile();
+
+
+
 
             tileUnique[SMALL_TREE_WITH_ARTIFICIAL_FLOWERBED_1] = new Tile();
             tileUnique[SMALL_TREE_WITH_ARTIFICIAL_FLOWERBED_2] = new Tile();
@@ -321,6 +500,97 @@ public class TileManager {
             tileUnique[GRASS_ROUND_24].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_890.png")));
             tileUnique[GRASS_ROUND_25].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_891.png")));
 
+
+            // Grass accessories
+            tileUnique[GRASS_ACCESSORY_SINGLE_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_2304.png")));
+            tileUnique[GRASS_ACCESSORY_SINGLE_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_2131.png")));
+            tileUnique[GRASS_ACCESSORY_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_1954.png")));
+            tileUnique[GRASS_ACCESSORY_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_2130.png")));
+            tileUnique[GRASS_ACCESSORY_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_1956.png")));
+            tileUnique[GRASS_ACCESSORY_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_2132.png")));
+            tileUnique[GRASS_ACCESSORY_5].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_1112.png")));
+            tileUnique[GRASS_ACCESSORY_6].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_1113.png")));
+            tileUnique[GRASS_ACCESSORY_TREE_LOG_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_1109.png")));
+            tileUnique[GRASS_ACCESSORY_TREE_LOG_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_1110.png")));
+            tileUnique[GRASS_ACCESSORY_SMALL_TREE_LOG_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/grass/tile_1111.png")));
+
+            // Bushes
+            tileUnique[NATURAL_BUSH_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/bushes/tile_1771.png")));
+            tileUnique[NATURAL_BUSH_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/bushes/tile_1772.png")));
+            tileUnique[BUSH_WITH_FLOWERBED_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/bushes/tile_1947.png")));
+            tileUnique[BUSH_WITH_FLOWERBED_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/bushes/tile_1948.png")));
+            tileUnique[BUSH_WITH_FLOWERBED_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/bushes/tile_2123.png")));
+            tileUnique[BUSH_WITH_FLOWERBED_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/bushes/tile_2124.png")));
+
+            // Flowerbeds
+            tileUnique[FLOWERBED_BLUE_WHITE_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1114.png")));
+            tileUnique[FLOWERBED_BLUE_WHITE_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1115.png")));
+            tileUnique[FLOWERBED_BLUE_WHITE_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1290.png")));
+            tileUnique[FLOWERBED_BLUE_WHITE_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1291.png")));
+            tileUnique[FLOWERBED_YELLOW_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1116.png")));
+            tileUnique[FLOWERBED_YELLOW_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1117.png")));
+            tileUnique[FLOWERBED_YELLOW_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1292.png")));
+            tileUnique[FLOWERBED_YELLOW_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1293.png")));
+            tileUnique[FLOWERBED_YELLOW_BLUE].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1466.png")));
+            tileUnique[FLOWERBED_YELLOW_BLUE_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1467.png")));
+            tileUnique[FLOWERBED_YELLOW_BLUE_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1642.png")));
+            tileUnique[FLOWERBED_YELLOW_BLUE_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1643.png")));
+            tileUnique[FLOWERBED_PINK_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1468.png")));
+            tileUnique[FLOWERBED_PINK_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1469.png")));
+            tileUnique[FLOWERBED_PINK_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1644.png")));
+            tileUnique[FLOWERBED_PINK_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1645.png")));
+
+            // Flowers
+            tileUnique[BLUE_WHITE_FLOWER_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1284.png")));
+            tileUnique[BLUE_WHITE_FLOWER_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1285.png")));
+            tileUnique[BLUE_WHITE_FLOWER_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1460.png")));
+            tileUnique[BLUE_WHITE_FLOWER_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1461.png")));
+            tileUnique[PINK_FLOWER_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1286.png")));
+            tileUnique[PINK_FLOWER_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1287.png")));
+            tileUnique[PINK_FLOWER_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1462.png")));
+            tileUnique[PINK_FLOWER_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1463.png")));
+            tileUnique[PINK_YELLOW_FLOWER_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1288.png")));
+            tileUnique[PINK_YELLOW_FLOWER_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1289.png")));
+            tileUnique[PINK_YELLOW_FLOWER_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1464.png")));
+            tileUnique[PINK_YELLOW_FLOWER_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1465.png")));
+            tileUnique[YELLOW_FLOWER_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1636.png")));
+            tileUnique[YELLOW_FLOWER_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1637.png")));
+            tileUnique[YELLOW_FLOWER_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1812.png")));
+            tileUnique[YELLOW_FLOWER_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1813.png")));
+            tileUnique[PURPLE_FLOWER_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1638.png")));
+            tileUnique[PURPLE_FLOWER_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1639.png")));
+            tileUnique[PURPLE_FLOWER_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1814.png")));
+            tileUnique[PURPLE_FLOWER_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1815.png")));
+            tileUnique[RED_PINK_FLOWER_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1640.png")));
+            tileUnique[RED_PINK_FLOWER_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1641.png")));
+            tileUnique[RED_PINK_FLOWER_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1816.png")));
+            tileUnique[RED_PINK_FLOWER_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/flowers/tile_1817.png")));
+
+
+
+            // BIG ALONE TRE
+            tileUnique[BIG_ALONE_TREE_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_615.png")));
+            tileUnique[BIG_ALONE_TREE_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_616.png")));
+            tileUnique[BIG_ALONE_TREE_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_617.png")));
+            tileUnique[BIG_ALONE_TREE_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_618.png")));
+            tileUnique[BIG_ALONE_TREE_5].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_619.png")));
+            tileUnique[BIG_ALONE_TREE_6].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_791.png")));
+            tileUnique[BIG_ALONE_TREE_7].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_792.png")));
+            tileUnique[BIG_ALONE_TREE_8].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_793.png")));
+            tileUnique[BIG_ALONE_TREE_9].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_794.png")));
+            tileUnique[BIG_ALONE_TREE_10].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_795.png")));
+            tileUnique[BIG_ALONE_TREE_11].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_967.png")));
+            tileUnique[BIG_ALONE_TREE_12].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_968.png")));
+            tileUnique[BIG_ALONE_TREE_13].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_969.png")));
+            tileUnique[BIG_ALONE_TREE_14].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_970.png")));
+            tileUnique[BIG_ALONE_TREE_15].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_971.png")));
+            tileUnique[BIG_ALONE_TREE_17].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_1144.png")));
+            tileUnique[BIG_ALONE_TREE_18].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_1145.png")));
+            tileUnique[BIG_ALONE_TREE_19].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/big_alone/tile_1146.png")));
+
+
+
+
             // Small Tree Clean Tiles
             tileUnique[SMALL_TREE_CLEAN_1].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/unique_single/tile_544.png")));
             tileUnique[SMALL_TREE_CLEAN_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/trees/unique_single/tile_545.png")));
@@ -391,7 +661,6 @@ public class TileManager {
             tileUnique[ISLAND_WITH_GRASS_2].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/islands/tile_306.png")));
             tileUnique[ISLAND_WITH_GRASS_3].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/islands/tile_307.png")));
             tileUnique[ISLAND_WITH_GRASS_4].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/islands/tile_308.png")));
-            //solid 308
             tileUnique[ISLAND_WITH_GRASS_4].isSolid = true;
             tileUnique[ISLAND_WITH_GRASS_5].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/islands/tile_481.png")));
             tileUnique[ISLAND_WITH_GRASS_6].image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/tiles/islands/tile_482.png")));
