@@ -28,9 +28,9 @@ public class SuperObject {
 
         // If the object is within the screen boundaries, draw it.
         if (worldX + gp.TILE_SIZE > gp.player.worldX - gp.player.screenX &&
-            worldX - gp.TILE_SIZE < gp.player.worldX + gp.player.screenX &&
-            worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.screenY &&
-            worldY - gp.TILE_SIZE < gp.player.worldY + gp.player.screenY) {
+                worldX - gp.TILE_SIZE < gp.player.worldX + gp.player.screenX &&
+                worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.screenY &&
+                worldY - gp.TILE_SIZE < gp.player.worldY + gp.player.screenY) {
             g2d.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
         }
 

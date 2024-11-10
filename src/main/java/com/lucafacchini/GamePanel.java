@@ -32,7 +32,11 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     KeyHandler kh = new KeyHandler();
     public Player player = new Player(this, kh);
-    TileManager tileManager = new TileManager(this);
+
+    public TileManager firstLayerMap = new TileManager(this, "firstLayer.csv");
+    public TileManager secondLayerMap = new TileManager(this, "secondLayer.csv");
+    public TileManager thirdLayerMap = new TileManager(this, "thirdLayer.csv");
+
     public CollisionManager collisionManager = new CollisionManager(this);
 
     public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // Max number of objects in the game.
@@ -103,7 +107,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Draw the components of the panel.
     private void drawAllComponents(Graphics2D g2d) {
-        tileManager.draw(g2d);
+        firstLayerMap.draw(g2d);
+        secondLayerMap.draw(g2d);
 
         for(int i = 0; i < objectsArray.length; i++) {
             if(objectsArray[i] != null) {
@@ -112,6 +117,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         player.draw(g2d);
+        thirdLayerMap.draw(g2d);
+
         ui.draw(g2d);
     }
 

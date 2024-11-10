@@ -1,7 +1,6 @@
 package com.lucafacchini;
 
 import com.lucafacchini.objects.Boots_Object;
-import com.lucafacchini.objects.Chest_Object;
 import com.lucafacchini.objects.Door_Object;
 import com.lucafacchini.objects.Key_Object;
 

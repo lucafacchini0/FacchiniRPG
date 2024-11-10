@@ -12,7 +12,8 @@ import java.util.Objects;
 public class Player extends Entity {
 
     // Player settings
-    public final int DEFAULT_PLAYER_SPEED = 4;
+    // TODO: The player collides with objects with a "wider" Bounding Box, the more i increment the speed.
+    public final int DEFAULT_PLAYER_SPEED = 5;
 
     // Sprite settings
     public final int UPDATE_TIME_FOR_SPRITE = 1;
@@ -191,7 +192,10 @@ public class Player extends Entity {
         if (isMoving && !(kh.isUpPressed && kh.isDownPressed) && !(kh.isLeftPressed && kh.isRightPressed)) {
             isCollidingWithTile = false;
             isCollidingWithObject = false;
+
             gp.collisionManager.checkTile(this);
+
+
             int objectIndex = gp.collisionManager.checkObject(this, true);
 
             // ##TROUBLESHOOTING
@@ -209,7 +213,7 @@ public class Player extends Entity {
             } else if (isCollidingWithTile) {
                 handleCollision(); // TODO: Fix this method. Diagonal movement is not working while colliding with Objects.
             } else if(isCollidingWithObject) {
-               // handleCollisionWithObject(objectIndex);
+                // handleCollisionWithObject(objectIndex);
             }
         }
     }
@@ -458,4 +462,3 @@ public class Player extends Entity {
         }
     }
 }
-
