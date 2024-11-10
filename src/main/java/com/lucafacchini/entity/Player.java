@@ -140,6 +140,10 @@ public class Player extends Entity {
     // TODO: If the player is facing left or right and moves just by one pixel, the sprite animation iterates a full cycle.
     private void updateSprite() {
         boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
+//
+//        // ##TROUBLESHOOTING
+//        // print framenUm
+//        System.out.println("spriteImageNum: " + spriteImageNum);
 
         spriteFramesCounter++; // Increase the counter FPS times per second
 
@@ -149,6 +153,11 @@ public class Player extends Entity {
         setMultiplier(currentDirection, spriteImageNum);
 
         if(currentDirection.contains("idling")) {
+
+            // ##TROUBLESHOOTING
+            // print framenUm
+//            System.out.println("spriteImageNum: " + spriteImageNum);
+
             if(spriteImageNum > 4) { // 4 is the last sprite of the idling animation. Walk have 6.
                 spriteImageNum = 1;
             }
@@ -157,10 +166,10 @@ public class Player extends Entity {
             spriteFramesCounter = 0;
 
             // ##TROUBLESHOOTING
-            // System.out.println("currentDirection: " + currentDirection + " lastPosition: " + lastPosition);
+             System.out.println("currentDirection: " + currentDirection + " lastPosition: " + lastPosition);
             if (isMoving) {
                 // ##TROUBLESHOOTING
-                // System.out.println("isMoving: " + isMoving + " spriteImageNum: " + spriteImageNum);
+                 System.out.println("isMoving: " + isMoving + " spriteImageNum: " + spriteImageNum);
                 spriteImageNum++;
                 if (spriteImageNum > MAX_SPRITES_PER_WALKING_DIRECTION) {
                     spriteImageNum = 1;
@@ -325,95 +334,84 @@ public class Player extends Entity {
 
     @Override
     public void draw(Graphics2D g2d) {
-        BufferedImage image = null;
+        BufferedImage image;
 
         switch (currentDirection) {
-            case "up":
-            case "up-left":
-            case "up-right":
-                switch (spriteImageNum) {
-                    case 1: image = upImages[0]; break;
-                    case 2: image = upImages[1]; break;
-                    case 3: image = upImages[2]; break;
-                    case 4: image = upImages[3]; break;
-                    case 5: image = upImages[4]; break;
-                    case 6: image = upImages[5]; break;
-                }
-                break;
-
-            case "down":
-            case "down-left":
-            case "down-right":
-                switch (spriteImageNum) {
-                    case 1: image = downImages[0]; break;
-                    case 2: image = downImages[1]; break;
-                    case 3: image = downImages[2]; break;
-                    case 4: image = downImages[3]; break;
-                    case 5: image = downImages[4]; break;
-                    case 6: image = downImages[5]; break;
-                }
-                break;
-
-            case "left":
-            case "idling-left":
-            case "idling-up-left":
-            case "idling-down-left":
-                switch (spriteImageNum) {
-                    case 1: image = leftImages[0]; break;
-                    case 2: image = leftImages[1]; break;
-                    case 3: image = leftImages[2]; break;
-                    case 4: image = leftImages[3]; break;
-                    case 5: image = leftImages[4]; break;
-                    case 6: image = leftImages[5]; break;
-                }
-                break;
-
-            case "right":
-            case "idling-right":
-            case "idling-up-right":
-            case "idling-down-right":
-                switch (spriteImageNum) {
-                    case 1: image = rightImages[0]; break;
-                    case 2: image = rightImages[1]; break;
-                    case 3: image = rightImages[2]; break;
-                    case 4: image = rightImages[3]; break;
-                    case 5: image = rightImages[4]; break;
-                    case 6: image = rightImages[5]; break;
-                }
-                break;
-
-            case "idling-up":
-                switch (spriteImageNum) {
-                    case 1: image = idlingUpImages[0]; break;
-                    case 2: image = idlingUpImages[1]; break;
-                    case 3: image = idlingUpImages[2]; break;
-                    case 4: image = idlingUpImages[3]; break;
-                }
-                break;
-
-            case "idling-down":
-                switch (spriteImageNum) {
-                    case 1: image = idlingDownImages[0]; break;
-                    case 2: image = idlingDownImages[1]; break;
-                    case 3: image = idlingDownImages[2]; break;
-                    case 4: image = idlingDownImages[3]; break;
-                }
-                break;
-
-            default:
-                image = null;  // In case of an invalid direction
-                break;
+            case "up", "up-left", "up-right" -> image = switch (spriteImageNum) {
+                case 1 -> upImages[0];
+                case 2 -> upImages[1];
+                case 3 -> upImages[2];
+                case 4 -> upImages[3];
+                case 5 -> upImages[4];
+                case 6 -> upImages[5];
+                default -> upImages[0];
+            };
+            case "down", "down-left", "down-right" -> image = switch (spriteImageNum) {
+                case 1 -> downImages[0];
+                case 2 -> downImages[1];
+                case 3 -> downImages[2];
+                case 4 -> downImages[3];
+                case 5 -> downImages[4];
+                case 6 -> downImages[5];
+                default -> downImages[0];
+            };
+            case "left" -> image = switch (spriteImageNum) {
+                case 1 -> leftImages[0];
+                case 2 -> leftImages[1];
+                case 3 -> leftImages[2];
+                case 4 -> leftImages[3];
+                case 5 -> leftImages[4];
+                case 6 -> leftImages[5];
+                default -> leftImages[0];
+            };
+            case "right" -> image = switch (spriteImageNum) {
+                case 1 -> rightImages[0];
+                case 2 -> rightImages[1];
+                case 3 -> rightImages[2];
+                case 4 -> rightImages[3];
+                case 5 -> rightImages[4];
+                case 6 -> rightImages[5];
+                default -> rightImages[0];
+            };
+            case "idling-up", "idling-up-right", "idling-up-left" -> image = switch (spriteImageNum) {
+                case 1 -> idlingUpImages[0];
+                case 2 -> idlingUpImages[1];
+                case 3 -> idlingUpImages[2];
+                case 4 -> idlingUpImages[3];
+                default -> idlingUpImages[0];
+            };
+            case "idling-down", "idling-down-right", "idling-down-left" -> image = switch (spriteImageNum) {
+                case 1 -> idlingDownImages[0];
+                case 2 -> idlingDownImages[1];
+                case 3 -> idlingDownImages[2];
+                case 4 -> idlingDownImages[3];
+                default -> idlingDownImages[0];
+            };
+            case "idling-left" -> image = switch (spriteImageNum) {
+                case 1 -> idlingLeftImages[0];
+                case 2 -> idlingLeftImages[1];
+                case 3 -> idlingLeftImages[2];
+                case 4 -> idlingLeftImages[3];
+                default -> idlingLeftImages[0];
+            };
+            case "idling-right" -> image = switch (spriteImageNum) {
+                case 1 -> idlingRightImages[0];
+                case 2 -> idlingRightImages[1];
+                case 3 -> idlingRightImages[2];
+                case 4 -> idlingRightImages[3];
+                default -> idlingRightImages[0];
+            };
+            default -> image = null;
         }
 
         if (image != null) {
             g2d.drawImage(image, screenX, screenY, 11 * 4, 19 * 4, null);
+
+            // ##TROUBLESHOOTING
+            // Draw the bounding box of the player
+            g2d.setColor(Color.RED);
+            g2d.drawRect(screenX + boundingBox.x, screenY + boundingBox.y, boundingBox.width, boundingBox.height);
         }
-
-        // ##TROUBLESHOOTING ##IMPORTANT
-//        g2d.setColor(Color.RED);
-//        g2d.drawRect(screenX + boundingBox.x, screenY + boundingBox.y, boundingBox.width, boundingBox.height);
     }
-
-
 }
 
