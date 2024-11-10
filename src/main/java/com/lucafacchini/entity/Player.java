@@ -166,10 +166,10 @@ public class Player extends Entity {
             spriteFramesCounter = 0;
 
             // ##TROUBLESHOOTING
-             System.out.println("currentDirection: " + currentDirection + " lastPosition: " + lastPosition);
+//             System.out.println("currentDirection: " + currentDirection + " lastPosition: " + lastPosition);
             if (isMoving) {
                 // ##TROUBLESHOOTING
-                 System.out.println("isMoving: " + isMoving + " spriteImageNum: " + spriteImageNum);
+//                 System.out.println("isMoving: " + isMoving + " spriteImageNum: " + spriteImageNum);
                 spriteImageNum++;
                 if (spriteImageNum > MAX_SPRITES_PER_WALKING_DIRECTION) {
                     spriteImageNum = 1;
@@ -189,16 +189,27 @@ public class Player extends Entity {
         boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
 
         if (isMoving && !(kh.isUpPressed && kh.isDownPressed) && !(kh.isLeftPressed && kh.isRightPressed)) {
-            isColliding = false;
+            isCollidingWithTile = false;
+            isCollidingWithObject = false;
             gp.collisionManager.checkTile(this);
             int objectIndex = gp.collisionManager.checkObject(this, true);
 
+            // ##TROUBLESHOOTING
+//            if(isCollidingWithTile) {
+//                System.out.println("Colliding with tile");
+//            }
+//            if(isCollidingWithObject) {
+//                System.out.println("Colliding with object");
+//            }
+
             pickUpObject(objectIndex);
 
-            if (!isColliding) {
+            if (!isCollidingWithTile && !isCollidingWithObject) {
                 movePlayer();
-            } else {
-               // handleCollision(); // TODO: Fix this method. Diagonal movement is not working while colliding with Objects.
+            } else if (isCollidingWithTile) {
+                handleCollision(); // TODO: Fix this method. Diagonal movement is not working while colliding with Objects.
+            } else if(isCollidingWithObject) {
+               // handleCollisionWithObject(objectIndex);
             }
         }
     }
@@ -287,6 +298,39 @@ public class Player extends Entity {
             }
         }
     }
+
+//    // TODO: Fix: Check the sides of the Object. If the player is moving diagonally, check the sides of the object.
+//    public void handleCollisionWithObject(int objectIndex) {
+//        if (kh.isUpPressed && kh.isLeftPressed) {
+//            System.out.println("UP-LEFT DETECTED");
+//
+//            // Check for collision with the object
+//            System.out.println("NOT HITTING OBJECT BB FROM UP-LEFT" + boundingBox);
+//            if (boundingBox.intersects(gp.objectsArray[objectIndex].boundingBox)) {
+//                System.out.println("UP-LEFT INTERSECTION DETECTED");
+//
+//                // Check if the player is coming from the left
+//                // Player is coming from the left if the player's right side intersects with the object's left side
+//                // and there's vertical overlap.
+//                if (boundingBox.getMaxX() > gp.objectsArray[objectIndex].boundingBox.getMinX() &&
+//                        boundingBox.getMinX() < gp.objectsArray[objectIndex].boundingBox.getMaxX() && // The player is left of the object
+//                        boundingBox.getMinY() < gp.objectsArray[objectIndex].boundingBox.getMaxY() &&
+//                        boundingBox.getMaxY() > gp.objectsArray[objectIndex].boundingBox.getMinY() &&
+//                        boundingBox.getMaxY() <= gp.objectsArray[objectIndex].boundingBox.getMaxY()) { // Ensure player is not hitting from below
+//                    // Move up
+//                    worldY -= (int) (speed * Math.sqrt(2) / 2); // Move up
+//                    System.out.println("Player coming from left, moved up");
+//                }
+//                // Check if the player is coming from below
+//                // Player is coming from below if the player's bottom side intersects with the object's top side
+//                // and there's horizontal overlap.
+//
+//
+//                System.out.println("aaaaaaaaaa moved up-left");
+//            }
+//        }
+//    }
+
 
     private void pickUpObject(int index) {
         if(index != -1) {

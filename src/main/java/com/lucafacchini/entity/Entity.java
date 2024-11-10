@@ -25,7 +25,8 @@ public class Entity {
     // The bounding box of the entity and whether it is colliding with another entity.
     public Rectangle boundingBox;
     public int boundingBoxDefaultX, boundingBoxDefaultY;
-    public boolean isColliding = false;
+    public boolean isCollidingWithTile = false;
+    public boolean isCollidingWithObject = false;
 
     public void update() {}
     public void draw(Graphics2D g2d) {}

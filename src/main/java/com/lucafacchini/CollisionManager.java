@@ -21,14 +21,14 @@ public class CollisionManager {
         tileNum1 = gp.tileManager.GAME_MAP[entityLeftColumn][entityTopRow];
         tileNum2 = gp.tileManager.GAME_MAP[entityRightColumn][entityTopRow];
         if (isTileColliding(tileNum1, tileNum2)) {
-            entity.isColliding = true;
+            entity.isCollidingWithTile = true;
         }
 
         // Check bottom side
         tileNum1 = gp.tileManager.GAME_MAP[entityLeftColumn][entityBottomRow];
         tileNum2 = gp.tileManager.GAME_MAP[entityRightColumn][entityBottomRow];
         if (isTileColliding(tileNum1, tileNum2)) {
-            entity.isColliding = true;
+            entity.isCollidingWithTile = true;
         }
     }
 
@@ -120,6 +120,7 @@ public class CollisionManager {
         return isTileColliding(gp.tileManager.GAME_MAP[leftTile][topTile], gp.tileManager.GAME_MAP[rightTile][topTile]);
     }
 
+
     // Objects
     public int checkObject(Entity entity, boolean isPlayer) {
         int index = -1;
@@ -139,7 +140,7 @@ public class CollisionManager {
                         if(entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
                             if(gp.objectsArray[i].isSolid) {
                                 // Debug message
-                                entity.isColliding = true;
+                                entity.isCollidingWithObject = true;
 
                             }
                             if(isPlayer) {
@@ -154,7 +155,7 @@ public class CollisionManager {
                         if(entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
                             if(gp.objectsArray[i].isSolid) {
                                 // Debug message
-                                entity.isColliding = true;
+                                entity.isCollidingWithObject = true;
 
                             }
                             if(isPlayer) {
@@ -168,7 +169,7 @@ public class CollisionManager {
                         if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
                             if(gp.objectsArray[i].isSolid) {
                                 // Debug message
-                                entity.isColliding = true;
+                                entity.isCollidingWithObject = true;
 
                             }
                             if(isPlayer) {
@@ -182,7 +183,7 @@ public class CollisionManager {
                         if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
                             if(gp.objectsArray[i].isSolid) {
                                 // Debug message
-                                entity.isColliding = true;
+                                entity.isCollidingWithObject = true;
 
                             }
                             if(isPlayer) {
@@ -195,7 +196,7 @@ public class CollisionManager {
                         if(entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
                             if(gp.objectsArray[i].isSolid) {
                                 // Debug message
-                                entity.isColliding = true;
+                                entity.isCollidingWithObject = true;
 
                             }
                             if(isPlayer) {
@@ -208,7 +209,7 @@ public class CollisionManager {
                         if(entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
                             if(gp.objectsArray[i].isSolid) {
                                 // Debug message
-                                entity.isColliding = true;
+                                entity.isCollidingWithObject = true;
 
                             }
                             if(isPlayer) {
@@ -221,7 +222,7 @@ public class CollisionManager {
                         if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
                             if(gp.objectsArray[i].isSolid) {
                                 // Debug message
-                                entity.isColliding = true;
+                                entity.isCollidingWithObject = true;
                             }
                             if(isPlayer) {
                                 index = i;
@@ -233,8 +234,7 @@ public class CollisionManager {
                         if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
                             if(gp.objectsArray[i].isSolid) {
                                 // Debug message
-                                entity.isColliding = true;
-
+                                entity.isCollidingWithObject = true;
                             }
                             if(isPlayer) {
                                 index = i;

@@ -23,15 +23,11 @@ public class AssetSetter {
         gp.objectsArray[1].worldY = 20 * gp.TILE_SIZE;
 
         gp.objectsArray[2] = new Door_Object();
-        gp.objectsArray[2].worldX = 28 * gp.TILE_SIZE;
-        gp.objectsArray[2].worldY = 28 * gp.TILE_SIZE;
+        gp.objectsArray[2].worldX = 24 * gp.TILE_SIZE;
+        gp.objectsArray[2].worldY = 17 * gp.TILE_SIZE;
 
         gp.objectsArray[3] = new Boots_Object();
         gp.objectsArray[3].worldX = 30 * gp.TILE_SIZE;
         gp.objectsArray[3].worldY = 31 * gp.TILE_SIZE;
-
-        gp.objectsArray[4] = new Chest_Object();
-        gp.objectsArray[4].worldX = 25 * gp.TILE_SIZE;
-        gp.objectsArray[4].worldY = 25 * gp.TILE_SIZE;
     }
 }
