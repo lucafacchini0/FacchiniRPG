@@ -100,6 +100,11 @@ public class UI {
                     messageCounter = 0;
                 }
             }
+
+            // draw player coordinates+
+            g2d.setColor(Color.BLUE);
+            g2d.drawString("X: " + gp.player.worldX / 64+ " Y: " + gp.player.worldY / 64, 10, 250);
+
         }
     }
 }

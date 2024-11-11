@@ -142,7 +142,7 @@ public class Player extends Entity {
     private void updateSprite() {
         boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
 //
-//        // ##TROUBLESHOOTING
+//        // Debug
 //        // print framenUm
 //        System.out.println("spriteImageNum: " + spriteImageNum);
 
@@ -155,7 +155,7 @@ public class Player extends Entity {
 
         if(currentDirection.contains("idling")) {
 
-            // ##TROUBLESHOOTING
+            // Debug
             // print framenUm
 //            System.out.println("spriteImageNum: " + spriteImageNum);
 
@@ -166,17 +166,17 @@ public class Player extends Entity {
         if (spriteFramesCounter >= UPDATE_TIME_FOR_SPRITE * spriteCounterMultiplier) {
             spriteFramesCounter = 0;
 
-            // ##TROUBLESHOOTING
+            // Debug
 //             System.out.println("currentDirection: " + currentDirection + " lastPosition: " + lastPosition);
             if (isMoving) {
-                // ##TROUBLESHOOTING
+                // Debug
 //                 System.out.println("isMoving: " + isMoving + " spriteImageNum: " + spriteImageNum);
                 spriteImageNum++;
                 if (spriteImageNum > MAX_SPRITES_PER_WALKING_DIRECTION) {
                     spriteImageNum = 1;
                 }
             } else {
-                // ##TROUBLESHOOTING
+                // Debug
                 // System.out.println("isMoving: " + isMoving + " spriteImageNum: " + spriteImageNum);
                 spriteImageNum++;
                 if (spriteImageNum > MAX_SPRITES_PER_IDLING_DIRECTION) {
@@ -198,7 +198,7 @@ public class Player extends Entity {
 
             int objectIndex = gp.collisionManager.checkObject(this, true);
 
-            // ##TROUBLESHOOTING
+            // Debug
 //            if(isCollidingWithTile) {
 //                System.out.println("Colliding with tile");
 //            }
@@ -212,7 +212,7 @@ public class Player extends Entity {
                 movePlayer();
             } else if (isCollidingWithTile) {
                 handleCollision(); // TODO: Fix this method. Diagonal movement is not working while colliding with Objects.
-            } else if(isCollidingWithObject) {
+            } else { // isCollidingWithObject
                 // handleCollisionWithObject(objectIndex);
             }
         }
@@ -339,7 +339,7 @@ public class Player extends Entity {
     private void pickUpObject(int index) {
         if(index != -1) {
 
-            // ##TROUBLESHOOTING
+            // Debug
             // for(int i = 0; i < gp.objectsArray.length; i++) {
             //     if(gp.objectsArray[i] != null) {
             //         System.out.println("Index: " + i + " Object: " + gp.objectsArray[i].name);
@@ -455,7 +455,7 @@ public class Player extends Entity {
         if (image != null) {
             g2d.drawImage(image, screenX, screenY, 11 * 4, 19 * 4, null);
 
-            // ##TROUBLESHOOTING
+            // Debug
             // Draw the bounding box of the player
             g2d.setColor(Color.RED);
             g2d.drawRect(screenX + boundingBox.x, screenY + boundingBox.y, boundingBox.width, boundingBox.height);

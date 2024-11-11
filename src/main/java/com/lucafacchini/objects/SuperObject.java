@@ -34,7 +34,7 @@ public class SuperObject {
             g2d.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
         }
 
-        //##TROUBLESHOOTING ##IMPORTANT
+        //Debug ##IMPORTANT
         g2d.setColor(Color.BLACK);
         g2d.drawRect(screenX + boundingBox.x, screenY + boundingBox.y, boundingBox.width, boundingBox.height);
 

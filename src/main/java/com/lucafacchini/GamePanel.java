@@ -33,9 +33,10 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler kh = new KeyHandler();
     public Player player = new Player(this, kh);
 
-    public TileManager firstLayerMap = new TileManager(this, "firstLayer.csv");
-    public TileManager secondLayerMap = new TileManager(this, "secondLayer.csv");
-    public TileManager thirdLayerMap = new TileManager(this, "thirdLayer.csv");
+    // Debug
+    public TileManager firstLayerMap = new TileManager(this, "background.csv");
+    public TileManager secondLayerMap = new TileManager(this, "groundDecoration.csv");
+    public TileManager thirdLayerMap = new TileManager(this, "background.csv");
 
     public CollisionManager collisionManager = new CollisionManager(this);
 
@@ -107,8 +108,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Draw the components of the panel.
     private void drawAllComponents(Graphics2D g2d) {
+        // Debug
+        // Initialize time to see how much time it takes to draw the components.
+        long startTime = System.nanoTime();
         firstLayerMap.draw(g2d);
-        secondLayerMap.draw(g2d);
 
         for(int i = 0; i < objectsArray.length; i++) {
             if(objectsArray[i] != null) {
@@ -117,9 +120,23 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         player.draw(g2d);
-        thirdLayerMap.draw(g2d);
+
+       secondLayerMap.draw(g2d);
+
 
         ui.draw(g2d);
+
+        // Debug
+        // Calculate the time it took to draw the components.
+        long endTime = System.nanoTime();
+        long elapsedTime = endTime - startTime;
+        // draw the time
+        g2d.setColor(Color.GREEN);
+        // print with dots
+        g2d.drawString("Time to draw components: " + elapsedTime , 10, 500);
+        // println
+        System.out.println("Time to draw components: " + elapsedTime);
+
     }
 
     public void playMusic(int index) {
