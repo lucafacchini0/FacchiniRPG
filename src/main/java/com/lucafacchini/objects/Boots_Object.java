@@ -1,18 +1,19 @@
 package com.lucafacchini.objects;
 
-import com.lucafacchini.entity.Utilities;
+import com.lucafacchini.Utilities;
+import com.lucafacchini.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.util.Objects;
 
 public class Boots_Object extends SuperObject {
-    public Boots_Object() {
-        name = "Boots";
+    public Boots_Object(GamePanel gp, Utilities utilities) {
 
-        Utilities utilities = new Utilities();
+        name = "Boots";
 
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/boots.png")));
+            image = utilities.rescaleImage(image, gp.TILE_SIZE, gp.TILE_SIZE);
         } catch (Exception e) {
             utilities.printError(this.getClass().getSimpleName(), "Failed to load image.", "\u001B[31m");
             e.printStackTrace();

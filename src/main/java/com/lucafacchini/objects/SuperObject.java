@@ -1,15 +1,17 @@
 package com.lucafacchini.objects;
 
 import com.lucafacchini.GamePanel;
+import com.lucafacchini.Utilities;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class SuperObject {
-
     // Coordinates
     public int worldX, worldY;
     public int screenX, screenY;
+
+    // TODO: Implement a constructor to construct every object faster and resize it automatically.
 
     // Properties
     public boolean isSolid = false;
@@ -18,6 +20,7 @@ public class SuperObject {
     public BufferedImage image;
     public String name;
     public Rectangle boundingBox = new Rectangle(0, 0, 64, 64); // TODO: Replace size with gp.TILE_SIZE
+    public Utilities utilities = new Utilities();
 
     public int boundingBoxDefaultX = 0;
     public int boundingBoxDefaultY = 0;
@@ -31,7 +34,7 @@ public class SuperObject {
                 worldX - gp.TILE_SIZE < gp.player.worldX + gp.player.screenX &&
                 worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.screenY &&
                 worldY - gp.TILE_SIZE < gp.player.worldY + gp.player.screenY) {
-            g2d.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+            g2d.drawImage(image, screenX, screenY, null);
         }
 
         //Debug ##IMPORTANT

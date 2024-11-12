@@ -1,6 +1,6 @@
 package com.lucafacchini.tiles;
 import com.lucafacchini.GamePanel;
-import com.lucafacchini.entity.Utilities;
+import com.lucafacchini.Utilities;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -25,7 +25,7 @@ public class TileManager {
     // Objects
     GamePanel gp;
     public HashMap<Integer, Tile> tileMap; // Store all the tiles
-    private Utilities utilities = new Utilities();
+    private final Utilities utilities = new Utilities();
 
     public TileManager(GamePanel gp, String path) {
         this.gp = gp;
@@ -33,6 +33,8 @@ public class TileManager {
         tileMap = new HashMap<>();
 
         loadMap(MAPS_PATH + path);
+
+       rescaleAllTileImages();
 
         // Debug
         // TODO: Implement a way to set the solid tiles
@@ -113,6 +115,14 @@ public class TileManager {
         }
     }
 
+    private void rescaleAllTileImages() {
+        for (Tile tile : tileMap.values()) {
+            if (tile.image != null) {
+                tile.image = utilities.rescaleImage(tile.image, gp.TILE_SIZE, gp.TILE_SIZE);
+            }
+        }
+    }
+
     public void draw(Graphics2D g2d) {
         int currentWorldColumn = 0;
         int currentWorldRow = 0;
@@ -143,7 +153,7 @@ public class TileManager {
 
                 Tile tile = tileMap.get(currentTileIndex);
                 if (tile != null && tile.image != null) {
-                    g2d.drawImage(tile.image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+                    g2d.drawImage(tile.image, screenX, screenY, null);
                 }
             }
 
@@ -155,6 +165,7 @@ public class TileManager {
             }
 
             // Debug
+            // WARNING - takes long time to draw (around 0.8 ms)
             g2d.setColor(Color.pink);
             g2d.drawRect(screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE);
         }

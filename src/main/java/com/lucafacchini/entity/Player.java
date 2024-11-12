@@ -2,6 +2,7 @@ package com.lucafacchini.entity;
 
 import com.lucafacchini.GamePanel;
 import com.lucafacchini.KeyHandler;
+import com.lucafacchini.Utilities;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,6 +11,12 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Player extends Entity {
+
+    // Player settings
+    public final int PLAYER_HEIGHT = 19;
+    public final int PLAYER_WIDTH = 11;
+    public final int RESCALED_PLAYER_HEIGTH;
+    public final int RESCALED_PLAYER_WIDTH;
 
     // Player settings
     // TODO: The player collides with objects with a "wider" Bounding Box, the more i increment the speed.
@@ -35,6 +42,7 @@ public class Player extends Entity {
     // Objects
     GamePanel gp;
     KeyHandler kh;
+    Utilities utilities = new Utilities();
 
     public Player(GamePanel gp, KeyHandler kh) {
         this.gp = gp;
@@ -54,9 +62,14 @@ public class Player extends Entity {
         boundingBoxDefaultX = boundingBox.x;
         boundingBoxDefaultY = boundingBox.y;
 
+        RESCALED_PLAYER_HEIGTH = PLAYER_HEIGHT * gp.SCALE;
+        RESCALED_PLAYER_WIDTH = PLAYER_WIDTH * gp.SCALE;
+
         // Load player sprites
         setDefaultValues();
         getImages();
+        rescaleAllPlayerImages();
+
     }
 
     void setDefaultValues() {
@@ -65,6 +78,7 @@ public class Player extends Entity {
 
         speed = DEFAULT_PLAYER_SPEED;
         currentDirection = "down";
+
     }
 
     @Override
@@ -85,6 +99,38 @@ public class Player extends Entity {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void rescaleAllPlayerImages() {
+        for(int i = 0; i < MAX_SPRITES_PER_WALKING_DIRECTION; i++) {
+            if (upImages[i] != null) {
+                upImages[i] = utilities.rescaleImage(upImages[i], RESCALED_PLAYER_WIDTH, RESCALED_PLAYER_HEIGTH);
+            }
+            if(downImages[i] != null) {
+                downImages[i] = utilities.rescaleImage(downImages[i], RESCALED_PLAYER_WIDTH, RESCALED_PLAYER_HEIGTH);
+            }
+            if(leftImages[i] != null) {
+                leftImages[i] = utilities.rescaleImage(leftImages[i], RESCALED_PLAYER_WIDTH, RESCALED_PLAYER_HEIGTH);
+            }
+            if(rightImages[i] != null) {
+                rightImages[i] = utilities.rescaleImage(rightImages[i], RESCALED_PLAYER_WIDTH, RESCALED_PLAYER_HEIGTH);
+            }
+        }
+
+        for(int i = 0; i < MAX_SPRITES_PER_IDLING_DIRECTION; i++) {
+            if(idlingUpImages[i] != null) {
+                idlingUpImages[i] = utilities.rescaleImage(idlingUpImages[i], RESCALED_PLAYER_WIDTH, RESCALED_PLAYER_HEIGTH);
+            }
+            if(idlingDownImages[i] != null) {
+                idlingDownImages[i] = utilities.rescaleImage(idlingDownImages[i], RESCALED_PLAYER_WIDTH, RESCALED_PLAYER_HEIGTH);
+            }
+            if(idlingLeftImages[i] != null) {
+                idlingLeftImages[i] = utilities.rescaleImage(idlingLeftImages[i], RESCALED_PLAYER_WIDTH, RESCALED_PLAYER_HEIGTH);
+            }
+            if(idlingRightImages[i] != null) {
+                idlingRightImages[i] = utilities.rescaleImage(idlingRightImages[i], RESCALED_PLAYER_WIDTH, RESCALED_PLAYER_HEIGTH);
+            }
         }
     }
 
@@ -178,7 +224,7 @@ public class Player extends Entity {
 
             if (!isCollidingWithTile && !isCollidingWithObject) {
                 movePlayer();
-            } else if (isCollidingWithTile) {
+            } else if (isCollidingWithTile && !isCollidingWithObject) {
                 handleCollision(); // TODO: Fix this method. Diagonal movement is not working while colliding with Objects.
             } else { // isCollidingWithObject
                 // handleCollisionWithObject(objectIndex);
@@ -419,7 +465,7 @@ public class Player extends Entity {
         }
 
         if (image != null) {
-            g2d.drawImage(image, screenX, screenY, 11 * 4, 19 * 4, null);
+            g2d.drawImage(image, screenX, screenY, null);
 
             // Debug
             g2d.setColor(Color.RED);

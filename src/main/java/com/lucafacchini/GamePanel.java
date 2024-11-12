@@ -9,6 +9,9 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
+    // Game settings
+    public String gameStatus = "running";
+
     // Tile settings
     public final int ORIGINAL_TILE_SIZE = 16;
     public final int SCALE = 4;
@@ -30,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Objects
     Thread gameThread;
-    KeyHandler kh = new KeyHandler();
+    KeyHandler kh = new KeyHandler(this);
     public Player player = new Player(this, kh);
 
     // Debug
@@ -92,25 +95,37 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void updateComponents() {
-        player.update();
+        if(gameStatus.equals("running")) {
+            player.update();
+
+        }
     }
 
     @Override
     public void paintComponent(Graphics g)  {
-        super.paintComponent(g);
+        if(gameStatus.equals("running")) {
+            super.paintComponent(g);
 
-        Graphics2D g2d = (Graphics2D)g;
+            Graphics2D g2d = (Graphics2D)g;
 
-        drawAllComponents(g2d);
+            drawAllComponents(g2d);
 
-        g2d.dispose();
+            g2d.dispose();
+        } else {
+            ui.draw((Graphics2D)g);
+        }
+
     }
 
     // Draw the components of the panel.
     private void drawAllComponents(Graphics2D g2d) {
         // Debug
         // Initialize time to see how much time it takes to draw the components.
+
+        // debug print gameStatus
+        System.out.println("gameStatus: " + gameStatus);
         long startTime = System.nanoTime();
+
         firstLayerMap.draw(g2d);
 
         for(int i = 0; i < objectsArray.length; i++) {

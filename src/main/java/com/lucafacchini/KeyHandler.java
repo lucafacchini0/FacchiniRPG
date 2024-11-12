@@ -5,6 +5,12 @@ import java.awt.event.KeyEvent;
 
 public class KeyHandler implements KeyListener {
 
+    GamePanel gp;
+
+    public KeyHandler(GamePanel gp) {
+        this.gp = gp;
+    }
+
     public boolean isLeftPressed = false;
     public boolean isRightPressed = false;
     public boolean isUpPressed = false;
@@ -54,6 +60,15 @@ public class KeyHandler implements KeyListener {
 
         if(key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
             isDownPressed = false;
+        }
+
+        if(key == KeyEvent.VK_T) {
+            if(gp.gameStatus == "running") {
+                gp.gameStatus = "paused";
+
+            } else if(gp.gameStatus == "paused") {
+                gp.gameStatus = "running";
+            }
         }
     }
 }
