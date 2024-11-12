@@ -5,6 +5,8 @@ import com.lucafacchini.objects.Chest_Object;
 import com.lucafacchini.objects.Door_Object;
 import com.lucafacchini.objects.Key_Object;
 
+import com.lucafacchini.entity.NPC_OldMan;
+
 public class AssetSetter {
 
     GamePanel gp;
@@ -33,5 +35,9 @@ public class AssetSetter {
         gp.objectsArray[4] = new Chest_Object(gp, new Utilities());
         gp.objectsArray[4].worldX = 23 * gp.TILE_SIZE;
         gp.objectsArray[4].worldY = 36 * gp.TILE_SIZE;
+    }
+
+    public void placeNPC() {
+        gp.npcArray[0] = new NPC_OldMan(gp);
     }
 }

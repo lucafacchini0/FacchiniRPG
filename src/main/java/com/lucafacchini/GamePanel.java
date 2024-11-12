@@ -2,6 +2,7 @@ package com.lucafacchini;
 
 import com.lucafacchini.entity.Player;
 import com.lucafacchini.objects.SuperObject;
+import com.lucafacchini.entity.Entity;
 import com.lucafacchini.tiles.TileManager;
 
 import javax.swing.*;
@@ -28,8 +29,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int MAX_WORLD_COLUMNS = 50;
     public final int MAX_WORLD_ROWS = 50;
 
-    // Object settings
+    // Object & NPCs settings
     public final int MAX_OBJECTS_ARRAY = 15;
+    public final int MAX_NPC_ARRAY = 15;
 
     // Game objects and managers
     Thread gameThread;
@@ -37,7 +39,10 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, kh);
     public CollisionManager collisionManager = new CollisionManager(this);
     public AssetSetter assetSetter = new AssetSetter(this);
+
+    // Objects & NPCs
     public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // Array for objects in the game
+    public Entity[] npcArray = new Entity[MAX_NPC_ARRAY]; // Array for NPCs in the game
 
     // Tile layers for rendering different map layers
     public TileManager firstLayerMap = new TileManager(this, "background.csv");
@@ -49,7 +54,10 @@ public class GamePanel extends JPanel implements Runnable {
     private Sound sound = new Sound();
     public UI ui = new UI(this);
 
-    // Constructor
+
+
+    // ------------------- Constructor -------------------
+
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
@@ -62,8 +70,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
 
+    // ------------------- Game Initialization -------------------
+
     public void initializeGame() {
         assetSetter.placeObject();
+        assetSetter.placeNPC();
     }
 
     public void startGameThread() {
@@ -71,7 +82,10 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-    // Game loop
+
+
+    // ------------------- Game Loop -------------------
+
     @Override
     public void run() {
         double targetFrameTime = 1_000_000_000.0 / FPS; // The delay between frames in nanoseconds.
@@ -93,9 +107,14 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+
+
+    // ------------------- Update Components -------------------
+
     private void updateComponents() {
         if(gameStatus.equals("running")) {
             player.update();
+            npcArray[0].update();
         }
     }
 
@@ -112,10 +131,12 @@ public class GamePanel extends JPanel implements Runnable {
         } else {
             ui.draw((Graphics2D)g);
         }
-
     }
 
-    // Draw the components of the panel.
+
+
+    // ------------------- Drawing  -------------------
+
     private void drawAllComponents(Graphics2D g2d) {
         // Debug
         // Initialize time to see how much time it takes to draw the components.
@@ -136,7 +157,6 @@ public class GamePanel extends JPanel implements Runnable {
 
        secondLayerMap.draw(g2d);
 
-
         ui.draw(g2d);
 
         // Debug
@@ -148,6 +168,10 @@ public class GamePanel extends JPanel implements Runnable {
         System.out.println("Time to draw components: " + elapsedTime);
 
     }
+
+
+
+    // ------------------- Music and Sound -------------------
 
     public void playMusic(int index) {
         music.setFile(index);

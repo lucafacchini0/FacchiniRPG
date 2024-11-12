@@ -9,7 +9,6 @@ public class KeyHandler implements KeyListener {
     public boolean isRightPressed = false;
     public boolean isUpPressed = false;
     public boolean isDownPressed = false;
-
     GamePanel gp;
 
     public KeyHandler(GamePanel gp) {
