@@ -5,16 +5,16 @@ import java.awt.event.KeyEvent;
 
 public class KeyHandler implements KeyListener {
 
+    public boolean isLeftPressed = false;
+    public boolean isRightPressed = false;
+    public boolean isUpPressed = false;
+    public boolean isDownPressed = false;
+
     GamePanel gp;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
     }
-
-    public boolean isLeftPressed = false;
-    public boolean isRightPressed = false;
-    public boolean isUpPressed = false;
-    public boolean isDownPressed = false;
 
     @Override
     public void keyTyped(KeyEvent e) {

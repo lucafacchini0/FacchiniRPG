@@ -34,87 +34,8 @@ public class UI {
     }
 
     public void showMessage(String text) {
-        message = text;
-        messageOn = true;
     }
 
     public void draw(Graphics2D g2d) {
-        if(gp.gameStatus.equals("paused")) {
-            g2d.setColor(Color.BLACK);
-            g2d.fillRect(0, 0, gp.SCREEN_WIDTH, gp.SCREEN_HEIGHT);
-            g2d.setColor(Color.WHITE);
-            g2d.setFont(arial_50);
-            g2d.drawString("Paused", 100, 500);
-            g2d.drawString("Better menu will be implemented soon.", 100, 600);
-            g2d.drawString("Press 'P' to resume.", 100, 700);
-        } else if(gp.gameStatus.equals("running")) {
-            if(gameFinished) {
-                g2d.setColor(Color.BLACK);
-                g2d.fillRect(0, 0, gp.SCREEN_WIDTH, gp.SCREEN_HEIGHT);
-
-                g2d.setFont(arial_50);
-                g2d.setColor(Color.WHITE);
-
-                String text;
-                int textLength;
-                int x;
-                int y;
-
-                text = "Congrats!!";
-                textLength = (int) g2d.getFontMetrics().getStringBounds(text, g2d).getWidth();
-
-                x = gp.SCREEN_WIDTH / 2 - textLength / 2;
-                y = gp.SCREEN_HEIGHT / 2 - 50;
-                g2d.drawString(text, x, y);
-
-                g2d.setFont(arial_30);
-                g2d.setColor(Color.YELLOW);
-                text = "You have completed the game!";
-                textLength = (int) g2d.getFontMetrics().getStringBounds(text, g2d).getWidth();
-                x = gp.SCREEN_WIDTH / 2 - textLength / 2;
-                y = gp.SCREEN_HEIGHT / 2 - 150;
-
-                g2d.drawString(text, x, y);
-
-                g2d.setColor(Color.WHITE);
-                text = df.format(playTime) + " seconds";
-
-                textLength = (int) g2d.getFontMetrics().getStringBounds(text, g2d).getWidth();
-
-                g2d.drawString(text, gp.SCREEN_WIDTH / 2 - textLength / 2, gp.SCREEN_HEIGHT / 2 + 50);
-
-                gp.gameThread = null;
-
-            } else {
-                playTime += 1.0 / gp.FPS;
-
-                g2d.setFont(arial_30);
-                g2d.setColor(Color.WHITE);
-                g2d.drawImage(keyImage, 10, 10, gp.TILE_SIZE, gp.TILE_SIZE, null);
-                g2d.drawString("x " + gp.player.hasKey, 80, 60);
-                g2d.setColor(Color.RED);
-                g2d.drawString("FPS: " + gp.FPS, 10, 150);
-
-                g2d.setColor(Color.WHITE);
-                g2d.drawString("Time: " + df.format(playTime), 10, 200);
-
-                if(messageOn) {
-                    messageCounter++;
-                    g2d.setColor(Color.WHITE);
-                    g2d.drawString(message, 10, 100);
-
-                    if(messageCounter > 120) {
-                        messageOn = false;
-                        messageCounter = 0;
-                    }
-                }
-
-                // draw player coordinates+
-                g2d.setColor(Color.BLUE);
-                g2d.drawString("X: " + gp.player.worldX / 64+ " Y: " + gp.player.worldY / 64, 10, 250);
-
-            }
-        }
-
     }
 }

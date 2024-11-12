@@ -1,39 +1,313 @@
 package com.lucafacchini.entity;
 
+import com.lucafacchini.GamePanel;
+import com.lucafacchini.KeyHandler;
+import com.lucafacchini.Utilities;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class Entity {
-    public final int MAX_SPRITES_PER_WALKING_DIRECTION = 6;
-    public final int MAX_SPRITES_PER_IDLING_DIRECTION = 4;
 
+    // ------------------- Fields -------------------
+
+    // Direction and position
+    public String currentDirection;
+    public String lastPosition = "down";
     public int worldX, worldY;
     public int speed;
 
-    public BufferedImage[] upImages = new BufferedImage[MAX_SPRITES_PER_WALKING_DIRECTION];
-    public BufferedImage[] downImages = new BufferedImage[MAX_SPRITES_PER_WALKING_DIRECTION];
-    public BufferedImage[] leftImages = new BufferedImage[MAX_SPRITES_PER_WALKING_DIRECTION];
-    public BufferedImage[] rightImages = new BufferedImage[MAX_SPRITES_PER_WALKING_DIRECTION];
+    // Sprite and animation settings
+    public int spriteCounterMultiplier = 1; // Speed of the sprite animation.
+    public int spriteFramesCounter = 0;     // Frames passed since last sprite change.
+    public int spriteImageNum = 1;          // Current sprite image number.
+    public HashMap<String, BufferedImage[]> images = new HashMap<>();
 
-    public BufferedImage[] idlingDownImages = new BufferedImage[MAX_SPRITES_PER_IDLING_DIRECTION];
-    public BufferedImage[] idlingUpImages = new BufferedImage[MAX_SPRITES_PER_IDLING_DIRECTION];
-    public BufferedImage[] idlingLeftImages = new BufferedImage[MAX_SPRITES_PER_IDLING_DIRECTION];
-    public BufferedImage[] idlingRightImages = new BufferedImage[MAX_SPRITES_PER_IDLING_DIRECTION];
-
-    public String currentDirection;
-
-    // The bounding box of the entity and whether it is colliding with another entity.
+    // Collision properties
     public Rectangle boundingBox;
     public int boundingBoxDefaultX, boundingBoxDefaultY;
     public boolean isCollidingWithTile = false;
     public boolean isCollidingWithObject = false;
 
+    // Game Panel reference
+    GamePanel gp;
+
+
+
+    // ------------------- Constructor -------------------
+
+    public Entity(GamePanel gp) {
+        boundingBox = new Rectangle(0, 0, gp.TILE_SIZE, gp.TILE_SIZE);
+        this.gp = gp;
+    }
+
+
+
+    // ------------------- Initialization -------------------
+
+    public void setDefaultValues() {}
+
+
+
+    // ------------------- Update Methods -------------------
+
     public void update() {}
-    public void draw(Graphics2D g2d) {}
-    public void getImages() {}
 
-    public int spriteFramesCounter = 0; // Frames that has passed since the last sprite change.
-    public int spriteImageNum = 1; // The current sprite image number.
+    // Update direction
+    public void updateDirection(KeyHandler kh, boolean isPlayer) {
+        if(isPlayer) { // Handle player movement with the keyboard
+            boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
+            boolean isIdle = !isMoving;
+
+            if (isIdle || (kh.isUpPressed && kh.isDownPressed) || (kh.isLeftPressed && kh.isRightPressed)) {
+                currentDirection = "idling-" + lastPosition;
+            } else {
+                if (kh.isUpPressed && kh.isLeftPressed) {
+                    currentDirection = "up-left";
+                    lastPosition = currentDirection;
+                }
+                else if (kh.isUpPressed && kh.isRightPressed) {
+                    currentDirection = "up-right";
+                    lastPosition = currentDirection;
+                }
+                else if (kh.isDownPressed && kh.isLeftPressed) {
+                    currentDirection = "down-left";
+                    lastPosition = currentDirection;
+                }
+                else if (kh.isDownPressed && kh.isRightPressed) {
+                    currentDirection = "down-right";
+                    lastPosition = currentDirection;
+                }
+                else if (kh.isUpPressed) {
+                    currentDirection = "up";
+                    lastPosition = currentDirection;
+                }
+                else if (kh.isDownPressed) {
+                    currentDirection = "down";
+                    lastPosition = currentDirection;
+                }
+                else if (kh.isLeftPressed) {
+                    currentDirection = "left";
+                    lastPosition = currentDirection;
+                }
+                else {
+                    currentDirection = "right";
+                    lastPosition = currentDirection;
+                }
+            }
+        }
+    }
+
+    public void updateSprite(int UPDATE_TIME_FOR_SPRITE, int IDLING_EYES_OPEN_MULTIPLIER,
+                             int IDLING_EYES_CLOSED_MULTIPLIER, int IDLING_DEFAULT_MULTIPLIER, int MOVING_MULTIPLIER,
+                             int MAX_SPRITES_WALKING) {
+        spriteFramesCounter++; // Increase the counter FPS times per second
+
+        // This method has the only purpose of setting some "delays" in the sprite animation
+        // depending on the current direction of the player. It does not follow any
+        // logical pattern, it's just a way to make the sprite animation look better.
+        setMultiplier(currentDirection, spriteImageNum, IDLING_EYES_OPEN_MULTIPLIER,
+                IDLING_EYES_CLOSED_MULTIPLIER, IDLING_DEFAULT_MULTIPLIER, MOVING_MULTIPLIER);
+
+        // Reset the sprite image number if the player is idling
+        if(currentDirection.contains("idling")) {
+            if(spriteImageNum > 4) { // 4 is the last sprite of the idling animation. Walk have 6.
+                spriteImageNum = 1;
+            }
+        }
+
+        // Update the sprite image number, depending on the spriteCounterMultiplier
+        // That variable depends on the current direction of the player. It's
+        // assigned in the setMultiplier method.
+        if (spriteFramesCounter >= UPDATE_TIME_FOR_SPRITE * spriteCounterMultiplier) {
+            spriteFramesCounter = 0;
+            spriteImageNum++;
+            if (spriteImageNum > MAX_SPRITES_WALKING) {
+                spriteImageNum = 1;
+            }
+        }
+    }
+
+    private void setMultiplier(String direction, int spriteImageNum,
+                               int IDLING_EYES_OPEN_MULTIPLIER, int IDLING_EYES_CLOSED_MULTIPLIER,
+                               int IDLING_DEFAULT_MULTIPLIER, int MOVING_MULTIPLIER) {
+
+        if(direction.equals("idling-down") || direction.equals("idling-left") || direction.equals("idling-right")) {
+            if(spriteImageNum == 1) {
+                spriteCounterMultiplier = IDLING_EYES_OPEN_MULTIPLIER;
+            } else {
+                spriteCounterMultiplier = IDLING_EYES_CLOSED_MULTIPLIER;
+            }
+        } else if(direction.contains("idling")) {
+            spriteCounterMultiplier = IDLING_DEFAULT_MULTIPLIER;
+        } else {
+            spriteCounterMultiplier = MOVING_MULTIPLIER;
+        }
+    }
 
 
+
+    // ------------------- Movement Methods -------------------
+
+    public void move(KeyHandler kh, boolean isPlayer) {
+        if(isPlayer) {
+            if (kh.isUpPressed && kh.isLeftPressed) {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            } else if (kh.isUpPressed && kh.isRightPressed) {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            } else if (kh.isDownPressed && kh.isLeftPressed) {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            } else if (kh.isDownPressed && kh.isRightPressed) {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            } else if (kh.isUpPressed) {
+                worldY -= speed;
+            } else if (kh.isDownPressed) {
+                worldY += speed;
+            } else if (kh.isLeftPressed) {
+                worldX -= speed;
+            } else if (kh.isRightPressed) {
+                worldX += speed;
+            }
+        }
+    }
+
+    // TODO: Fix this method. Diagonal movement is not working while colliding with Objects.
+    public void handleCollision(KeyHandler kh) {
+        if (kh.isUpPressed && kh.isLeftPressed) {
+            if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromTop(this)) {
+            } else if (gp.collisionManager.isCollidingFromLeft(this)) {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+            } else if (gp.collisionManager.isCollidingFromTop(this)) {
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            } else {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            }
+        } else if (kh.isUpPressed && kh.isRightPressed) {
+            if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromTop(this)) {
+            } else if (gp.collisionManager.isCollidingFromRight(this)) {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+            } else if (gp.collisionManager.isCollidingFromTop(this)) {
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            } else {
+                worldY -= (int) (speed * Math.sqrt(2) / 2);
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            }
+        } else if (kh.isDownPressed && kh.isLeftPressed) {
+            if (gp.collisionManager.isCollidingFromLeft(this) && gp.collisionManager.isCollidingFromBottom(this)) {
+            } else if (gp.collisionManager.isCollidingFromLeft(this)) {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+            } else if (gp.collisionManager.isCollidingFromBottom(this)) {
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            } else {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+                worldX -= (int) (speed * Math.sqrt(2) / 2);
+            }
+        } else if (kh.isDownPressed && kh.isRightPressed) {
+            if (gp.collisionManager.isCollidingFromRight(this) && gp.collisionManager.isCollidingFromBottom(this)) {
+            } else if (gp.collisionManager.isCollidingFromRight(this)) {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+            } else if (gp.collisionManager.isCollidingFromBottom(this)) {
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            } else {
+                worldY += (int) (speed * Math.sqrt(2) / 2);
+                worldX += (int) (speed * Math.sqrt(2) / 2);
+            }
+        }
+    }
+
+
+
+    // ------------------- Image Handling -------------------
+
+    public void getImages(String folderName, int MAX_WALKING_SPRITES, int MAX_IDLING_SPRITES) {
+        loadDirectionalImages("up", "/" + folderName + "/walk_up_", MAX_WALKING_SPRITES);
+        loadDirectionalImages("down", "/" + folderName + "/walk_down_", MAX_WALKING_SPRITES);
+        loadDirectionalImages("left", "/" + folderName + "/walk_left_", MAX_WALKING_SPRITES);
+        loadDirectionalImages("right", "/" + folderName + "/walk_right_", MAX_WALKING_SPRITES);
+
+        loadDirectionalImages("idlingUp", "/" + folderName + "/idling/idling_up_", MAX_IDLING_SPRITES);
+        loadDirectionalImages("idlingDown", "/" + folderName + "/idling/idling_down_", MAX_IDLING_SPRITES);
+        loadDirectionalImages("idlingLeft", "/" + folderName + "/idling/idling_left_", MAX_IDLING_SPRITES);
+        loadDirectionalImages("idlingRight", "/" + folderName + "/idling/idling_right_", MAX_IDLING_SPRITES);
+    }
+
+    private void loadDirectionalImages(String key, String pathPrefix, int maxSprites) {
+        try {
+            BufferedImage[] directionImages = images.computeIfAbsent(key, _ -> new BufferedImage[maxSprites]);
+            for (int i = 0; i < maxSprites; i++) {
+                String imagePath = pathPrefix + (i + 1) + ".png";
+                directionImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
+            }
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void rescaleImages(final int RESCALED_WIDTH, final int RESCALED_HEIGHT, final int WALKING_SPRITES, final int IDLING_SPRITES, final Utilities utilities) {
+        for (String direction : new String[]{"up", "down", "left", "right"}) {
+            BufferedImage[] directionImages = images.get(direction);
+            if (directionImages != null) {
+                for (int i = 0; i < WALKING_SPRITES; i++) {
+                    if (directionImages[i] != null) {
+                        directionImages[i] = utilities.rescaleImage(directionImages[i], RESCALED_WIDTH, RESCALED_HEIGHT);
+                    }
+                }
+            }
+        }
+
+        for (String direction : new String[]{"idlingUp", "idlingDown", "idlingLeft", "idlingRight"}) {
+            BufferedImage[] directionImages = images.get(direction);
+            if (directionImages != null) {
+                for (int i = 0; i < IDLING_SPRITES; i++) {
+                    if (directionImages[i] != null) {
+                        directionImages[i] = utilities.rescaleImage(directionImages[i], RESCALED_WIDTH, RESCALED_HEIGHT);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    // ------------------- Drawing -------------------
+
+    public void drawEntity(Graphics2D g2d, int screenX, int screenY) {
+        BufferedImage image;
+
+        switch (currentDirection) {
+            case "up", "up-left", "up-right" -> image = getImageForDirection("up", spriteImageNum);
+            case "down", "down-left", "down-right" -> image = getImageForDirection("down", spriteImageNum);
+            case "left", "left-up", "left-down" -> image = getImageForDirection("left", spriteImageNum);
+            case "right", "right-up", "right-down" -> image = getImageForDirection("right", spriteImageNum);
+            // Add more cases as needed
+            default -> image = getImageForDirection("idlingDown", spriteImageNum); // default direction
+        }
+
+        if (image != null) {
+            g2d.drawImage(image, screenX, screenY, null);
+
+            // Debug
+            g2d.setColor(Color.RED);
+            g2d.drawRect(screenX + boundingBox.x, screenY + boundingBox.y, boundingBox.width, boundingBox.height);
+        }
+    }
+
+    private BufferedImage getImageForDirection(String direction, int spriteImageNum) {
+        BufferedImage[] directionImages = images.get(direction);
+        if (directionImages == null || directionImages.length == 0) {
+            throw new IllegalArgumentException("No images found for direction: " + direction);
+        }
+        // Clamp spriteImageNum within the valid range
+        int index = Math.max(0, Math.min(spriteImageNum - 1, directionImages.length - 1));
+        return directionImages[index];
+    }
 }

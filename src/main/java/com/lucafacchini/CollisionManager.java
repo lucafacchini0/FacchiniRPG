@@ -1,31 +1,55 @@
 package com.lucafacchini;
 
 import com.lucafacchini.entity.Entity;
+import com.lucafacchini.objects.SuperObject;
+import com.lucafacchini.tiles.TileManager;
+
+import java.util.HashMap;
 
 public class CollisionManager {
 
     GamePanel gp;
 
+
+
+    // ------------------- Constructor -------------------
+
     public CollisionManager(GamePanel gp) {
         this.gp = gp;
     }
 
+
+
+    // ------------------- Utility methods -------------------
+
     private boolean isTileColliding(int... tileNums) {
         for (int tileNum : tileNums) {
             if (tileNum >= 0) {
-                if (gp.firstLayerMap.tileMap.get(tileNum) != null && gp.firstLayerMap.tileMap.get(tileNum).isSolid) {
-                    return true;
-                }
-                if (gp.secondLayerMap.tileMap.get(tileNum) != null && gp.secondLayerMap.tileMap.get(tileNum).isSolid) {
-                    return true;
-                }
-                if (gp.thirdLayerMap.tileMap.get(tileNum) != null && gp.thirdLayerMap.tileMap.get(tileNum).isSolid) {
-                    return true;
-                }
+                if(isTileSolid(tileNum, gp.firstLayerMap)) { return true; }
+                if(isTileSolid(tileNum, gp.secondLayerMap)) { return true; }
+                if(isTileSolid(tileNum, gp.thirdLayerMap)) { return true; }
             }
         }
         return false;
     }
+
+    private boolean isTileSolid(int tileNum, TileManager layer) {
+        return layer != null && layer.tileMap.get(tileNum) != null && layer.tileMap.get(tileNum).isSolid;
+    }
+
+    private void resetEntityBoundingBox(Entity entity) {
+        entity.boundingBox.x = entity.boundingBoxDefaultX;
+        entity.boundingBox.y = entity.boundingBoxDefaultY;
+    }
+
+    private void resetObjectBoundingBox(SuperObject object) {
+        object.boundingBox.x = object.boundingBoxDefaultX;
+        object.boundingBox.y = object.boundingBoxDefaultY;
+    }
+
+
+
+    // ------------------- Collision methods -------------------
 
     private void checkTileCollision(Entity entity, int entityLeftColumn, int entityRightColumn, int entityTopRow, int entityBottomRow) {
         int[] topTiles = {
@@ -50,6 +74,10 @@ public class CollisionManager {
             entity.isCollidingWithTile = true;
         }
     }
+
+
+
+    // ------------------- Directional collision methods -------------------
 
     public void checkTile(Entity entity) {
         int entityLeftWorldX = entity.worldX + entity.boundingBox.x;
@@ -101,6 +129,10 @@ public class CollisionManager {
         }
         checkTileCollision(entity, entityLeftColumn, entityRightColumn, entityTopRow, entityBottomRow);
     }
+
+
+
+    // ------------------- Side collision methods -------------------
 
     public boolean isCollidingFromLeft(Entity entity) {
         int entityLeftWorldX = entity.worldX + entity.boundingBox.x;
@@ -161,6 +193,10 @@ public class CollisionManager {
                 gp.thirdLayerMap.GAME_MAP[leftTile][topTile], gp.thirdLayerMap.GAME_MAP[rightTile][topTile]
         );
     }
+
+
+
+    // ------------------- Object collision methods -------------------
 
     // TODO: Fix this method. Integrate with handleCollisionWithObject method in Player class.
     public int checkObject(Entity entity, boolean isPlayer) {

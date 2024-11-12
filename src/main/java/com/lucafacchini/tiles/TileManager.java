@@ -14,18 +14,24 @@ import java.util.logging.Logger;
 
 public class TileManager {
 
+    // ------------------- Fields -------------------
+
     // Coordinates
     public static int worldX, worldY;
     public static int screenX, screenY;
 
-    // Constants
+    // Map management
     public static final String MAPS_PATH = "/maps/";
+    public HashMap<Integer, Tile> tileMap; // Store all the tiles
     public final int[][] GAME_MAP; // Store the actual map
 
     // Objects
     GamePanel gp;
-    public HashMap<Integer, Tile> tileMap; // Store all the tiles
     private final Utilities utilities = new Utilities();
+
+
+
+    // ------------------- Constructor -------------------
 
     public TileManager(GamePanel gp, String path) {
         this.gp = gp;
@@ -36,17 +42,14 @@ public class TileManager {
 
        rescaleAllTileImages();
 
-        // Debug
         // TODO: Implement a way to set the solid tiles
+        // [ DEBUG ]
         setSolid(38193);
     }
 
-    public void setSolid(int id) {
-        Tile tile = tileMap.get(id);
-        if (tile != null) {
-            tile.isSolid = true;
-        }
-    }
+
+
+    // ------------------- Tile Loading -------------------
 
     public void loadMap(String filePath) {
         try {
@@ -115,6 +118,10 @@ public class TileManager {
         }
     }
 
+
+
+    // ------------------- Tile Rescaling -------------------
+
     private void rescaleAllTileImages() {
         for (Tile tile : tileMap.values()) {
             if (tile.image != null) {
@@ -122,6 +129,21 @@ public class TileManager {
             }
         }
     }
+
+
+
+    // ------------------- Tile Setting -------------------
+
+    public void setSolid(int id) {
+        Tile tile = tileMap.get(id);
+        if (tile != null) {
+            tile.isSolid = true;
+        }
+    }
+
+
+
+    // ------------------- Drawing -------------------
 
     public void draw(Graphics2D g2d) {
         int currentWorldColumn = 0;
@@ -164,10 +186,10 @@ public class TileManager {
                 currentWorldColumn = 0;
             }
 
-            // Debug
-            // WARNING - takes long time to draw (around 0.8 ms)
-            g2d.setColor(Color.pink);
-            g2d.drawRect(screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE);
+            // [ DEBUG ]
+            // [ WARNING ] - takes long time to draw (around 0.8 ms)
+            // g2d.setColor(Color.pink);
+            // g2d.drawRect(screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE);
         }
     }
 }

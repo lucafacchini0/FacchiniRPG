@@ -9,46 +9,44 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    // Game settings
+    // Game settings and status
     public String gameStatus = "running";
+    public final int FPS = 60;
 
     // Tile settings
     public final int ORIGINAL_TILE_SIZE = 16;
     public final int SCALE = 4;
     public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
 
-    // Object settings
-    public final int MAX_OBJECTS_ARRAY = 15;
-
     // Screen settings
     public final int MAX_SCREEN_ROWS = 12;
     public final int MAX_SCREEN_COLUMNS = 16;
     public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLUMNS;
     public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
-    public final int FPS = 60;
 
     // World settings
     public final int MAX_WORLD_COLUMNS = 50;
     public final int MAX_WORLD_ROWS = 50;
 
-    // Objects
+    // Object settings
+    public final int MAX_OBJECTS_ARRAY = 15;
+
+    // Game objects and managers
     Thread gameThread;
     KeyHandler kh = new KeyHandler(this);
     public Player player = new Player(this, kh);
+    public CollisionManager collisionManager = new CollisionManager(this);
+    public AssetSetter assetSetter = new AssetSetter(this);
+    public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // Array for objects in the game
 
-    // Debug
+    // Tile layers for rendering different map layers
     public TileManager firstLayerMap = new TileManager(this, "background.csv");
     public TileManager secondLayerMap = new TileManager(this, "groundDecoration.csv");
     public TileManager thirdLayerMap = new TileManager(this, "background.csv");
 
-    public CollisionManager collisionManager = new CollisionManager(this);
-
-    public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // Max number of objects in the game.
-    public AssetSetter assetSetter = new AssetSetter(this); // This class will place objects in the game.
-
+    // Sound and UI components
     private Sound music = new Sound();
     private Sound sound = new Sound();
-
     public UI ui = new UI(this);
 
     // Constructor
@@ -62,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         playMusic(0);
     }
+
 
     public void initializeGame() {
         assetSetter.placeObject();
@@ -97,7 +96,6 @@ public class GamePanel extends JPanel implements Runnable {
     private void updateComponents() {
         if(gameStatus.equals("running")) {
             player.update();
-
         }
     }
 
