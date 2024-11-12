@@ -37,6 +37,5 @@ public class SuperObject {
         //Debug ##IMPORTANT
         g2d.setColor(Color.BLACK);
         g2d.drawRect(screenX + boundingBox.x, screenY + boundingBox.y, boundingBox.width, boundingBox.height);
-
     }
 }

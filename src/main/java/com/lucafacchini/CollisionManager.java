@@ -66,27 +66,34 @@ public class CollisionManager {
             case "up":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
                 break;
+
             case "down":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
                 break;
+
             case "left":
                 entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
                 break;
+
             case "right":
                 entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
                 break;
+
             case "up-left":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
                 entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
                 break;
+
             case "up-right":
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.TILE_SIZE;
                 entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
                 break;
+
             case "down-left":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
                 entityLeftColumn = (entityLeftWorldX - entity.speed) / gp.TILE_SIZE;
                 break;
+
             case "down-right":
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.TILE_SIZE;
                 entityRightColumn = (entityRightWorldX + entity.speed) / gp.TILE_SIZE;
@@ -155,7 +162,7 @@ public class CollisionManager {
         );
     }
 
-    // Objects
+    // TODO: Fix this method. Integrate with handleCollisionWithObject method in Player class.
     public int checkObject(Entity entity, boolean isPlayer) {
         int index = -1;
 
@@ -180,6 +187,7 @@ public class CollisionManager {
                             }
                         }
                         break;
+
                     case "up-right":
                         entity.boundingBox.x += entity.speed;
                         entity.boundingBox.y -= entity.speed;
@@ -192,6 +200,7 @@ public class CollisionManager {
                             }
                         }
                         break;
+
                     case "down-left":
                         entity.boundingBox.x -= entity.speed;
                         entity.boundingBox.y += entity.speed;
@@ -204,6 +213,7 @@ public class CollisionManager {
                             }
                         }
                         break;
+
                     case "down-right":
                         entity.boundingBox.x += entity.speed;
                         entity.boundingBox.y += entity.speed;
@@ -216,6 +226,7 @@ public class CollisionManager {
                             }
                         }
                         break;
+
                     case "up":
                         entity.boundingBox.y -= entity.speed;
                         if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
@@ -227,6 +238,7 @@ public class CollisionManager {
                             }
                         }
                         break;
+
                     case "down":
                         entity.boundingBox.y += entity.speed;
                         if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
@@ -238,6 +250,7 @@ public class CollisionManager {
                             }
                         }
                         break;
+
                     case "left":
                         entity.boundingBox.x -= entity.speed;
                         if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
@@ -249,6 +262,7 @@ public class CollisionManager {
                             }
                         }
                         break;
+
                     case "right":
                         entity.boundingBox.x += entity.speed;
                         if (entity.boundingBox.intersects(gp.objectsArray[i].boundingBox)) {
@@ -261,7 +275,6 @@ public class CollisionManager {
                         }
                         break;
                 }
-
                 entity.boundingBox.x = entity.boundingBoxDefaultX;
                 entity.boundingBox.y = entity.boundingBoxDefaultY;
                 gp.objectsArray[i].boundingBox.x = gp.objectsArray[i].boundingBoxDefaultX;

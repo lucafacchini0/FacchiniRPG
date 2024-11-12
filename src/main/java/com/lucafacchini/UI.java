@@ -39,7 +39,6 @@ public class UI {
     }
 
     public void draw(Graphics2D g2d) {
-
         if(gameFinished) {
             g2d.setColor(Color.BLACK);
             g2d.fillRect(0, 0, gp.SCREEN_WIDTH, gp.SCREEN_HEIGHT);

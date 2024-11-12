@@ -7,7 +7,7 @@ public class Entity {
     public final int MAX_SPRITES_PER_WALKING_DIRECTION = 6;
     public final int MAX_SPRITES_PER_IDLING_DIRECTION = 4;
 
-    public int worldX, worldY; // The position of the entity in the game world. Not just the visible screen.
+    public int worldX, worldY;
     public int speed;
 
     public BufferedImage[] upImages = new BufferedImage[MAX_SPRITES_PER_WALKING_DIRECTION];

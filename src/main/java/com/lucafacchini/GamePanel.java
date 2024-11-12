@@ -43,8 +43,8 @@ public class GamePanel extends JPanel implements Runnable {
     public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // Max number of objects in the game.
     public AssetSetter assetSetter = new AssetSetter(this); // This class will place objects in the game.
 
-    Sound music = new Sound();
-    Sound sound = new Sound();
+    private Sound music = new Sound();
+    private Sound sound = new Sound();
 
     public UI ui = new UI(this);
 
@@ -130,11 +130,8 @@ public class GamePanel extends JPanel implements Runnable {
         // Calculate the time it took to draw the components.
         long endTime = System.nanoTime();
         long elapsedTime = endTime - startTime;
-        // draw the time
         g2d.setColor(Color.GREEN);
-        // print with dots
         g2d.drawString("Time to draw components: " + elapsedTime , 10, 500);
-        // println
         System.out.println("Time to draw components: " + elapsedTime);
 
     }

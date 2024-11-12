@@ -33,6 +33,5 @@ public class AssetSetter {
         gp.objectsArray[4] = new Chest_Object();
         gp.objectsArray[4].worldX = 23 * gp.TILE_SIZE;
         gp.objectsArray[4].worldY = 36 * gp.TILE_SIZE;
-
     }
 }

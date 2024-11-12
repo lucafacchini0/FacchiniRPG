@@ -22,8 +22,6 @@ public class TileManager {
     public static final String MAPS_PATH = "/maps/";
     public final int[][] GAME_MAP; // Store the actual map
 
-    public
-
     // Objects
     GamePanel gp;
     public HashMap<Integer, Tile> tileMap; // Store all the tiles
@@ -37,6 +35,7 @@ public class TileManager {
         loadMap(MAPS_PATH + path);
 
         // Debug
+        // TODO: Implement a way to set the solid tiles
         setSolid(38193);
     }
 
@@ -74,7 +73,6 @@ public class TileManager {
         } catch (Exception e) {
             Logger.getLogger(TileManager.class.getName()).log(Level.SEVERE, null, e);
         }
-
         loadAllTileImages();
     }
 
@@ -89,7 +87,6 @@ public class TileManager {
             }
         }
     }
-
 
     // Load images with the specified ID, if not already loaded
     private void loadTileImage(int id) {
@@ -162,6 +159,4 @@ public class TileManager {
             g2d.drawRect(screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE);
         }
     }
-
-
 }
