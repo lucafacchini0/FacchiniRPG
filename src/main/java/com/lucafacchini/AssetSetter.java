@@ -39,5 +39,7 @@ public class AssetSetter {
 
     public void placeNPC() {
         gp.npcArray[0] = new NPC_OldMan(gp);
+        gp.npcArray[0].worldX = 22 * gp.TILE_SIZE;
+        gp.npcArray[0].worldY = 22 * gp.TILE_SIZE;
     }
 }

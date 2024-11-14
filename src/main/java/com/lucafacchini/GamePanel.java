@@ -151,8 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         for(int i = 0; i < npcArray.length; i++) {
             if(npcArray[i] != null) {
-                System.out.println("Drawing NPC: " + npcArray[i].na);
-                npcArray[i].drawEntity(g2d, npcArray[i].worldX, npcArray[i].worldY);
+
             }
         }
 

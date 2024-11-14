@@ -298,7 +298,7 @@ public class Entity {
 
     // ------------------- Drawing -------------------
 
-    public void drawEntity(Graphics2D g2d, int screenX, int screenY) {
+    public void drawPlayer(Graphics2D g2d, int screenX, int screenY) {
         BufferedImage image;
 
         switch (currentDirection) {

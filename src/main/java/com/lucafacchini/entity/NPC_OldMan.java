@@ -2,6 +2,8 @@ package com.lucafacchini.entity;
 
 import com.lucafacchini.GamePanel;
 
+import java.awt.*;
+
 public class NPC_OldMan extends Entity {
 
     // ---------- NPC Properties ----------
@@ -46,18 +48,16 @@ public class NPC_OldMan extends Entity {
         worldY = 22 * gp.TILE_SIZE;
 
         // also pas class name
-        getImages("npc/old_man", 4, 4);
+        getImages("npc/old_man", 2, 2);
 
         RESCALED_NPC_HEIGHT = gp.TILE_SIZE * NPC_HEIGTH;
         RESCALED_NPC_WIDTH = gp.TILE_SIZE * NPC_WIDTH;
     }
 
     public void update() {
-        updateDirection(null, false);
         updateSprite(UPDATE_TIME_FOR_SPRITE,  IDLING_NPC_SPRITE_MULTIPLIER_EYES_OPEN,
                 IDLING_NPC_SPRITE_MULTIPLIER_EYES_CLOSED, MOVING_NPC_SPRITE_MULTIPLIER,
                 NPC_MAX_SPRITES_PER_WALKING_DIRECTION, NPC_MAX_SPRITES_PER_IDLING_DIRECTION);
-        updatePosition();
     }
 
     private void updatePosition() {
@@ -77,6 +77,5 @@ public class NPC_OldMan extends Entity {
         }
 
     }
-
 
 }

@@ -189,6 +189,6 @@ public class Player extends Entity {
     // ------------------- Drawing -------------------
 
     public void draw(Graphics2D g2d) {
-        drawEntity(g2d, screenX, screenY);
+        drawPlayer(g2d, screenX, screenY);
     }
 }
