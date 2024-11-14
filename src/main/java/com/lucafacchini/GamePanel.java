@@ -1,8 +1,8 @@
 package com.lucafacchini;
 
+import com.lucafacchini.entity.Entity;
 import com.lucafacchini.entity.Player;
 import com.lucafacchini.objects.SuperObject;
-import com.lucafacchini.entity.Entity;
 import com.lucafacchini.tiles.TileManager;
 
 import javax.swing.*;
@@ -10,54 +10,51 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    // Game settings and status
+    // Game settings
     public String gameStatus = "running";
-    public final int FPS = 60;
 
     // Tile settings
     public final int ORIGINAL_TILE_SIZE = 16;
     public final int SCALE = 4;
     public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
 
+    // Object settings
+    public final int MAX_OBJECTS_ARRAY = 15;
+
     // Screen settings
     public final int MAX_SCREEN_ROWS = 12;
     public final int MAX_SCREEN_COLUMNS = 16;
     public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLUMNS;
     public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
+    public final int FPS = 60;
 
     // World settings
     public final int MAX_WORLD_COLUMNS = 50;
     public final int MAX_WORLD_ROWS = 50;
 
-    // Object & NPCs settings
-    public final int MAX_OBJECTS_ARRAY = 15;
-    public final int MAX_NPC_ARRAY = 15;
-
-    // Game objects and managers
+    // Objects
     Thread gameThread;
     KeyHandler kh = new KeyHandler(this);
     public Player player = new Player(this, kh);
-    public CollisionManager collisionManager = new CollisionManager(this);
-    public AssetSetter assetSetter = new AssetSetter(this);
 
-    // Objects & NPCs
-    public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // Array for objects in the game
-    public Entity[] npcArray = new Entity[MAX_NPC_ARRAY]; // Array for NPCs in the game
-
-    // Tile layers for rendering different map layers
+    // Debug
     public TileManager firstLayerMap = new TileManager(this, "background.csv");
     public TileManager secondLayerMap = new TileManager(this, "groundDecoration.csv");
     public TileManager thirdLayerMap = new TileManager(this, "background.csv");
 
-    // Sound and UI components
+    public CollisionManager collisionManager = new CollisionManager(this);
+
+    public SuperObject[] objectsArray = new SuperObject[MAX_OBJECTS_ARRAY]; // Max number of objects in the game.
+    public AssetSetter assetSetter = new AssetSetter(this); // This class will place objects in the game.
+
+    public Entity[] npcArray = new Entity[10]; // Max number of NPCs in the game
+
     private Sound music = new Sound();
     private Sound sound = new Sound();
+
     public UI ui = new UI(this);
 
-
-
-    // ------------------- Constructor -------------------
-
+    // Constructor
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
@@ -69,9 +66,6 @@ public class GamePanel extends JPanel implements Runnable {
         playMusic(0);
     }
 
-
-    // ------------------- Game Initialization -------------------
-
     public void initializeGame() {
         assetSetter.placeObject();
         assetSetter.placeNPC();
@@ -82,10 +76,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-
-
-    // ------------------- Game Loop -------------------
-
+    // Game loop
     @Override
     public void run() {
         double targetFrameTime = 1_000_000_000.0 / FPS; // The delay between frames in nanoseconds.
@@ -107,14 +98,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-
-
-    // ------------------- Update Components -------------------
-
     private void updateComponents() {
         if(gameStatus.equals("running")) {
             player.update();
-            npcArray[0].update();
+
         }
     }
 
@@ -131,38 +118,48 @@ public class GamePanel extends JPanel implements Runnable {
         } else {
             ui.draw((Graphics2D)g);
         }
+
     }
 
-
-
-    // ------------------- Drawing  -------------------
-
+    // Draw the components of the panel.
     private void drawAllComponents(Graphics2D g2d) {
+        // Debug
+        // Initialize time to see how much time it takes to draw the components.
+
+        // debug print gameStatus
+        System.out.println("gameStatus: " + gameStatus);
+        long startTime = System.nanoTime();
+
         firstLayerMap.draw(g2d);
 
         for(int i = 0; i < objectsArray.length; i++) {
             if(objectsArray[i] != null) {
-                System.out.println("Drawing object: " + objectsArray[i].name);
                 objectsArray[i].draw(g2d, this);
+            }
+        }
+
+        for(int i = 0; i < npcArray.length; i++) {
+            if(npcArray[i] != null) {
+                npcArray[i].draw(g2d);
             }
         }
 
         player.draw(g2d);
 
-        for(int i = 0; i < npcArray.length; i++) {
-            if(npcArray[i] != null) {
+        secondLayerMap.draw(g2d);
 
-            }
-        }
-
-       secondLayerMap.draw(g2d);
 
         ui.draw(g2d);
+
+        // Debug
+        // Calculate the time it took to draw the components.
+        long endTime = System.nanoTime();
+        long elapsedTime = endTime - startTime;
+        g2d.setColor(Color.GREEN);
+        g2d.drawString("Time to draw components: " + elapsedTime , 10, 500);
+        System.out.println("Time to draw components: " + elapsedTime);
+
     }
-
-
-
-    // ------------------- Music and Sound -------------------
 
     public void playMusic(int index) {
         music.setFile(index);

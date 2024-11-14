@@ -1,81 +1,67 @@
 package com.lucafacchini.entity;
 
 import com.lucafacchini.GamePanel;
+import com.lucafacchini.Utilities;
 
-import java.awt.*;
-
-public class NPC_OldMan extends Entity {
-
-    // ---------- NPC Properties ----------
-
-    public final String name;
-
-    public final int NPC_HEIGTH = 16;
+public class NPC_OldMan extends Entity{
+    public final int NPC_HEIGHT = 16;
     public final int NPC_WIDTH = 16;
-    public final int RESCALED_NPC_HEIGHT;
+    public final int RESCALED_NPC_HEIGTH;
     public final int RESCALED_NPC_WIDTH;
-    public final int DEFAULT_NPC_SPEED = 2;
+    public final int DEFAULT_NPC_SPEED = 1;
 
-
-
-    // ---------- Sprite Settings ----------
-
-    public final int NPC_MAX_SPRITES_PER_WALKING_DIRECTION = 2;
-    public final int NPC_MAX_SPRITES_PER_IDLING_DIRECTION = 1;
-
-
-
-    // ---------- Animation Timing ----------
-
-    public final int UPDATE_TIME_FOR_SPRITE = 1;
-    public final int MOVING_NPC_SPRITE_MULTIPLIER = 5;
-    public final int IDLING_NPC_SPRITE_MULTIPLIER_DEFAULT = 20;
-    public final int IDLING_NPC_SPRITE_MULTIPLIER_EYES_OPEN = 120;
-    public final int IDLING_NPC_SPRITE_MULTIPLIER_EYES_CLOSED = MOVING_NPC_SPRITE_MULTIPLIER;
-
-
-
-    // ---------- Constructor ----------
+    Utilities utilities = new Utilities();
 
     public NPC_OldMan(GamePanel gp) {
         super(gp);
+        RESCALED_NPC_HEIGTH = NPC_HEIGHT * gp.SCALE;
+        RESCALED_NPC_WIDTH = NPC_WIDTH * gp.SCALE;
+        setDefaultValues();
+        getImages("npc/old_man");
+        rescaleImages();
 
-        name = "Old Man";
+    }
+
+    void setDefaultValues() {
+        worldX = gp.TILE_SIZE * 24 - gp.TILE_SIZE; // Spawn at the center of the map
+        worldY = gp.TILE_SIZE * 24 - gp.TILE_SIZE; // Spawn at the center of the map
+
+        speed = DEFAULT_NPC_SPEED;
         currentDirection = "down";
-        speed = 2;
 
-        worldX = 22 * gp.TILE_SIZE;
-        worldY = 22 * gp.TILE_SIZE;
-
-        // also pas class name
-        getImages("npc/old_man", 2, 2);
-
-        RESCALED_NPC_HEIGHT = gp.TILE_SIZE * NPC_HEIGTH;
-        RESCALED_NPC_WIDTH = gp.TILE_SIZE * NPC_WIDTH;
     }
 
-    public void update() {
-        updateSprite(UPDATE_TIME_FOR_SPRITE,  IDLING_NPC_SPRITE_MULTIPLIER_EYES_OPEN,
-                IDLING_NPC_SPRITE_MULTIPLIER_EYES_CLOSED, MOVING_NPC_SPRITE_MULTIPLIER,
-                NPC_MAX_SPRITES_PER_WALKING_DIRECTION, NPC_MAX_SPRITES_PER_IDLING_DIRECTION);
-    }
-
-    private void updatePosition() {
-        switch(lastPosition) {
-            case "up":
-                worldY -= speed;
-                break;
-            case "down":
-                worldY += speed;
-                break;
-            case "left":
-                worldX -= speed;
-                break;
-            case "right":
-                worldX += speed;
-                break;
+    private void rescaleImages() {
+        for(int i = 0; i < MAX_SPRITES_PER_WALKING_DIRECTION; i++) {
+            if (upImages[i] != null) {
+                upImages[i] = utilities.rescaleImage(upImages[i], RESCALED_NPC_WIDTH, RESCALED_NPC_HEIGTH);
+            }
+            if(downImages[i] != null) {
+                downImages[i] = utilities.rescaleImage(downImages[i], RESCALED_NPC_WIDTH, RESCALED_NPC_HEIGTH);
+            }
+            if(leftImages[i] != null) {
+                leftImages[i] = utilities.rescaleImage(leftImages[i], RESCALED_NPC_WIDTH, RESCALED_NPC_HEIGTH);
+            }
+            if(rightImages[i] != null) {
+                rightImages[i] = utilities.rescaleImage(rightImages[i], RESCALED_NPC_WIDTH, RESCALED_NPC_HEIGTH);
+            }
         }
 
+        for(int i = 0; i < MAX_SPRITES_PER_IDLING_DIRECTION; i++) {
+            if(idlingUpImages[i] != null) {
+                idlingUpImages[i] = utilities.rescaleImage(idlingUpImages[i], RESCALED_NPC_WIDTH, RESCALED_NPC_HEIGTH);
+            }
+            if(idlingDownImages[i] != null) {
+                idlingDownImages[i] = utilities.rescaleImage(idlingDownImages[i], RESCALED_NPC_WIDTH, RESCALED_NPC_HEIGTH);
+            }
+            if(idlingLeftImages[i] != null) {
+                idlingLeftImages[i] = utilities.rescaleImage(idlingLeftImages[i], RESCALED_NPC_WIDTH, RESCALED_NPC_HEIGTH);
+            }
+            if(idlingRightImages[i] != null) {
+                idlingRightImages[i] = utilities.rescaleImage(idlingRightImages[i], RESCALED_NPC_WIDTH, RESCALED_NPC_HEIGTH);
+            }
+        }
     }
+
 
 }
