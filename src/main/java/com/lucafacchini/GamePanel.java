@@ -138,35 +138,27 @@ public class GamePanel extends JPanel implements Runnable {
     // ------------------- Drawing  -------------------
 
     private void drawAllComponents(Graphics2D g2d) {
-        // Debug
-        // Initialize time to see how much time it takes to draw the components.
-
-        // debug print gameStatus
-        System.out.println("gameStatus: " + gameStatus);
-        long startTime = System.nanoTime();
-
         firstLayerMap.draw(g2d);
 
         for(int i = 0; i < objectsArray.length; i++) {
             if(objectsArray[i] != null) {
+                System.out.println("Drawing object: " + objectsArray[i].name);
                 objectsArray[i].draw(g2d, this);
             }
         }
 
         player.draw(g2d);
 
+        for(int i = 0; i < npcArray.length; i++) {
+            if(npcArray[i] != null) {
+                System.out.println("Drawing NPC: " + npcArray[i].na);
+                npcArray[i].drawEntity(g2d, npcArray[i].worldX, npcArray[i].worldY);
+            }
+        }
+
        secondLayerMap.draw(g2d);
 
         ui.draw(g2d);
-
-        // Debug
-        // Calculate the time it took to draw the components.
-        long endTime = System.nanoTime();
-        long elapsedTime = endTime - startTime;
-        g2d.setColor(Color.GREEN);
-        g2d.drawString("Time to draw components: " + elapsedTime , 10, 500);
-        System.out.println("Time to draw components: " + elapsedTime);
-
     }
 
 

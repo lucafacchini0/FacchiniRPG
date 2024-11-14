@@ -44,7 +44,7 @@ public class TileManager {
 
         // TODO: Implement a way to set the solid tiles
         // [ DEBUG ]
-        setSolid(38193);
+      //  setSolid(38193);
     }
 
 
@@ -101,22 +101,24 @@ public class TileManager {
                 InputStream imageStream = getClass().getResourceAsStream(imagePath);
 
                 if (imageStream == null) {
-                    utilities.printError("TILE_MANAGER", "Error: Image not found for ID: " + id + " (" + imagePath + ")", "\u001B[31m");
+                    utilities.printErrorMessage("TILE_MANAGER", "Error: TILE not found for ID: " + id + " (" + imagePath + ")");
                 } else {
                     Tile tile = new Tile();
                     tile.image = ImageIO.read(imageStream);
                     if (tile.image != null) {
                         tileMap.put(id, tile);
+                        utilities.printSuccess("TILE_MANAGER", "Successfully loaded TILE for ID: " + id);
                     } else {
-                        utilities.printError("TILE_MANAGER", "Error: Image not found for ID: " + id + " (" + imagePath + ")", "\u001B[31m");
+                        utilities.printErrorMessage("TILE_MANAGER", "Error: Failed to load TILE for ID: " + id + " (" + imagePath + ")");
                     }
                 }
 
             } catch (IOException e) {
-                Logger.getLogger(TileManager.class.getName()).log(Level.SEVERE, "[TILE_MANAGER] Error loading TILE: " + id, e);
+                utilities.printErrorMessage("TILE_MANAGER", "Error loading TILE: " + id + " (" + e.getMessage() + ")");
             }
         }
     }
+
 
 
 

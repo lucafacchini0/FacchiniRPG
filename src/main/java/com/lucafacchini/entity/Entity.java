@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 public class Entity {
 
@@ -32,6 +33,9 @@ public class Entity {
     public int boundingBoxDefaultX, boundingBoxDefaultY;
     public boolean isCollidingWithTile = false;
     public boolean isCollidingWithObject = false;
+
+    // Utilities
+    public Utilities utilities = new Utilities();
 
     // Game Panel reference
     GamePanel gp;
@@ -57,50 +61,56 @@ public class Entity {
 
     public void update() {}
 
-    // Update direction
     public void updateDirection(KeyHandler kh, boolean isPlayer) {
-        if(isPlayer) { // Handle player movement with the keyboard
-            boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
-            boolean isIdle = !isMoving;
-
-            if (isIdle || (kh.isUpPressed && kh.isDownPressed) || (kh.isLeftPressed && kh.isRightPressed)) {
-                currentDirection = "idling-" + lastPosition;
-            } else {
-                if (kh.isUpPressed && kh.isLeftPressed) {
-                    currentDirection = "up-left";
-                    lastPosition = currentDirection;
-                }
-                else if (kh.isUpPressed && kh.isRightPressed) {
-                    currentDirection = "up-right";
-                    lastPosition = currentDirection;
-                }
-                else if (kh.isDownPressed && kh.isLeftPressed) {
-                    currentDirection = "down-left";
-                    lastPosition = currentDirection;
-                }
-                else if (kh.isDownPressed && kh.isRightPressed) {
-                    currentDirection = "down-right";
-                    lastPosition = currentDirection;
-                }
-                else if (kh.isUpPressed) {
-                    currentDirection = "up";
-                    lastPosition = currentDirection;
-                }
-                else if (kh.isDownPressed) {
-                    currentDirection = "down";
-                    lastPosition = currentDirection;
-                }
-                else if (kh.isLeftPressed) {
-                    currentDirection = "left";
-                    lastPosition = currentDirection;
-                }
-                else {
-                    currentDirection = "right";
-                    lastPosition = currentDirection;
-                }
-            }
+        if (isPlayer) {
+            updatePlayerDirection(kh);
+        } else {
+            setRandomDirection();
         }
     }
+
+    private void updatePlayerDirection(KeyHandler kh) {
+        boolean isMoving = kh.isUpPressed || kh.isDownPressed || kh.isLeftPressed || kh.isRightPressed;
+        boolean isIdle = !isMoving;
+
+        if (isIdle || (kh.isUpPressed && kh.isDownPressed) || (kh.isLeftPressed && kh.isRightPressed)) {
+            currentDirection = "idling-" + lastPosition;
+        } else {
+            setDirectionBasedOnKeys(kh);
+        }
+    }
+
+    private void setDirectionBasedOnKeys(KeyHandler kh) {
+        if (kh.isUpPressed && kh.isLeftPressed) {
+            setDirection("up-left");
+        } else if (kh.isUpPressed && kh.isRightPressed) {
+            setDirection("up-right");
+        } else if (kh.isDownPressed && kh.isLeftPressed) {
+            setDirection("down-left");
+        } else if (kh.isDownPressed && kh.isRightPressed) {
+            setDirection("down-right");
+        } else if (kh.isUpPressed) {
+            setDirection("up");
+        } else if (kh.isDownPressed) {
+            setDirection("down");
+        } else if (kh.isLeftPressed) {
+            setDirection("left");
+        } else {
+            setDirection("right");
+        }
+    }
+
+    private void setDirection(String direction) {
+        currentDirection = direction;
+        lastPosition = direction;
+    }
+
+    private void setRandomDirection() {
+        String[] directions = {"up", "down", "left", "right"};
+        currentDirection = directions[new Random().nextInt(directions.length)];
+    }
+
+
 
     public void updateSprite(int UPDATE_TIME_FOR_SPRITE, int IDLING_EYES_OPEN_MULTIPLIER,
                              int IDLING_EYES_CLOSED_MULTIPLIER, int IDLING_DEFAULT_MULTIPLIER, int MOVING_MULTIPLIER,
@@ -241,14 +251,22 @@ public class Entity {
     }
 
     private void loadDirectionalImages(String key, String pathPrefix, int maxSprites) {
+
+
+        String imagePath = null;
         try {
+            imagePath = "";
+
             BufferedImage[] directionImages = images.computeIfAbsent(key, _ -> new BufferedImage[maxSprites]);
             for (int i = 0; i < maxSprites; i++) {
-                String imagePath = pathPrefix + (i + 1) + ".png";
+                imagePath = pathPrefix + (i + 1) + ".png";
                 directionImages[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
             }
-        } catch (IOException | NullPointerException e) {
-            e.printStackTrace();
+            utilities.printLoadingImagesSuccess(getClass().getSimpleName(), "Loaded SPRITES: ", imagePath);
+        } catch (NullPointerException e) {
+            utilities.printLoadingImagesError(getClass().getSimpleName(), "Error loading SPRITES: ", imagePath, "NullPointerException");
+        } catch (IOException e) {
+            utilities.printLoadingImagesError(getClass().getSimpleName(), "Error loading SPRITES: ", imagePath, "IOException");
         }
     }
 
@@ -298,6 +316,7 @@ public class Entity {
             // Debug
             g2d.setColor(Color.RED);
             g2d.drawRect(screenX + boundingBox.x, screenY + boundingBox.y, boundingBox.width, boundingBox.height);
+            utilities.drawEntitySuccess(getClass().getSimpleName(), "Drawn entity at: " + worldX / gp.TILE_SIZE + ", " + worldY / gp.TILE_SIZE);
         }
     }
 
@@ -310,4 +329,11 @@ public class Entity {
         int index = Math.max(0, Math.min(spriteImageNum - 1, directionImages.length - 1));
         return directionImages[index];
     }
+
+
+
+    // ------------------- Utilities & Debugging -------------------
+
+
+
 }

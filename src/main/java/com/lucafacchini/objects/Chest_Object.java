@@ -15,7 +15,6 @@ public class Chest_Object extends SuperObject {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/chest.png")));
             image = utilities.rescaleImage(image, gp.TILE_SIZE, gp.TILE_SIZE);
         } catch (Exception e) {
-            utilities.printError(this.getClass().getSimpleName(), "Failed to load image.", "\u001B[31m");
             e.printStackTrace();
         }
 
