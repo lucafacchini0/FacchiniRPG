@@ -173,7 +173,7 @@ public class Player extends Entity {
         setMultiplier(currentDirection, spriteImageNum);
 
         // Reset the sprite image number if the player is idling
-        if(currentDirection.contains("idling")) {
+        if(lastPosition.contains("idling")) {
             if(spriteImageNum > 4) { // 4 is the last sprite of the idling animation. Walk have 6.
                 spriteImageNum = 1;
             }
@@ -197,14 +197,18 @@ public class Player extends Entity {
         if (isMoving && !(kh.isUpPressed && kh.isDownPressed) && !(kh.isLeftPressed && kh.isRightPressed)) {
             isCollidingWithTile = false;
             isCollidingWithObject = false;
+            isCollidingWithEntity = false;
 
             gp.collisionManager.checkTile(this);
             int objectIndex = gp.collisionManager.checkObject(this, true);
             pickUpObject(objectIndex);
 
-            if (!isCollidingWithTile && !isCollidingWithObject) {
+            // Check NPC collision
+            int npcIndex = gp.collisionManager.checkEntity(this, gp.npcArray);
+
+            if (!isCollidingWithTile && !isCollidingWithObject && !isCollidingWithEntity) {
                 movePlayer();
-            } else if (isCollidingWithTile && !isCollidingWithObject) {
+            } else if (isCollidingWithTile && !isCollidingWithObject && !isCollidingWithEntity) {
                 handleCollision(); // TODO: Fix this method. Diagonal movement is not working while colliding with Objects.
             } else { // isCollidingWithObject
                 // handleCollisionWithObject(objectIndex);

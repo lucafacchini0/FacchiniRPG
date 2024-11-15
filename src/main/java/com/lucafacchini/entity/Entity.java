@@ -12,6 +12,8 @@ public class Entity {
     public final int MAX_SPRITES_PER_WALKING_DIRECTION = 2;
     public final int MAX_SPRITES_PER_IDLING_DIRECTION = 2;
 
+    public int updateFramesCounter = 0;
+
     public int worldX, worldY;
     public int speed;
 
@@ -32,6 +34,7 @@ public class Entity {
     public int boundingBoxDefaultX, boundingBoxDefaultY;
     public boolean isCollidingWithTile = false;
     public boolean isCollidingWithObject = false;
+    public boolean isCollidingWithEntity = false;
 
     GamePanel gp;
 
@@ -39,7 +42,58 @@ public class Entity {
         this.gp = gp;
     }
 
-    public void update() {}
+    public void setAction() {}
+    public void update() {
+        setAction();
+
+        isCollidingWithTile = false;
+        isCollidingWithEntity = false;
+        isCollidingWithObject = false;
+
+        gp.collisionManager.checkTile(this);
+        gp.collisionManager.checkPlayer(this);
+        gp.collisionManager.checkObject(this, false);
+
+        if(!isCollidingWithTile && !isCollidingWithEntity && !isCollidingWithObject) {
+            switch(currentDirection) {
+                case "up" -> worldY -= speed;
+                case "down" -> worldY += speed;
+                case "left" -> worldX -= speed;
+                case "right" -> worldX += speed;
+                case "up-left" -> {
+                    worldY -= speed;
+                    worldX -= speed;
+                }
+                case "up-right" -> {
+                    worldY -= speed;
+                    worldX += speed;
+                }
+                case "down-left" -> {
+                    worldY += speed;
+                    worldX -= speed;
+                }
+                case "down-right" -> {
+                    worldY += speed;
+                    worldX += speed;
+                }
+            }
+
+
+            spriteFramesCounter++;
+
+            spriteFramesCounter++;
+            if (spriteFramesCounter > 30) {
+                spriteImageNum++;
+                if (spriteImageNum > MAX_SPRITES_PER_WALKING_DIRECTION) {
+                    spriteImageNum = 1;
+                }
+                spriteFramesCounter = 0;
+            }
+        }
+    }
+
+
+
     public void draw(Graphics2D g2d) {
         BufferedImage image = null;
 

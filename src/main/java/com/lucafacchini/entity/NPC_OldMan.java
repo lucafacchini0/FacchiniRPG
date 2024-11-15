@@ -3,12 +3,16 @@ package com.lucafacchini.entity;
 import com.lucafacchini.GamePanel;
 import com.lucafacchini.Utilities;
 
+import java.util.Random;
+
 public class NPC_OldMan extends Entity{
     public final int NPC_HEIGHT = 16;
     public final int NPC_WIDTH = 16;
     public final int RESCALED_NPC_HEIGTH;
     public final int RESCALED_NPC_WIDTH;
     public final int DEFAULT_NPC_SPEED = 1;
+
+    private int updateFrameCounter = 0;
 
     Utilities utilities = new Utilities();
 
@@ -24,9 +28,9 @@ public class NPC_OldMan extends Entity{
 
     void setDefaultValues() {
         worldX = gp.TILE_SIZE * 24 - gp.TILE_SIZE; // Spawn at the center of the map
-        worldY = gp.TILE_SIZE * 24 - gp.TILE_SIZE; // Spawn at the center of the map
+        worldY = gp.TILE_SIZE * 26 - gp.TILE_SIZE; // Spawn at the center of the map
 
-        speed = DEFAULT_NPC_SPEED;
+        speed = 1;
         currentDirection = "down";
 
     }
@@ -63,5 +67,20 @@ public class NPC_OldMan extends Entity{
         }
     }
 
+    @Override
+    public void setAction() {
+        updateFrameCounter++;
+        if (updateFrameCounter >= 120) {
+            Random random = new Random();
+            int index = random.nextInt(4); // Random number between 0 and 3
 
+            switch (index) {
+                case 0 -> currentDirection = "up";
+                case 1 -> currentDirection = "down";
+                case 2 -> currentDirection = "left";
+                case 3 -> currentDirection = "right";
+            }
+            updateFrameCounter = 0;
+        }
+    }
 }

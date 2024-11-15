@@ -101,6 +101,7 @@ public class GamePanel extends JPanel implements Runnable {
     private void updateComponents() {
         if(gameStatus.equals("running")) {
             player.update();
+            npcArray[0].update();
 
         }
     }
@@ -123,12 +124,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Draw the components of the panel.
     private void drawAllComponents(Graphics2D g2d) {
-        // Debug
-        // Initialize time to see how much time it takes to draw the components.
-
-        // debug print gameStatus
-        System.out.println("gameStatus: " + gameStatus);
-        long startTime = System.nanoTime();
 
         firstLayerMap.draw(g2d);
 
@@ -150,15 +145,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 
         ui.draw(g2d);
-
-        // Debug
-        // Calculate the time it took to draw the components.
-        long endTime = System.nanoTime();
-        long elapsedTime = endTime - startTime;
-        g2d.setColor(Color.GREEN);
-        g2d.drawString("Time to draw components: " + elapsedTime , 10, 500);
-        System.out.println("Time to draw components: " + elapsedTime);
-
     }
 
     public void playMusic(int index) {

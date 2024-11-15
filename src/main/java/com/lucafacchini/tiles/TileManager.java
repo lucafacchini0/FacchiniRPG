@@ -44,7 +44,7 @@ public class TileManager {
 
         // TODO: Implement a way to set the solid tiles
         // [ DEBUG ]
-      //  setSolid(38193);
+        setSolid(38193);
     }
 
 
