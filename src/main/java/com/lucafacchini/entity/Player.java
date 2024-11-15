@@ -217,14 +217,12 @@ public class Player extends Entity {
     }
 
     private void setMultiplier(String direction, int spriteImageNum) {
-        if(direction.equals("idling-down") || direction.equals("idling-left") || direction.equals("idling-right")) {
-            if(spriteImageNum == 1) {
+        if (direction.contains("idling")) {
+            if (spriteImageNum == 1) {
                 spriteCounterMultiplier = IDLING_PLAYER_SPRITE_MULTIPLIER_EYES_OPEN;
             } else {
                 spriteCounterMultiplier = IDLING_PLAYER_SPRITE_MULTIPLIER_EYES_CLOSED;
             }
-        } else if(direction.contains("idling")) {
-            spriteCounterMultiplier = IDLING_PLAYER_SPRITE_MULTIPLIER_DEFAULT;
         } else {
             spriteCounterMultiplier = MOVING_PLAYER_SPRITE_MULTIPLIER;
         }
