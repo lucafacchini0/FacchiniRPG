@@ -10,8 +10,13 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
+
     // Game settings
-    public String gameStatus = "running";
+    public final int runningState = 1;
+    public final int pausedState = 2;
+    public final int dialogState = 3;
+
+    public int gameStatus = runningState;
 
     // Tile settings
     public final int ORIGINAL_TILE_SIZE = 16;
@@ -99,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void updateComponents() {
-        if(gameStatus.equals("running")) {
+        if(gameStatus == runningState) {
             player.update();
             npcArray[0].update();
 
@@ -108,7 +113,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void paintComponent(Graphics g)  {
-        if(gameStatus.equals("running")) {
+        if(gameStatus == runningState) {
             super.paintComponent(g);
 
             Graphics2D g2d = (Graphics2D)g;
@@ -118,6 +123,7 @@ public class GamePanel extends JPanel implements Runnable {
             g2d.dispose();
         } else {
             ui.draw((Graphics2D)g);
+            ui.isDrawing = false;
         }
 
     }

@@ -203,8 +203,10 @@ public class Player extends Entity {
             int objectIndex = gp.collisionManager.checkObject(this, true);
             pickUpObject(objectIndex);
 
+
             // Check NPC collision
             int npcIndex = gp.collisionManager.checkEntity(this, gp.npcArray);
+            interractionWithNPC(npcIndex);
 
             if (!isCollidingWithTile && !isCollidingWithObject && !isCollidingWithEntity) {
                 movePlayer();
@@ -363,6 +365,12 @@ public class Player extends Entity {
                     gp.ui.gameFinished = true;
                     break;
             }
+        }
+    }
+
+    public void interractionWithNPC(int index) {
+        if(index != -1) {
+            gp.gameStatus = gp.dialogState;
         }
     }
 

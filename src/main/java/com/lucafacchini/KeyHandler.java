@@ -62,11 +62,11 @@ public class KeyHandler implements KeyListener {
         }
 
         if(key == KeyEvent.VK_T) {
-            if(gp.gameStatus == "running") {
-                gp.gameStatus = "paused";
+            if(gp.gameStatus == gp.runningState) {
+                gp.gameStatus = gp.pausedState;
 
-            } else if(gp.gameStatus == "paused") {
-                gp.gameStatus = "running";
+            } else if (gp.gameStatus == gp.pausedState) {
+                gp.gameStatus = gp.runningState;
             }
         }
     }
