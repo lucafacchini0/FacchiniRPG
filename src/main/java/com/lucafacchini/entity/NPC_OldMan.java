@@ -23,6 +23,7 @@ public class NPC_OldMan extends Entity{
         setDefaultValues();
         getImages("npc/old_man");
         rescaleImages();
+        setDialogue();
 
     }
 
@@ -81,6 +82,20 @@ public class NPC_OldMan extends Entity{
                 case 3 -> currentDirection = "right";
             }
             updateFrameCounter = 0;
+        }
+    }
+
+    public void setDialogue() {
+        dialogues[0] = "Hello, welcome to FacchiniRPG!";
+        dialogues[1] = "I'm so happy you've found me!";
+        dialogues[2] = "Have a nice adventure!";
+    }
+
+    @Override
+    public void speak() {
+        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        if(dialogues[dialogueIndex + 1] != null) {
+            dialogueIndex++;
         }
     }
 }

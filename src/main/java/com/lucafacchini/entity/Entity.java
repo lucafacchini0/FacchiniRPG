@@ -37,12 +37,16 @@ public class Entity {
     public boolean isCollidingWithEntity = false;
 
     GamePanel gp;
+    String[] dialogues = new String[20]; // TODO: Change to HashMap
+    int dialogueIndex = 0;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
     }
 
     public void setAction() {}
+    public void speak() {}
+
     public void update() {
         setAction();
 

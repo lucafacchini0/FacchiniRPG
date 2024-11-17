@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements Runnable {
     // Game settings
     public final int runningState = 1;
     public final int pausedState = 2;
-    public final int dialogState = 3;
+    public final int dialogueState = 3;
 
     public int gameStatus = runningState;
 
@@ -121,9 +121,8 @@ public class GamePanel extends JPanel implements Runnable {
             drawAllComponents(g2d);
 
             g2d.dispose();
-        } else {
+        } else if(gameStatus == dialogueState && !ui.isDrawing) {
             ui.draw((Graphics2D)g);
-            ui.isDrawing = false;
         }
 
     }

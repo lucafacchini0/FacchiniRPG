@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 public class UI {
 
     public boolean isDrawing = false;
+    public String currentDialogue = "";
 
     GamePanel gp;
     Graphics2D g2d;
@@ -42,20 +43,18 @@ public class UI {
     public void draw(Graphics2D g2d) {
         this.g2d = g2d;
 
-        if(!isDrawing) {
+        g2d.setFont(arial_30);
+        g2d.setColor(Color.WHITE);
+
+        if(gp.gameStatus == gp.runningState) {
+            // Do stuff
+        }
+        if(gp.gameStatus == gp.pausedState) {
+            // Do stuff
+        }
+        if(gp.gameStatus == gp.dialogueState) {
             isDrawing = true;
-
-
-            if(gp.gameStatus == gp.runningState) {
-
-            } else if(gp.gameStatus == gp.pausedState) {
-
-            } else if(gp.gameStatus == gp.dialogState) {
-                drawDialogueScreen();
-            }
-
-
-
+            drawDialogueScreen();
         }
     }
 
@@ -68,10 +67,14 @@ public class UI {
         height = gp.TILE_SIZE * 4;
 
         drawSubWindow(x, y, width, height);
+
+        x += gp.TILE_SIZE;
+        y += gp.TILE_SIZE;
+        g2d.drawString(currentDialogue, x, y);
     }
 
     public void drawSubWindow(int x, int y, int width, int height) {
-        Color color = new Color(0, 0,0, 59);
+        Color color = new Color(0, 0,0, 200);
         g2d.setColor(color);
         g2d.fillRoundRect(x, y, width, height, 50, 50);
 

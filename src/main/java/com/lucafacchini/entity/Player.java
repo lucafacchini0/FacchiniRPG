@@ -4,11 +4,8 @@ import com.lucafacchini.GamePanel;
 import com.lucafacchini.KeyHandler;
 import com.lucafacchini.Utilities;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 
 public class Player extends Entity {
 
@@ -370,7 +367,8 @@ public class Player extends Entity {
 
     public void interractionWithNPC(int index) {
         if(index != -1) {
-            gp.gameStatus = gp.dialogState;
+            gp.gameStatus = gp.dialogueState;
+            gp.npcArray[index].speak();
         }
     }
 
