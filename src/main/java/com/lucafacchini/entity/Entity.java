@@ -64,22 +64,10 @@ public class Entity {
                 case "down" -> worldY += speed;
                 case "left" -> worldX -= speed;
                 case "right" -> worldX += speed;
-                case "up-left" -> {
-                    worldY -= speed;
-                    worldX -= speed;
-                }
-                case "up-right" -> {
-                    worldY -= speed;
-                    worldX += speed;
-                }
-                case "down-left" -> {
-                    worldY += speed;
-                    worldX -= speed;
-                }
-                case "down-right" -> {
-                    worldY += speed;
-                    worldX += speed;
-                }
+                case "up-left" -> {  worldY -= speed; worldX -= speed; }
+                case "up-right" -> {  worldY -= speed; worldX += speed;  }
+                case "down-left" -> { worldY += speed; worldX -= speed; }
+                case "down-right" -> { worldY += speed;  worldX += speed; }
             }
 
 
