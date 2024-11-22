@@ -1,4 +1,4 @@
-# 🕹️ **FacchiniTreasureHunter** 🎮
+# 🕹️ **Facchini's TreasureHunter** 🎮
 
 A simple 2D Top-Down game where you have to collect a key to open a door and win the game.
 
